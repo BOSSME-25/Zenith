@@ -32,9 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local.example
 
 # vercel
 .vercel
+
+# zenith source materials (brand kit, strategy memo, punch list) — local only
+/_source/
 
 # typescript
 *.tsbuildinfo
