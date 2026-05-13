@@ -1,46 +1,70 @@
 import "server-only";
-import { sql, type QueryResult, type QueryResultRow } from "@vercel/postgres";
+import {
+  createPool,
+  type QueryResult,
+  type QueryResultRow,
+  type VercelPool,
+} from "@vercel/postgres";
 
 /**
- * Database availability check.
- * Returns true only when a connection string is configured so the rest
- * of the app can fall back to no-op behavior in pre-deploy environments.
+ * Resolve the connection string from any of the env var names Neon/Vercel
+ * marketplace integrations might expose. The non-pooling URL is also acceptable
+ * because we drive the pool ourselves below; @vercel/postgres's `sql` tag is
+ * the one that mandates a pooler hostname.
  */
-export function isDbConfigured(): boolean {
-  return Boolean(
+function getConnectionString(): string | undefined {
+  return (
     process.env.POSTGRES_URL ||
-      process.env.POSTGRES_URL_NON_POOLING ||
-      process.env.DATABASE_URL,
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.DATABASE_URL ||
+    process.env.PRISMA_DATABASE_URL
   );
 }
 
-type SqlTag = typeof sql;
+export function isDbConfigured(): boolean {
+  return Boolean(getConnectionString());
+}
+
+let pool: VercelPool | null = null;
+function getPool(): VercelPool {
+  if (!pool) {
+    pool = createPool({ connectionString: getConnectionString() });
+  }
+  return pool;
+}
 
 let warnedMissingEnv = false;
 function warnOnce() {
   if (!warnedMissingEnv && process.env.NODE_ENV !== "production") {
     warnedMissingEnv = true;
     console.warn(
-      "[zenith] POSTGRES_URL is not set — database calls are no-ops. " +
-        "Set POSTGRES_URL in .env.local (or link the project on Vercel) to enable persistence.",
+      "[zenith] No database URL is set — database calls are no-ops. " +
+        "Set POSTGRES_URL (or DATABASE_URL) in .env.local or on Vercel to enable persistence.",
     );
   }
 }
 
+const emptyResult = <T extends QueryResultRow>(): QueryResult<T> =>
+  ({ rows: [], rowCount: 0, command: "", oid: 0, fields: [] } as unknown as QueryResult<T>);
+
+type SqlFn = <T extends QueryResultRow = QueryResultRow>(
+  strings: TemplateStringsArray,
+  ...values: unknown[]
+) => Promise<QueryResult<T>>;
+
 /**
  * Safe sql tag that returns an empty result if the DB is not configured.
- * Use this everywhere we read or write from server actions and pages.
  */
-export const safeSql = (async <T extends QueryResultRow = QueryResultRow>(
+export const safeSql: SqlFn = (async <T extends QueryResultRow = QueryResultRow>(
   strings: TemplateStringsArray,
   ...values: unknown[]
 ): Promise<QueryResult<T>> => {
   if (!isDbConfigured()) {
     warnOnce();
-    return { rows: [], rowCount: 0, command: "", oid: 0, fields: [] } as unknown as QueryResult<T>;
+    return emptyResult<T>();
   }
-  return (sql as unknown as SqlTag)<T>(strings, ...(values as never[]));
-}) as unknown as SqlTag;
+  return getPool().sql<T>(strings, ...(values as never[]));
+}) as SqlFn;
 
 /**
  * Positional-parameter variant for queries that need to bind non-primitive
@@ -52,9 +76,9 @@ export async function safeQuery<T extends QueryResultRow = QueryResultRow>(
 ): Promise<QueryResult<T>> {
   if (!isDbConfigured()) {
     warnOnce();
-    return { rows: [], rowCount: 0, command: "", oid: 0, fields: [] } as unknown as QueryResult<T>;
+    return emptyResult<T>();
   }
-  return (await sql.query(text, values as never[])) as unknown as QueryResult<T>;
+  return (await getPool().query(text, values as never[])) as unknown as QueryResult<T>;
 }
 
 const CREATE_STATEMENTS = [
@@ -126,8 +150,9 @@ export async function initDatabase(): Promise<{ ok: boolean; message: string }> 
     return { ok: false, message: "POSTGRES_URL is not configured." };
   }
   try {
+    const p = getPool();
     for (const stmt of CREATE_STATEMENTS) {
-      await sql.query(stmt);
+      await p.query(stmt);
     }
     return { ok: true, message: "All tables created (or already existed)." };
   } catch (err) {
