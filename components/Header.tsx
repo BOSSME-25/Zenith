@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Logo } from "./Logo";
 import { cn } from "@/lib/cn";
 
 const NAV = [
@@ -37,7 +36,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 bg-midnight text-white border-b border-midnight-75/40">
       <div className="container-prose flex items-center justify-between py-3 md:py-4">
-        <Logo variant="full-light" priority width={220} height={56} className="h-10 md:h-12 w-auto" />
+        <Link
+          href="/"
+          aria-label="Zenith College and Career Prep — home"
+          className="inline-flex items-baseline gap-2 whitespace-nowrap"
+        >
+          <span className="text-xl md:text-2xl font-bold tracking-tight text-white">Zenith</span>
+          <span className="hidden sm:inline text-xs md:text-sm font-medium uppercase tracking-[0.18em] text-ion">
+            College &amp; Career Prep
+          </span>
+        </Link>
         <nav className="hidden md:flex items-center gap-7" aria-label="Primary">
           {NAV.map((item) => {
             const active = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));

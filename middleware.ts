@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { ADMIN_COOKIE_NAME, verifyTokenValue } from "@/lib/auth";
+import { ADMIN_COOKIE_NAME, verifyTokenValue } from "@/lib/auth-edge";
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
