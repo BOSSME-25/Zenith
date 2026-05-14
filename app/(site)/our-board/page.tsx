@@ -158,12 +158,56 @@ export default function OurBoardPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Founding Board" title="Meet the founding board." bg="white">
+      <Section eyebrow="In Their Words" title="Why I joined Zenith." bg="white" className="border-t border-ion/40">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              name: "Dr. Jay Samant",
+              role: "Founder",
+              quote:
+                "I founded Zenith because Maryvale students deserve a school that was built with them, not placed near them. Every design decision we've made starts with that belief.",
+            },
+            {
+              name: "Dr. Robert Barlow",
+              role: "Board Member",
+              quote:
+                "I joined Zenith because I know what it means to need a school that believes in you. Strong governance is how we protect that promise for every student who walks through these doors.",
+            },
+            { name: "George Saad, Esq.", role: "Board Member", quote: "Placeholder — George's blurb coming soon." },
+            { name: "Michael Finch", role: "Board Member", quote: "Placeholder — Michael's blurb coming soon." },
+            { name: "Jade Nangah", role: "Board Member", quote: "Placeholder — Jade's blurb coming soon." },
+            { name: "Lynn Palacios", role: "Board Member", quote: "Placeholder — Lynn's blurb coming soon." },
+            { name: "Dr. Tom Nevill", role: "Board Member", quote: "Placeholder — Tom's blurb coming soon." },
+            { name: "Luis Cordova", role: "Board Member", quote: "Placeholder — Luis's blurb coming soon." },
+            { name: "Veronica Sas", role: "Board Member", quote: "Placeholder — Veronica's blurb coming soon." },
+            { name: "Emily Belt", role: "Board Member", quote: "Placeholder — Emily's blurb coming soon." },
+          ].map((q) => (
+            <figure
+              key={q.name}
+              className="rounded-2xl bg-white border border-ion p-6 md:p-7 flex flex-col shadow-[0_2px_8px_rgba(6,36,63,0.04)]"
+            >
+              <span className="text-4xl leading-none text-eventide" aria-hidden>
+                &ldquo;
+              </span>
+              <blockquote className="mt-2 text-base leading-relaxed text-midnight">
+                {q.quote}
+              </blockquote>
+              <figcaption className="mt-5 pt-4 border-t border-ion">
+                <p className="text-sm font-semibold text-midnight">{q.name}</p>
+                <p className="text-xs text-eventide font-medium uppercase tracking-wider">{q.role}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Section>
+
+      <Section eyebrow="Founding Board" title="Meet the founding board." bg="ion-soft">
+        <p className="sr-only">Full bios for each founding board member.</p>
         <div className="grid gap-8 md:grid-cols-2">
           {BOARD.map((m) => (
             <article
               key={m.name}
-              className="rounded-2xl bg-ion-soft border border-ion p-6 md:p-8 flex flex-col"
+              className="rounded-2xl bg-white border border-ion p-6 md:p-8 flex flex-col"
             >
               <div className="flex items-start gap-4">
                 {m.photo ? (

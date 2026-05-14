@@ -45,6 +45,50 @@ export default function OurStoryPage() {
         </div>
       </Section>
 
+      <Section eyebrow="Why Now" title="Why Maryvale? Why Now?" bg="white">
+        <div className="max-w-4xl">
+          <p className="text-base md:text-lg leading-relaxed text-midnight">
+            Maryvale students do not lack talent. They lack access to personalized, college and
+            career-connected opportunities. Many local high schools are extremely large and often
+            provide limited access to advanced coursework, individualized support, and career-connected
+            learning experiences. Zenith was designed to bridge those gaps through rigorous academics,
+            strong relationships, early college opportunities, and real-world readiness.
+          </p>
+          <div className="mt-10 rounded-3xl bg-midnight text-white p-8 md:p-10 border-l-4 border-ion">
+            <p className="text-2xl md:text-3xl font-semibold leading-snug">
+              &ldquo;This is not an ability gap. It is an access gap.&rdquo;
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section eyebrow="What We Heard" title="What we heard from families." bg="ion-soft">
+        <p className="text-base md:text-lg leading-relaxed text-midnight max-w-3xl">
+          Across 200+ surveys and 100+ one-on-one conversations, Maryvale families consistently asked
+          for the same things:
+        </p>
+        <ul className="mt-8 grid gap-4 md:grid-cols-2 max-w-5xl">
+          {[
+            "Smaller schools where students are known and supported",
+            "Stronger academic support and intervention",
+            "Real access to college credit opportunities",
+            "Career-connected learning tied to real jobs",
+            "Safer, more personalized school environments",
+          ].map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-3 rounded-2xl bg-white border border-ion p-5"
+            >
+              <span className="mt-1.5 h-2 w-2 flex-none rounded-full bg-eventide" aria-hidden />
+              <p className="text-base md:text-lg leading-relaxed text-midnight">{item}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-8 text-base md:text-lg text-midnight-75 max-w-3xl">
+          Zenith&apos;s model was directly shaped by this feedback.
+        </p>
+      </Section>
+
       <Section eyebrow="Designed With Community" title="The Zenith design process." bg="white">
         <ol className="grid gap-6 md:grid-cols-3">
           {[

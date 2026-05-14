@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, Lightbulb, Users, Wallet, Briefcase, Compass, HandHeart, Flag } from "lucide-react";
+import { ArrowRight, GraduationCap, Lightbulb, Users, Wallet, Briefcase, Compass, HandHeart, Flag, TrendingUp, BarChart2 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 
@@ -38,6 +38,59 @@ const WHY_POINTS = [
   },
 ];
 
+const DIFFERENTIATORS = [
+  {
+    icon: GraduationCap,
+    title: "AP-First Model",
+    body: "All students are prepared for advanced coursework and college-level expectations beginning in 9th grade through rigorous Pre-AP aligned instruction and academic support systems.",
+  },
+  {
+    icon: Compass,
+    title: "Personalized Pathways",
+    body: "Every scholar develops individualized college, career, and leadership goals through advisory, mentorship, and postsecondary planning.",
+  },
+  {
+    icon: Briefcase,
+    title: "Career-Connected Learning",
+    body: "Students engage in internships, work-based learning, career exploration, and industry-connected experiences aligned to high-demand Arizona careers.",
+  },
+  {
+    icon: Users,
+    title: "Small, Personalized Environment",
+    body: "With no more than 100 students per grade, every student is known, supported, and challenged.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Financial Literacy and Real-World Readiness",
+    body: "Students develop practical life, financial, communication, and leadership skills alongside academic rigor.",
+  },
+  {
+    icon: BarChart2,
+    title: "Embedded Intervention and Support",
+    body: "Daily Elevate intervention block provides targeted academic support, ELD support, enrichment, tutoring, and acceleration.",
+  },
+];
+
+const PARTNERS = [
+  "BES (Bush Education Strategies)",
+  "Harvest Compassion Center",
+  "AZ Leads",
+  "Million Dollar Teacher Project",
+  "Center for the Future of Arizona",
+  "AZ Hispanic Chamber of Commerce",
+  "Phoenix Community Alliance",
+  "Grand Canyon University",
+  "Maricopa Community Colleges",
+  "Boys and Girls Club",
+  "YMCA",
+];
+
+const COMMUNITY_STATS = [
+  { value: "200+", label: "Community surveys completed" },
+  { value: "100+", label: "One-on-one family conversations" },
+  { value: "6+", label: "Community organizations engaged" },
+];
+
 const VALUES = [
   {
     name: "Purpose",
@@ -64,25 +117,32 @@ export default function Home() {
           <div className="max-w-2xl">
             <p className="eyebrow text-ion">A New Kind of High School Is Coming to Maryvale</p>
             <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-white">
-              Elevating Every Future
+              AP-First. College &amp; Career Connected. Built for Maryvale.
             </h1>
             <p className="mt-6 text-lg md:text-xl text-white/85 leading-relaxed">
-              Zenith College and Career Prep is an early college STEAM high school designed to prepare
-              students in the Maryvale community of Phoenix for success in college, career, and life.
+              Zenith College and Career Prep is a personalized public charter high school preparing
+              students to excel through AP-first academics, early college pathways, STEAM learning,
+              and real-world career experiences.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/get-involved#family"
                 className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors"
               >
-                Join the Interest List
+                Join Our Interest List
                 <ArrowRight size={18} aria-hidden />
               </Link>
               <Link
-                href="/get-involved#survey"
+                href="/school-model"
                 className="inline-flex items-center gap-2 rounded-full border border-ion/60 px-6 py-3 text-sm md:text-base font-semibold text-ion hover:bg-ion hover:text-midnight transition-colors"
               >
-                Take the Community Survey
+                Learn More
+              </Link>
+              <Link
+                href="/get-involved#partner"
+                className="inline-flex items-center gap-2 rounded-full border border-ion/60 px-6 py-3 text-sm md:text-base font-semibold text-ion hover:bg-ion hover:text-midnight transition-colors"
+              >
+                Partner With Zenith
               </Link>
             </div>
           </div>
@@ -163,16 +223,44 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section eyebrow="Core Values" bg="ion-soft">
+      <Section eyebrow="The Zenith Difference" title="What makes Zenith different?" bg="ion-soft">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {DIFFERENTIATORS.map(({ icon: Icon, title, body }, i) => (
+            <Reveal
+              key={title}
+              as="article"
+              delay={i * 80}
+              className="rounded-2xl bg-white border border-ion p-7 md:p-8 flex flex-col"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-midnight text-ion">
+                <Icon size={26} aria-hidden />
+              </span>
+              <p className="mt-5 text-xl font-semibold text-midnight leading-snug">{title}</p>
+              <p className="mt-3 text-base leading-relaxed text-midnight-75">{body}</p>
+            </Reveal>
+          ))}
+        </div>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link
+            href="/school-model"
+            className="inline-flex items-center gap-2 rounded-full bg-midnight px-6 py-3 text-sm md:text-base font-semibold text-white hover:bg-midnight-75 transition-colors"
+          >
+            Explore the school model
+            <ArrowRight size={18} aria-hidden />
+          </Link>
+        </div>
+      </Section>
+
+      <Section eyebrow="Core Values" bg="white">
         <div className="grid gap-8 md:grid-cols-3">
           {VALUES.map(({ name, body, icon: Icon }, i) => (
             <Reveal
               key={name}
               as="article"
               delay={i * 120}
-              className="group relative rounded-3xl bg-white border border-ion p-8 md:p-10 flex flex-col items-center text-center transition-shadow hover:shadow-[0_12px_40px_rgba(6,36,63,0.08)]"
+              className="group relative rounded-3xl bg-ion-soft border border-ion p-8 md:p-10 flex flex-col items-center text-center transition-shadow hover:shadow-[0_12px_40px_rgba(6,36,63,0.08)]"
             >
-              <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-midnight text-ion shadow-[0_8px_24px_rgba(6,36,63,0.18)] ring-[6px] ring-ion-soft transition-transform group-hover:scale-105">
+              <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-midnight text-ion shadow-[0_8px_24px_rgba(6,36,63,0.18)] ring-[6px] ring-white transition-transform group-hover:scale-105">
                 <Icon size={32} aria-hidden strokeWidth={1.75} />
               </span>
               <p className="mt-6 text-xl md:text-2xl font-semibold text-midnight">{name}</p>
@@ -183,8 +271,23 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section eyebrow="In the Community" title="Designed with Maryvale, for Maryvale." description="From planning sessions to chamber events, the Zenith team is showing up where Maryvale families and partners already are." bg="white">
-        <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[150px] md:auto-rows-[200px] gap-3 md:gap-4">
+      <Section eyebrow="In the Community" title="Designed with Maryvale, for Maryvale." bg="ion-soft">
+        <p className="text-base md:text-lg leading-relaxed text-midnight max-w-3xl">
+          Zenith was designed through direct feedback from Maryvale students, families, educators,
+          nonprofit leaders, and community stakeholders.
+        </p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          {COMMUNITY_STATS.map((s) => (
+            <div
+              key={s.label}
+              className="rounded-2xl bg-white border border-ion p-6 flex flex-col items-start"
+            >
+              <p className="text-4xl md:text-5xl font-bold text-midnight leading-none">{s.value}</p>
+              <p className="mt-3 text-sm md:text-base text-midnight-75 leading-snug">{s.label}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 auto-rows-[150px] md:auto-rows-[200px] gap-3 md:gap-4">
           {COMMUNITY.map(({ src, caption, span, pos }, i) => (
             <Reveal
               key={src}
@@ -206,6 +309,28 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
+        <div className="mt-12 rounded-3xl bg-midnight text-white p-8 md:p-10 border-l-4 border-ion max-w-4xl">
+          <p className="text-2xl md:text-3xl font-semibold leading-snug">
+            &ldquo;This school was built with the community, not simply placed into the community.&rdquo;
+          </p>
+        </div>
+      </Section>
+
+      <Section eyebrow="Partners" title="Community and strategic partnerships." bg="white">
+        <ul className="flex flex-wrap gap-3">
+          {PARTNERS.map((name) => (
+            <li
+              key={name}
+              className="inline-flex items-center rounded-full bg-ion-soft border border-ion px-4 py-2 text-sm md:text-base font-medium text-midnight"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-8 text-sm md:text-base text-midnight-75 max-w-3xl">
+          Partnerships include community collaboration, strategic advising, outreach, higher education
+          engagement, and ongoing partnership development.
+        </p>
       </Section>
 
       <Section bg="midnight" eyebrow="Mission &amp; Vision" title="What we&apos;re building, and who we&apos;re building it for.">

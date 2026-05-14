@@ -37,6 +37,38 @@ const FAQS = [
     q: "What does STEAM mean?",
     a: "Science, Technology, Engineering, Arts, and Mathematics. Zenith integrates the arts into traditional STEM to develop creative problem-solvers.",
   },
+  {
+    q: "What makes Zenith different?",
+    a: "Zenith combines rigorous AP-first academics, personalized student supports, college credit opportunities, career-connected learning, and real-world readiness experiences in a small, relationship-centered high school environment designed specifically for Maryvale students.",
+  },
+  {
+    q: "What does AP-first mean?",
+    a: "Zenith prepares all students for advanced coursework beginning in 9th grade through Pre-AP aligned instruction and academic support systems. Students will have opportunities to participate in AP coursework and college-level learning experiences as they progress through high school.",
+  },
+  {
+    q: "Will students have access to college credit opportunities?",
+    a: "Yes. Zenith students will have opportunities to earn college credit through Advanced Placement coursework and dual enrollment opportunities aligned to student readiness and postsecondary goals.",
+  },
+  {
+    q: "What career pathways will Zenith offer?",
+    a: "Zenith plans to offer career-connected pathways in high-demand Arizona industries including IT and Cybersecurity, Health Sciences, and Advanced Manufacturing.",
+  },
+  {
+    q: "What is the Elevate Block?",
+    a: "The Elevate Block is a dedicated daily intervention and enrichment period built into the school schedule to provide students with personalized academic support, tutoring, enrichment, ELD support, AP preparation, and college and career readiness opportunities.",
+  },
+  {
+    q: "How does advisory work at Zenith?",
+    a: "Students participate in advisory with a consistent adult mentor focused on relationship-building, leadership development, character education, college and career planning, goal-setting, and student support throughout their four years at Zenith.",
+  },
+  {
+    q: "Will Zenith offer extracurricular activities and athletics?",
+    a: "Yes. Zenith plans to offer scholar interest clubs, extracurricular opportunities, leadership activities, and future athletics programming to help students build community, explore interests, and develop leadership skills.",
+  },
+  {
+    q: "How large will Zenith be?",
+    a: "Zenith is designed as a small, personalized high school with no more than 100 students per grade. This intentional size ensures every student is known, supported, and challenged by name.",
+  },
 ];
 
 export default function FaqPage() {
