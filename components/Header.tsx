@@ -54,9 +54,12 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "text-sm font-medium tracking-wide transition-colors",
-                  active ? "text-ion" : "text-white/85 hover:text-ion",
+                  "relative text-sm font-medium tracking-wide transition-colors",
+                  active
+                    ? "text-ion after:absolute after:left-0 after:right-0 after:-bottom-1.5 after:h-[2px] after:rounded-full after:bg-aurora"
+                    : "text-white/85 hover:text-ion",
                 )}
               >
                 {item.label}

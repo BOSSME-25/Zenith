@@ -1,4 +1,7 @@
+import Link from "next/link";
+import { Users, ClipboardList, Heart, Handshake } from "lucide-react";
 import { Section } from "@/components/Section";
+import { Reveal } from "@/components/Reveal";
 import { FamilyForm } from "@/components/forms/FamilyForm";
 import { CommunityForm } from "@/components/forms/CommunityForm";
 import { PartnerForm } from "@/components/forms/PartnerForm";
@@ -6,42 +9,76 @@ import { SurveyForm } from "@/components/forms/SurveyForm";
 
 export const metadata = { title: "Get Involved" };
 
+const AUDIENCES = [
+  {
+    href: "#family",
+    icon: Users,
+    label: "Future Families",
+    line: "Join the interest list and be first to know when enrollment opens.",
+  },
+  {
+    href: "#survey",
+    icon: ClipboardList,
+    label: "Community Survey",
+    line: "Shape the school by sharing what matters most to your family.",
+  },
+  {
+    href: "#community",
+    icon: Heart,
+    label: "Community Supporters",
+    line: "Show the Arizona board this community wants this school.",
+  },
+  {
+    href: "#partner",
+    icon: Handshake,
+    label: "Partners",
+    line: "Bring internships, mentorship, or resources to Zenith students.",
+  },
+];
+
 export default function GetInvolvedPage() {
   return (
     <>
       <Section
         eyebrow="Get Involved"
         title="Help us open Zenith for Maryvale."
-        description="Charter schools rise because communities show up. Add your family to the Interest List, share what matters most through the survey, stand with us as a supporter, or partner with us as we build."
+        description="Charter schools rise because communities show up. Pick the path that fits you below."
         bg="white"
       >
-        <nav aria-label="Form sections" className="flex flex-wrap gap-2 mt-4">
-          {[
-            { href: "#family", label: "Family Interest" },
-            { href: "#survey", label: "Community Survey" },
-            { href: "#community", label: "Community Supporter" },
-            { href: "#partner", label: "Partner Inquiry" },
-          ].map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="inline-flex items-center rounded-full bg-ion-soft border border-ion px-4 py-2 text-sm font-semibold text-midnight hover:bg-ion"
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          {AUDIENCES.map(({ href, icon: Icon, label, line }, i) => (
+            <Reveal
+              key={href}
+              delay={i * 80}
+              as="div"
+              className="h-full"
             >
-              {l.label}
-            </a>
+              <Link
+                href={href}
+                className="group block h-full rounded-2xl bg-ion-soft border border-ion p-6 md:p-7 transition-all duration-200 hover:-translate-y-0.5 hover:bg-ion-50 hover:shadow-[0_10px_30px_rgba(6,36,63,0.08)] active:scale-[0.99]"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-aurora ring-1 ring-aurora/30 transition-transform group-hover:scale-105">
+                  <Icon size={24} aria-hidden strokeWidth={2} />
+                </span>
+                <p className="mt-5 text-lg md:text-xl font-semibold text-midnight">{label}</p>
+                <p className="mt-2 text-sm md:text-base text-midnight-75 leading-snug">{line}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-eventide group-hover:text-midnight">
+                  Go to form <span aria-hidden>→</span>
+                </span>
+              </Link>
+            </Reveal>
           ))}
-        </nav>
+        </div>
       </Section>
 
       <Section bg="ion-soft">
-        <div id="family" className="scroll-mt-24 max-w-3xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
+        <div id="family" className="max-w-3xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
           <p className="eyebrow text-eventide">Family Interest List</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
             Join the Zenith Interest List.
           </h2>
           <p className="mt-3 text-midnight-75">
-            Get notified the moment enrollment opens, plus updates on community forums, open houses, and
-            major milestones along the way.
+            Get notified the moment enrollment opens.
           </p>
           <div className="mt-8">
             <FamilyForm />
@@ -50,14 +87,13 @@ export default function GetInvolvedPage() {
       </Section>
 
       <Section bg="white">
-        <div id="survey" className="scroll-mt-24 max-w-3xl mx-auto rounded-2xl bg-ion-soft border border-ion p-8 md:p-10">
+        <div id="survey" className="max-w-3xl mx-auto rounded-2xl bg-ion-soft border border-ion p-8 md:p-10">
           <p className="eyebrow text-eventide">Community Survey</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
             Tell us what matters most.
           </h2>
           <p className="mt-3 text-midnight-75">
-            We&apos;re designing Zenith with the community. Your answers help shape pathways, schedule, and
-            partnerships — and strengthen our charter application.
+            Your answers shape Zenith&apos;s model and strengthen our charter application.
           </p>
           <div className="mt-8">
             <SurveyForm />
@@ -66,14 +102,13 @@ export default function GetInvolvedPage() {
       </Section>
 
       <Section bg="ion-soft">
-        <div id="community" className="scroll-mt-24 max-w-3xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
+        <div id="community" className="max-w-3xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
           <p className="eyebrow text-eventide">Community Supporter</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
             Stand with Zenith.
           </h2>
           <p className="mt-3 text-midnight-75">
-            Educators, neighbors, business owners, alumni, and faith leaders — your support shows the
-            Arizona State Board for Charter Schools that this community wants this school.
+            Your name shows the Arizona board that Maryvale wants this school.
           </p>
           <div className="mt-8">
             <CommunityForm />
@@ -82,14 +117,13 @@ export default function GetInvolvedPage() {
       </Section>
 
       <Section bg="white">
-        <div id="partner" className="scroll-mt-24 max-w-3xl mx-auto rounded-2xl bg-ion-soft border border-ion p-8 md:p-10">
+        <div id="partner" className="max-w-3xl mx-auto rounded-2xl bg-ion-soft border border-ion p-8 md:p-10">
           <p className="eyebrow text-eventide">Partner Inquiry</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
             Partner with Zenith.
           </h2>
           <p className="mt-3 text-midnight-75">
-            Internship hosts, mentors, dual enrollment partners, donors, sponsors, vendors — let&apos;s
-            talk about how your organization can help Zenith students go further.
+            Let&apos;s talk about how your organization can help Zenith students go further.
           </p>
           <div className="mt-8">
             <PartnerForm />

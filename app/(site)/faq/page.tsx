@@ -4,70 +4,82 @@ import { Section } from "@/components/Section";
 
 export const metadata = { title: "Frequently Asked Questions" };
 
-const FAQS = [
+type Faq = {
+  q: string;
+  a: string;
+  learnMore?: string;
+};
+
+const FAQS: Faq[] = [
   {
     q: "When will Zenith open?",
-    a: "Pending charter authorization. Target opening: Fall 2027.",
+    a: "Target opening Fall 2027, pending charter authorization from the Arizona State Board for Charter Schools.",
   },
   {
     q: "Is Zenith a tuition-free public school?",
-    a: "Yes. Zenith will be a tuition-free public charter school open to all Arizona students.",
+    a: "Yes. Zenith will be a tuition-free public charter school open to all eligible Arizona students.",
   },
   {
     q: "What grades will Zenith serve?",
-    a: "Grades 9-12, growing one grade per year starting with 9th grade.",
+    a: "9th through 12th grade, adding one grade per year starting with 9th grade in Fall 2027.",
   },
   {
     q: "Where will Zenith be located?",
-    a: "In the Maryvale community of Phoenix. Specific location to be confirmed.",
+    a: "In the Maryvale community of Phoenix. Specific site to be confirmed after authorization.",
   },
   {
     q: "How do I enroll my child?",
-    a: "Enrollment opens after charter authorization. Join the Interest List to be notified the moment enrollment opens.",
+    a: "Join the Interest List now — you'll be the first notified when enrollment opens after authorization.",
   },
   {
     q: "How can I support Zenith?",
-    a: "Take the survey, share with families, partner with us, or attend a community forum. See Get Involved.",
+    a: "Take the survey, join the interest list, or reach out about partnering. Every action helps our charter application.",
   },
   {
     q: "Who is leading Zenith?",
-    a: "Founded by Dr. Jay Samant, a BES Fellow with 16+ years of K-12 and higher education leadership. Governed by a nine-member founding board.",
+    a: "Dr. Jay Samant, BES Fellow and 16-year education leader, with a nine-member founding board. See Our Board.",
   },
   {
     q: "What does STEAM mean?",
-    a: "Science, Technology, Engineering, Arts, and Mathematics. Zenith integrates the arts into traditional STEM to develop creative problem-solvers.",
+    a: "Science, Technology, Engineering, Arts, and Mathematics — integrating the arts into STEM develops creative problem-solvers.",
   },
   {
     q: "What makes Zenith different?",
-    a: "Zenith combines rigorous AP-first academics, personalized student supports, college credit opportunities, career-connected learning, and real-world readiness experiences in a small, relationship-centered high school environment designed specifically for Maryvale students.",
+    a: "AP-first academics, personalized advisory, early college credit, career pathways, and a small school environment — all in one school designed for Maryvale.",
+    learnMore: "/school-model",
   },
   {
     q: "What does AP-first mean?",
-    a: "Zenith prepares all students for advanced coursework beginning in 9th grade through Pre-AP aligned instruction and academic support systems. Students will have opportunities to participate in AP coursework and college-level learning experiences as they progress through high school.",
+    a: "Every student starts in Pre-AP aligned instruction in 9th grade, with AP courses and college-level work available as they progress.",
+    learnMore: "/school-model",
   },
   {
-    q: "Will students have access to college credit opportunities?",
-    a: "Yes. Zenith students will have opportunities to earn college credit through Advanced Placement coursework and dual enrollment opportunities aligned to student readiness and postsecondary goals.",
+    q: "Will students earn college credit?",
+    a: "Yes, through AP coursework and dual enrollment partnerships aligned to student readiness and goals.",
+    learnMore: "/school-model",
   },
   {
     q: "What career pathways will Zenith offer?",
-    a: "Zenith plans to offer career-connected pathways in high-demand Arizona industries including IT and Cybersecurity, Health Sciences, and Advanced Manufacturing.",
+    a: "IT and Cybersecurity, Health Sciences, and Advanced Manufacturing — aligned to high-demand Arizona industries.",
+    learnMore: "/school-model",
   },
   {
     q: "What is the Elevate Block?",
-    a: "The Elevate Block is a dedicated daily intervention and enrichment period built into the school schedule to provide students with personalized academic support, tutoring, enrichment, ELD support, AP preparation, and college and career readiness opportunities.",
+    a: "A daily built-in period for personalized intervention, tutoring, enrichment, ELD support, and AP prep.",
+    learnMore: "/school-model",
   },
   {
-    q: "How does advisory work at Zenith?",
-    a: "Students participate in advisory with a consistent adult mentor focused on relationship-building, leadership development, character education, college and career planning, goal-setting, and student support throughout their four years at Zenith.",
+    q: "How does advisory work?",
+    a: "Every student has a consistent adult mentor supporting academic progress, college and career planning, and leadership throughout high school.",
+    learnMore: "/school-model",
   },
   {
-    q: "Will Zenith offer extracurricular activities and athletics?",
-    a: "Yes. Zenith plans to offer scholar interest clubs, extracurricular opportunities, leadership activities, and future athletics programming to help students build community, explore interests, and develop leadership skills.",
+    q: "Will Zenith have extracurriculars and athletics?",
+    a: "Yes — clubs, leadership activities, affinity groups, and future athletics programming.",
   },
   {
     q: "How large will Zenith be?",
-    a: "Zenith is designed as a small, personalized high school with no more than 100 students per grade. This intentional size ensures every student is known, supported, and challenged by name.",
+    a: "No more than 100 students per grade — intentionally small so every student is known by name.",
   },
 ];
 
@@ -100,6 +112,17 @@ export default function FaqPage() {
                   </summary>
                   <div className="px-6 pb-5 -mt-1 text-base leading-relaxed text-midnight-75">
                     {item.a}
+                    {item.learnMore && (
+                      <>
+                        {" "}
+                        <Link
+                          href={item.learnMore}
+                          className="inline-flex items-center gap-1 font-semibold text-aurora hover:text-eventide transition-colors"
+                        >
+                          Learn more <span aria-hidden>→</span>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </details>
               </li>
@@ -112,7 +135,7 @@ export default function FaqPage() {
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors"
+              className="inline-flex items-center justify-center rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors active:scale-95"
             >
               Contact Us
             </Link>

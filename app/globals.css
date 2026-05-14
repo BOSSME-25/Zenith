@@ -31,6 +31,12 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  /* Default scroll-margin so anchored sections clear the sticky header */
+  [id] {
+    scroll-margin-top: 5rem;
   }
 
   body {
@@ -51,7 +57,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-eventide);
+    outline: 2px solid var(--color-aurora);
     outline-offset: 2px;
     border-radius: 2px;
   }

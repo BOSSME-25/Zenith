@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Section } from "@/components/Section";
-import { BoardSilhouette } from "@/components/BoardSilhouette";
+import { BoardMemberCard, type BoardMember } from "@/components/BoardMemberCard";
 
 export const metadata = { title: "Our Board" };
 
@@ -15,18 +15,12 @@ const FOUNDER = {
   ],
 };
 
-type BoardMember = {
-  name: string;
-  focus: string;
-  photo?: string;
-  paragraphs: string[];
-};
-
 const BOARD: BoardMember[] = [
   {
     name: "Robert Barlow, Ph.D.",
     focus: "People Strategy and Governance",
     photo: "/board/robert-barlow.jpg",
+    tags: ["Governance", "Talent Strategy", "Charter Education", "Ethical Leadership"],
     paragraphs: [
       "Robert Barlow is an education and people strategy leader whose career spans public charter education, workforce development, nonprofit governance, and military and government service. He previously served as Director of Talent for the largest Title I K-8 public charter school network in Arizona, leading talent and people strategy for more than 800 employees serving over 10,000 students statewide. He also serves as Secretary of the Board of Directors at the George Washington Carver Museum and Cultural Center.",
       "Dr. Barlow holds a doctorate in ethical leadership, with research focused on improving outcomes for individuals transitioning out of foster care, informed in part by his own lived experience. That perspective shapes his approach to governance: accountable, grounded in mission, and centered on the students and families the board is meant to serve.",
@@ -37,6 +31,7 @@ const BOARD: BoardMember[] = [
     name: "George Saad, Esq.",
     focus: "Legal and Organizational Governance",
     photo: "/board/george-saad.jpg",
+    tags: ["Legal", "IP Law", "International Education", "Business Strategy"],
     paragraphs: [
       "George Saad is the Founder and Managing Attorney of PLATZ JURIS, PLLC, a Phoenix-based law firm focused on intellectual property, business law, and civil litigation. He serves businesses across the United States as a trusted legal partner and fractional general counsel, drawing on a background that bridges law, operations, and organizational leadership.",
       "Before entering the legal profession, George spent more than two decades leading and scaling international education, managing K-12 college-prep schools across multiple countries and developing high-performance teams rooted in ethics, accountability, and innovation. Raised across Lebanon, England, Canada, and the United States, he brings a multilingual, global perspective to every institution he serves.",
@@ -47,6 +42,7 @@ const BOARD: BoardMember[] = [
     name: "Michael Finch, B.S.",
     focus: "Real Estate, Finance, and Investment Strategy",
     photo: "/board/michael-finch.jpg",
+    tags: ["Real Estate", "Finance", "Investment", "Institutional Building"],
     paragraphs: [
       "Michael Finch is a commercial real estate entrepreneur and investment strategist with nearly two decades of experience building national platforms in the single-family residential and build-for-rent sectors. He was the Principal Founder and Executive Vice President of SVN | SFRhub Advisors, SFRhub.com, and SVN SFR Capital Management, companies he grew into nationally recognized leaders in their asset class, regularly transacting one to two billion dollars in annual pipeline.",
       "Michael founded ULI's Single Family Residential Product Council as its inaugural Chairman, bringing together private equity, debt, developers, and asset managers to expand thought leadership in residential investment on a global scale. He now applies that expertise to a new investment fund focused on acquiring and managing distressed income-producing assets, with a particular interest in solving housing affordability challenges.",
@@ -57,6 +53,7 @@ const BOARD: BoardMember[] = [
     name: "Jade Nangah, B.A.",
     focus: "Brand Strategy and Communications",
     photo: "/board/jade-nangah.jpg",
+    tags: ["Brand Strategy", "Communications", "Thought Leadership", "Content"],
     paragraphs: [
       "Jade Nangah is a content strategist and personal brand advisor who helps founders and executives translate their expertise into clear, credible visibility. With more than a decade of experience across startups, growth-stage companies, and Fortune 500 brands, her work centers on making complex thinking legible through strategic content that builds trust and accelerates growth.",
       "Jade specializes in founder-led content systems and thought leadership across LinkedIn, long-form media, and emerging AI-driven discovery channels. Her approach blends narrative clarity with disciplined execution, helping leaders show up consistently, communicate with authority, and remain visible in a market where credibility is increasingly established online.",
@@ -66,6 +63,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Lynn Palacios, M.Ed.",
     focus: "Curriculum, Instruction, and School Design",
+    tags: ["Curriculum", "STEAM", "Instructional Design", "Dual Enrollment"],
     photo: "/board/lynn-palacios.jpg",
     paragraphs: [
       "Lynn Palacios is an educational leader and instructional coach with more than three decades of experience designing and leading innovative secondary and postsecondary learning programs. She currently serves as Instructional Coach at Barry Goldwater High School in the Deer Valley Unified School District, where her work has contributed to the school being named Arizona's first Solution Tree Model PLC High School.",
@@ -76,6 +74,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Tom Nevill, Ph.D.",
     focus: "Higher Education Partnership and Academic Affairs",
+    tags: ["Higher Education", "Academic Affairs", "Dual Enrollment", "GateWay CC"],
     photo: "/board/tom-nevill.jpg",
     paragraphs: [
       "Dr. Tom Nevill serves as Vice President of Academic Affairs at GateWay Community College in Phoenix, where he is the Chief Academic Officer and a member of the president's leadership team. He oversees academic programs spanning healthcare, technology, business, skilled trades, arts, humanities, and sciences, along with dual enrollment, community partnerships, counseling, and a faculty and staff community of over 300 people and a budget approaching twenty million dollars.",
@@ -86,6 +85,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Luis Cordova, B.S.",
     focus: "Economic Analysis and Community Impact",
+    tags: ["Economic Analysis", "Community Impact", "Public Policy", "Arizona"],
     photo: "/board/luis-cordova.jpg",
     paragraphs: [
       "Luis Cordova is Senior Vice President, COO, and co-founder of Rounds Consulting Group, where he leads economic, demographic, and fiscal impact analysis for public and private sector clients across Arizona and the broader region. His expertise spans economic forecasting, real estate market analysis, infrastructure investment, and community planning. He is a contributing panelist on the JPMorgan Chase Economic Outlook Center's Western Blue Chip Forecasts and a certified Arizona Economic Development Professional.",
@@ -96,6 +96,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Veronica Sas, B.S.",
     focus: "Finance, Risk, and Audit",
+    tags: ["Finance", "Risk Management", "Audit", "Global Operations"],
     photo: "/board/veronica-sas.jpg",
     paragraphs: [
       "Veronica Sas is a seasoned finance executive with more than 25 years of experience helping organizations navigate growth, complexity, and change. She has served in senior financial leadership roles across nonprofits, clean energy companies, advanced manufacturing firms, and global technology businesses, earning a reputation for bringing clarity to financial strategy and building the internal controls that enable confident, long-term decision-making.",
@@ -106,6 +107,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Emily Belt, B.A.",
     focus: "Operations, Community Access, and Regional Strategy",
+    tags: ["Operations", "Higher Education", "Community Access", "Entrepreneurship"],
     photo: "/board/emily-belt.jpg",
     paragraphs: [
       "Emily Belt is a senior operations executive, entrepreneur, and community builder with more than 17 years of continuous leadership experience across higher education, social services, and business ownership in Arizona. She currently serves as Regional Director of Operations at Grand Canyon University, overseeing admissions, retention, programming, and regional strategy for the state of Arizona. Over 14 years at GCU, she has been part of the university's growth into underserved Phoenix communities and has developed leaders at every level of her organization.",
@@ -202,42 +204,12 @@ export default function OurBoardPage() {
       </Section>
 
       <Section eyebrow="Founding Board" title="Meet the founding board." bg="ion-soft">
-        <p className="sr-only">Full bios for each founding board member.</p>
-        <div className="grid gap-8 md:grid-cols-2">
+        <p className="text-base md:text-lg text-midnight-75 max-w-3xl">
+          Preview each board member&apos;s background. Use &ldquo;Read more&rdquo; to expand the full bio.
+        </p>
+        <div className="mt-8 grid gap-6 md:grid-cols-2 items-start">
           {BOARD.map((m) => (
-            <article
-              key={m.name}
-              className="rounded-2xl bg-white border border-ion p-6 md:p-8 flex flex-col"
-            >
-              <div className="flex items-start gap-4">
-                {m.photo ? (
-                  <Image
-                    src={m.photo}
-                    alt={`Portrait of ${m.name}`}
-                    width={160}
-                    height={160}
-                    className="w-16 h-16 rounded-xl shrink-0 object-cover bg-midnight"
-                  />
-                ) : (
-                  <BoardSilhouette className="w-16 h-16 rounded-xl shrink-0" />
-                )}
-                <div>
-                  <p className="text-lg md:text-xl font-semibold text-midnight leading-snug">
-                    {m.name}
-                  </p>
-                  <p className="mt-1 text-sm text-eventide font-medium">
-                    Board Member &middot; {m.focus}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-5 space-y-3">
-                {m.paragraphs.map((p, i) => (
-                  <p key={i} className="text-sm md:text-base leading-relaxed text-midnight-75">
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </article>
+            <BoardMemberCard key={m.name} member={m} />
           ))}
         </div>
       </Section>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Section } from "@/components/Section";
+import { Reveal } from "@/components/Reveal";
+import { StatCounter } from "@/components/StatCounter";
 
 export const metadata = { title: "Our Story" };
 
@@ -54,34 +56,54 @@ export default function OurStoryPage() {
             learning experiences. Zenith was designed to bridge those gaps through rigorous academics,
             strong relationships, early college opportunities, and real-world readiness.
           </p>
-          <div className="mt-10 rounded-3xl bg-midnight text-white p-8 md:p-10 border-l-4 border-ion">
-            <p className="text-2xl md:text-3xl font-semibold leading-snug">
-              &ldquo;This is not an ability gap. It is an access gap.&rdquo;
-            </p>
-          </div>
         </div>
       </Section>
 
-      <Section eyebrow="What We Heard" title="What we heard from families." bg="ion-soft">
-        <p className="text-base md:text-lg leading-relaxed text-midnight max-w-3xl">
-          Across 200+ surveys and 100+ one-on-one conversations, Maryvale families consistently asked
-          for the same things:
-        </p>
-        <ul className="mt-8 grid gap-4 md:grid-cols-2 max-w-5xl">
+      <Section bg="midnight">
+        <Reveal className="max-w-4xl mx-auto text-center py-6 md:py-10">
+          <p className="text-4xl md:text-6xl font-bold leading-[1.05] tracking-tight text-white">
+            This is not an ability gap.
+          </p>
+          <p className="mt-3 text-4xl md:text-6xl font-bold leading-[1.05] tracking-tight text-ion">
+            It is an access gap.
+          </p>
+          <p className="mt-6 text-sm md:text-base font-medium tracking-wide text-aurora">
+            &mdash; Shaped by 200+ conversations with Maryvale families
+          </p>
+        </Reveal>
+        <div className="mt-12 rounded-3xl bg-midnight-75/30 border border-ion/20 p-8 md:p-10">
+          <StatCounter
+            variant="dark"
+            stats={[
+              { value: 200, suffix: "+", label: "Community surveys completed" },
+              { value: 100, suffix: "+", label: "One-on-one family conversations" },
+              { value: 6, suffix: "+", label: "Community organizations engaged" },
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section bg="ion-soft">
+        <p className="eyebrow text-eventide">What We Heard From Maryvale Families</p>
+        <h2 className="mt-4 text-3xl md:text-4xl font-semibold leading-tight text-midnight max-w-3xl">
+          The same five things, in conversation after conversation.
+        </h2>
+        <ul className="mt-10 grid gap-4 md:grid-cols-2 max-w-5xl">
           {[
-            "Smaller schools where students are known and supported",
-            "Stronger academic support and intervention",
-            "Real access to college credit opportunities",
-            "Career-connected learning tied to real jobs",
-            "Safer, more personalized school environments",
-          ].map((item) => (
-            <li
+            "Smaller schools where students are known",
+            "Stronger academic support",
+            "Real access to college credit",
+            "Career-connected learning",
+            "Safer, more personalized environments",
+          ].map((item, i) => (
+            <Reveal
               key={item}
-              className="flex items-start gap-3 rounded-2xl bg-white border border-ion p-5"
+              as="li"
+              delay={i * 70}
+              className="rounded-2xl bg-white border-l-4 border-aurora border-y border-r border-y-ion border-r-ion p-5 md:p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(6,36,63,0.06)]"
             >
-              <span className="mt-1.5 h-2 w-2 flex-none rounded-full bg-eventide" aria-hidden />
-              <p className="text-base md:text-lg leading-relaxed text-midnight">{item}</p>
-            </li>
+              <p className="text-base md:text-lg font-semibold text-midnight leading-snug">{item}</p>
+            </Reveal>
           ))}
         </ul>
         <p className="mt-8 text-base md:text-lg text-midnight-75 max-w-3xl">
