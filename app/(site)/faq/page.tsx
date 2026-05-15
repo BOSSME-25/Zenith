@@ -17,7 +17,7 @@ const FAQS: Faq[] = [
   },
   {
     q: "Is Zenith a tuition-free public school?",
-    a: "Yes. Zenith will be a tuition-free public charter school open to all eligible Arizona students.",
+    a: "Yes. Zenith is a tuition-free public charter high school opening in 2027 with its founding 9th grade class. There is no cost to attend, and all Arizona families with students eligible for 9th grade are welcome to apply.",
   },
   {
     q: "What grades will Zenith serve?",
@@ -50,7 +50,7 @@ const FAQS: Faq[] = [
   },
   {
     q: "What does AP-first mean?",
-    a: "Every student starts in Pre-AP aligned instruction in 9th grade, with AP courses and college-level work available as they progress.",
+    a: "AP-first means Zenith is designed to prepare all students for rigorous college-level coursework and postsecondary success. Students begin with Pre-AP aligned instruction in 9th grade and have access to Advanced Placement (AP) courses, college credit opportunities, and dual enrollment as they progress through high school.",
     learnMore: "/school-model",
   },
   {

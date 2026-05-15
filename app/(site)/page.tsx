@@ -11,7 +11,7 @@ const COMMUNITY = [
   { src: "/community/just-schools.jpg", caption: "Just Schools advocacy event", span: "", pos: "center 25%" },
   { src: "/community/hvv-tabling.jpg", caption: "Tabling and talking with families", span: "lg:col-span-2", pos: "center top" },
   { src: "/community/hcc-with-lori.jpg", caption: "Partnering with Harvest Compassion Center", span: "", pos: "center 22%" },
-  { src: "/community/aef.jpg", caption: "Visiting Arizona Education Forward", span: "", pos: "center 25%" },
+  { src: "/community/aef.jpg", caption: "Visiting Arizona Educational Foundation", span: "", pos: "center 25%" },
   { src: "/community/azhcc.jpg", caption: "At the Arizona Hispanic Chamber of Commerce", span: "", pos: "center 22%" },
   { src: "/community/pcc.jpg", caption: "With the Phoenix Community Alliance", span: "", pos: "75% 35%" },
 ];
@@ -78,13 +78,14 @@ const DIFFERENTIATORS = [
 ];
 
 const PARTNERS = [
-  "BES (Bush Education Strategies)",
+  "BES (Build. Excel. Sustain.)",
   "Harvest Compassion Center",
   "AZ Leads",
   "Million Dollar Teacher Project",
   "Center for the Future of Arizona",
   "AZ Hispanic Chamber of Commerce",
   "Phoenix Community Alliance",
+  "Arizona State University",
   "Grand Canyon University",
   "Maricopa Community Colleges",
   "Boys and Girls Club",
@@ -240,7 +241,7 @@ export default function Home() {
             stats={[
               { value: 200, suffix: "+", label: "Community surveys completed" },
               { value: 100, suffix: "+", label: "One-on-one family conversations" },
-              { value: 6, suffix: "+", label: "Community organizations engaged" },
+              { value: 10, suffix: "+", label: "Community organizations engaged" },
             ]}
           />
         </div>
