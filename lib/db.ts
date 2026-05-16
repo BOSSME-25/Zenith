@@ -1,17 +1,6 @@
 import "server-only";
-import {
-  createPool,
-  type QueryResult,
-  type QueryResultRow,
-  type VercelPool,
-} from "@vercel/postgres";
+import { Pool, type QueryResult, type QueryResultRow } from "pg";
 
-/**
- * Resolve the connection string from any of the env var names Neon/Vercel
- * marketplace integrations might expose. The non-pooling URL is also acceptable
- * because we drive the pool ourselves below; @vercel/postgres's `sql` tag is
- * the one that mandates a pooler hostname.
- */
 function getConnectionString(): string | undefined {
   return (
     process.env.POSTGRES_URL ||
@@ -25,10 +14,14 @@ export function isDbConfigured(): boolean {
   return Boolean(getConnectionString());
 }
 
-let pool: VercelPool | null = null;
-function getPool(): VercelPool {
+let pool: Pool | null = null;
+function getPool(): Pool {
   if (!pool) {
-    pool = createPool({ connectionString: getConnectionString() });
+    pool = new Pool({
+      connectionString: getConnectionString(),
+      ssl: { rejectUnauthorized: false },
+      max: 5,
+    });
   }
   return pool;
 }
@@ -52,9 +45,14 @@ type SqlFn = <T extends QueryResultRow = QueryResultRow>(
   ...values: unknown[]
 ) => Promise<QueryResult<T>>;
 
-/**
- * Safe sql tag that returns an empty result if the DB is not configured.
- */
+function buildParameterized(strings: TemplateStringsArray, values: unknown[]) {
+  let text = strings[0];
+  for (let i = 0; i < values.length; i++) {
+    text += `$${i + 1}${strings[i + 1]}`;
+  }
+  return { text, values };
+}
+
 export const safeSql: SqlFn = (async <T extends QueryResultRow = QueryResultRow>(
   strings: TemplateStringsArray,
   ...values: unknown[]
@@ -63,13 +61,10 @@ export const safeSql: SqlFn = (async <T extends QueryResultRow = QueryResultRow>
     warnOnce();
     return emptyResult<T>();
   }
-  return getPool().sql<T>(strings, ...(values as never[]));
+  const { text, values: params } = buildParameterized(strings, values);
+  return (await getPool().query<T>(text, params as never[])) as QueryResult<T>;
 }) as SqlFn;
 
-/**
- * Positional-parameter variant for queries that need to bind non-primitive
- * values such as text arrays. No-ops when the DB is not configured.
- */
 export async function safeQuery<T extends QueryResultRow = QueryResultRow>(
   text: string,
   values: unknown[] = [],
@@ -78,7 +73,7 @@ export async function safeQuery<T extends QueryResultRow = QueryResultRow>(
     warnOnce();
     return emptyResult<T>();
   }
-  return (await getPool().query(text, values as never[])) as unknown as QueryResult<T>;
+  return (await getPool().query<T>(text, values as never[])) as QueryResult<T>;
 }
 
 const CREATE_STATEMENTS = [
