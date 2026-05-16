@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { safeSql, isDbConfigured } from "@/lib/db";
-import { Users, Heart, Handshake, ClipboardList, MessageSquare, Newspaper } from "lucide-react";
+import { Users, Heart, Handshake, MessageSquare, Newspaper } from "lucide-react";
 
 type CountRow = { count: string };
 type RecentRow = {
@@ -15,7 +15,6 @@ const TILES = [
   { type: "families", label: "Families", icon: Users },
   { type: "community", label: "Community", icon: Heart },
   { type: "partners", label: "Partners", icon: Handshake },
-  { type: "surveys", label: "Surveys", icon: ClipboardList },
   { type: "contacts", label: "Contacts", icon: MessageSquare },
   { type: "updates", label: "Updates", icon: Newspaper },
 ] as const;
@@ -24,11 +23,10 @@ async function getCounts() {
   if (!isDbConfigured()) {
     return TILES.map((t) => ({ ...t, count: 0 }));
   }
-  const [f, c, p, s, ct, u] = await Promise.all([
+  const [f, c, p, ct, u] = await Promise.all([
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM families`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM community`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM partners`,
-    safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM surveys`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM contacts`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM updates`,
   ]);
@@ -36,9 +34,8 @@ async function getCounts() {
     { ...TILES[0], count: Number(f.rows[0]?.count || 0) },
     { ...TILES[1], count: Number(c.rows[0]?.count || 0) },
     { ...TILES[2], count: Number(p.rows[0]?.count || 0) },
-    { ...TILES[3], count: Number(s.rows[0]?.count || 0) },
-    { ...TILES[4], count: Number(ct.rows[0]?.count || 0) },
-    { ...TILES[5], count: Number(u.rows[0]?.count || 0) },
+    { ...TILES[3], count: Number(ct.rows[0]?.count || 0) },
+    { ...TILES[4], count: Number(u.rows[0]?.count || 0) },
   ];
 }
 
@@ -51,8 +48,6 @@ async function getRecent(): Promise<RecentRow[]> {
       SELECT 'community', id, name, email, submitted_at FROM community
       UNION ALL
       SELECT 'partners', id, organization, email, submitted_at FROM partners
-      UNION ALL
-      SELECT 'surveys', id, COALESCE(name, 'Anonymous'), COALESCE(email, '—'), submitted_at FROM surveys
       UNION ALL
       SELECT 'contacts', id, name, subject, submitted_at FROM contacts
     ) AS combined
