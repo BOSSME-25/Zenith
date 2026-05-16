@@ -5,7 +5,6 @@ import { Reveal } from "@/components/Reveal";
 import { FamilyForm } from "@/components/forms/FamilyForm";
 import { CommunityForm } from "@/components/forms/CommunityForm";
 import { PartnerForm } from "@/components/forms/PartnerForm";
-import { SurveyForm } from "@/components/forms/SurveyForm";
 
 export const metadata = { title: "Get Involved" };
 
@@ -87,17 +86,39 @@ export default function GetInvolvedPage() {
       </Section>
 
       <Section bg="white">
-        <div id="survey" className="max-w-3xl mx-auto rounded-2xl bg-ion-soft border border-ion p-8 md:p-10">
+        <div id="survey" className="max-w-4xl mx-auto rounded-2xl bg-ion-soft border border-ion p-6 md:p-10">
           <p className="eyebrow text-eventide">Community Survey</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
             Tell us what matters most.
           </h2>
           <p className="mt-3 text-midnight-75">
             Your answers shape Zenith&apos;s model and strengthen our charter application.
+            Available in English and Spanish.
           </p>
-          <div className="mt-8">
-            <SurveyForm />
+          <div className="mt-8 rounded-xl overflow-hidden bg-white border border-ion">
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdMyr3TYkWq47QffUuYgRcwauK_tBTkQLJ-jbzYBQiza7T6EA/viewform?embedded=true"
+              title="Zenith Community Survey"
+              width="100%"
+              height="1400"
+              loading="lazy"
+              className="block w-full"
+            >
+              Loading…
+            </iframe>
           </div>
+          <p className="mt-4 text-sm text-midnight-75">
+            Having trouble?{" "}
+            <a
+              href="https://forms.gle/K8x9DnACTqf9NTc86"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-aurora-blue underline hover:no-underline"
+            >
+              Open the survey in a new tab
+            </a>
+            .
+          </p>
         </div>
       </Section>
 
