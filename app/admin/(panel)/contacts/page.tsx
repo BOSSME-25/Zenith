@@ -1,31 +1,42 @@
 import { safeSql } from "@/lib/db";
-import { SubmissionTable, type Column } from "@/components/admin/SubmissionTable";
+import {
+  SubmissionTable,
+  formatSubmittedAt,
+  type ColumnHeader,
+  type SubmissionRow,
+} from "@/components/admin/SubmissionTable";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contact Messages" };
 
 type Row = {
   id: number;
-  submitted_at: string;
+  submitted_at: string | Date;
   name: string;
   email: string;
   subject: string;
   message: string;
 };
 
-const columns: Column<Row>[] = [
-  { header: "Name", accessor: (r) => r.name },
-  { header: "Email", accessor: (r) => r.email },
-  { header: "Subject", accessor: (r) => r.subject },
-  {
-    header: "Message",
-    accessor: (r) => (r.message.length > 160 ? r.message.slice(0, 160) + "…" : r.message),
-    className: "max-w-[24rem]",
-  },
+const headers: ColumnHeader[] = [
+  { label: "Name" },
+  { label: "Email" },
+  { label: "Subject" },
+  { label: "Message", className: "max-w-[24rem]" },
 ];
+
+function truncate(s: string, n: number): string {
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
 
 export default async function AdminContactsPage() {
   const { rows } = await safeSql<Row>`SELECT * FROM contacts ORDER BY submitted_at DESC LIMIT 1000`;
+  const data: SubmissionRow[] = rows.map((r) => ({
+    id: r.id,
+    submittedAt: formatSubmittedAt(r.submitted_at),
+    cells: [r.name, r.email, r.subject, truncate(r.message || "", 160)],
+    searchBlob: [r.name, r.email, r.subject, r.message].join(" ").toLowerCase(),
+  }));
   return (
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
@@ -37,12 +48,7 @@ export default async function AdminContactsPage() {
           </p>
         </div>
       </header>
-      <SubmissionTable
-        table="contacts"
-        rows={rows}
-        columns={columns}
-        searchKeys={[(r) => r.name, (r) => r.email, (r) => r.subject, (r) => r.message]}
-      />
+      <SubmissionTable table="contacts" headers={headers} rows={data} />
     </div>
   );
 }

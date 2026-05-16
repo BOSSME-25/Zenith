@@ -1,12 +1,17 @@
 import { safeSql } from "@/lib/db";
-import { SubmissionTable, type Column } from "@/components/admin/SubmissionTable";
+import {
+  SubmissionTable,
+  formatSubmittedAt,
+  type ColumnHeader,
+  type SubmissionRow,
+} from "@/components/admin/SubmissionTable";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Community Surveys" };
 
 type Row = {
   id: number;
-  submitted_at: string;
+  submitted_at: string | Date;
   is_resident: boolean | null;
   has_child: boolean | null;
   career_pathways: string[] | null;
@@ -15,24 +20,39 @@ type Row = {
   email: string | null;
 };
 
-const columns: Column<Row>[] = [
-  { header: "Name", accessor: (r) => r.name || "Anonymous" },
-  { header: "Email", accessor: (r) => r.email || "—" },
-  { header: "Resident", accessor: (r) => (r.is_resident == null ? "—" : r.is_resident ? "Yes" : "No") },
-  { header: "Has child", accessor: (r) => (r.has_child == null ? "—" : r.has_child ? "Yes" : "No") },
-  { header: "Pathways", accessor: (r) => (r.career_pathways || []).join(", ") || "—" },
-  {
-    header: "Important",
-    accessor: (r) => {
-      const t = r.important_to_family || "";
-      return t.length > 100 ? t.slice(0, 100) + "…" : t || "—";
-    },
-    className: "max-w-[20rem]",
-  },
+const headers: ColumnHeader[] = [
+  { label: "Name" },
+  { label: "Email" },
+  { label: "Resident" },
+  { label: "Has child" },
+  { label: "Pathways" },
+  { label: "Important", className: "max-w-[20rem]" },
 ];
+
+function truncate(s: string, n: number): string {
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
+
+function yesNo(v: boolean | null): string {
+  if (v == null) return "—";
+  return v ? "Yes" : "No";
+}
 
 export default async function AdminSurveysPage() {
   const { rows } = await safeSql<Row>`SELECT * FROM surveys ORDER BY submitted_at DESC LIMIT 1000`;
+  const data: SubmissionRow[] = rows.map((r) => ({
+    id: r.id,
+    submittedAt: formatSubmittedAt(r.submitted_at),
+    cells: [
+      r.name || "Anonymous",
+      r.email || "—",
+      yesNo(r.is_resident),
+      yesNo(r.has_child),
+      (r.career_pathways || []).join(", ") || "—",
+      truncate(r.important_to_family || "", 100) || "—",
+    ],
+    searchBlob: [r.name || "", r.email || "", r.important_to_family || ""].join(" ").toLowerCase(),
+  }));
   return (
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
@@ -44,12 +64,7 @@ export default async function AdminSurveysPage() {
           </p>
         </div>
       </header>
-      <SubmissionTable
-        table="surveys"
-        rows={rows}
-        columns={columns}
-        searchKeys={[(r) => r.name || "", (r) => r.email || "", (r) => r.important_to_family || ""]}
-      />
+      <SubmissionTable table="surveys" headers={headers} rows={data} />
     </div>
   );
 }

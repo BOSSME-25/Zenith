@@ -5,35 +5,26 @@ import { Download, Search, Trash2 } from "lucide-react";
 import { deleteSubmission } from "@/app/actions/update";
 import { cn } from "@/lib/cn";
 
-export type Column<T> = {
-  header: string;
-  accessor: (row: T) => string;
+export type SubmissionRow = {
+  id: number;
+  submittedAt: string;
+  cells: string[];
+  searchBlob: string;
+};
+
+export type ColumnHeader = {
+  label: string;
   className?: string;
 };
 
-type Props<T extends { id: number; submitted_at: string | Date }> = {
+type Props = {
   table: "families" | "community" | "partners" | "surveys" | "contacts";
-  rows: T[];
-  columns: Column<T>[];
-  searchKeys: Array<(row: T) => string>;
+  headers: ColumnHeader[];
+  rows: SubmissionRow[];
   emptyLabel?: string;
 };
 
-function formatDateTime(value: string | Date): string {
-  try {
-    return new Date(value).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
-  } catch {
-    return String(value);
-  }
-}
-
-export function SubmissionTable<T extends { id: number; submitted_at: string | Date }>({
-  table,
-  rows,
-  columns,
-  searchKeys,
-  emptyLabel,
-}: Props<T>) {
+export function SubmissionTable({ table, headers, rows, emptyLabel }: Props) {
   const [query, setQuery] = useState("");
   const [pendingId, setPendingId] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -41,10 +32,8 @@ export function SubmissionTable<T extends { id: number; submitted_at: string | D
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
-    return rows.filter((row) =>
-      searchKeys.some((fn) => (fn(row) || "").toLowerCase().includes(q)),
-    );
-  }, [rows, query, searchKeys]);
+    return rows.filter((row) => row.searchBlob.includes(q));
+  }, [rows, query]);
 
   return (
     <div>
@@ -77,9 +66,9 @@ export function SubmissionTable<T extends { id: number; submitted_at: string | D
             <thead className="bg-ion-soft text-eventide">
               <tr>
                 <th className="px-5 py-3 text-left font-semibold whitespace-nowrap">Submitted</th>
-                {columns.map((c) => (
-                  <th key={c.header} className={cn("px-5 py-3 text-left font-semibold", c.className)}>
-                    {c.header}
+                {headers.map((h) => (
+                  <th key={h.label} className={cn("px-5 py-3 text-left font-semibold", h.className)}>
+                    {h.label}
                   </th>
                 ))}
                 <th className="px-5 py-3 text-right font-semibold">Actions</th>
@@ -88,10 +77,10 @@ export function SubmissionTable<T extends { id: number; submitted_at: string | D
             <tbody>
               {filtered.map((row) => (
                 <tr key={row.id} className="border-t border-ion/60 align-top">
-                  <td className="px-5 py-3 text-midnight-75 whitespace-nowrap">{formatDateTime(row.submitted_at)}</td>
-                  {columns.map((c) => (
-                    <td key={c.header} className={cn("px-5 py-3 text-midnight", c.className)}>
-                      {c.accessor(row)}
+                  <td className="px-5 py-3 text-midnight-75 whitespace-nowrap">{row.submittedAt}</td>
+                  {row.cells.map((cell, i) => (
+                    <td key={i} className={cn("px-5 py-3 text-midnight", headers[i]?.className)}>
+                      {cell}
                     </td>
                   ))}
                   <td className="px-5 py-3 text-right">
@@ -122,4 +111,12 @@ export function SubmissionTable<T extends { id: number; submitted_at: string | D
       </p>
     </div>
   );
+}
+
+export function formatSubmittedAt(value: string | Date): string {
+  try {
+    return new Date(value).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+  } catch {
+    return String(value);
+  }
 }

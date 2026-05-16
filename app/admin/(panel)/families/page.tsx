@@ -1,12 +1,17 @@
 import { safeSql } from "@/lib/db";
-import { SubmissionTable, type Column } from "@/components/admin/SubmissionTable";
+import {
+  SubmissionTable,
+  formatSubmittedAt,
+  type ColumnHeader,
+  type SubmissionRow,
+} from "@/components/admin/SubmissionTable";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Families" };
 
 type Row = {
   id: number;
-  submitted_at: string;
+  submitted_at: string | Date;
   parent_name: string;
   email: string;
   phone: string | null;
@@ -18,19 +23,37 @@ type Row = {
   how_heard: string | null;
 };
 
-const columns: Column<Row>[] = [
-  { header: "Parent", accessor: (r) => r.parent_name },
-  { header: "Email", accessor: (r) => r.email },
-  { header: "Phone", accessor: (r) => r.phone || "—" },
-  { header: "Student", accessor: (r) => r.student_name },
-  { header: "Current", accessor: (r) => `${r.current_grade}th` },
-  { header: "Expected", accessor: (r) => `${r.expected_grade}th` },
-  { header: "Zip", accessor: (r) => r.zip_code },
-  { header: "Prefers", accessor: (r) => r.preferred_contact },
+const headers: ColumnHeader[] = [
+  { label: "Parent" },
+  { label: "Email" },
+  { label: "Phone" },
+  { label: "Student" },
+  { label: "Current" },
+  { label: "Expected" },
+  { label: "Zip" },
+  { label: "Prefers" },
 ];
 
 export default async function AdminFamiliesPage() {
   const { rows } = await safeSql<Row>`SELECT * FROM families ORDER BY submitted_at DESC LIMIT 1000`;
+  const data: SubmissionRow[] = rows.map((r) => {
+    const cells = [
+      r.parent_name,
+      r.email,
+      r.phone || "—",
+      r.student_name,
+      `${r.current_grade}th`,
+      `${r.expected_grade}th`,
+      r.zip_code,
+      r.preferred_contact,
+    ];
+    return {
+      id: r.id,
+      submittedAt: formatSubmittedAt(r.submitted_at),
+      cells,
+      searchBlob: [r.parent_name, r.email, r.student_name].join(" ").toLowerCase(),
+    };
+  });
   return (
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
@@ -42,12 +65,7 @@ export default async function AdminFamiliesPage() {
           </p>
         </div>
       </header>
-      <SubmissionTable
-        table="families"
-        rows={rows}
-        columns={columns}
-        searchKeys={[(r) => r.parent_name, (r) => r.email, (r) => r.student_name]}
-      />
+      <SubmissionTable table="families" headers={headers} rows={data} />
     </div>
   );
 }

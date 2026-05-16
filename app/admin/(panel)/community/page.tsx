@@ -1,12 +1,17 @@
 import { safeSql } from "@/lib/db";
-import { SubmissionTable, type Column } from "@/components/admin/SubmissionTable";
+import {
+  SubmissionTable,
+  formatSubmittedAt,
+  type ColumnHeader,
+  type SubmissionRow,
+} from "@/components/admin/SubmissionTable";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Community Supporters" };
 
 type Row = {
   id: number;
-  submitted_at: string;
+  submitted_at: string | Date;
   name: string;
   email: string;
   zip_code: string;
@@ -15,16 +20,28 @@ type Row = {
   interests: string[] | null;
 };
 
-const columns: Column<Row>[] = [
-  { header: "Name", accessor: (r) => r.name },
-  { header: "Email", accessor: (r) => r.email },
-  { header: "Zip", accessor: (r) => r.zip_code },
-  { header: "Roles", accessor: (r) => (r.roles || []).join(", ") || "—" },
-  { header: "Interests", accessor: (r) => (r.interests || []).join(", ") || "—" },
+const headers: ColumnHeader[] = [
+  { label: "Name" },
+  { label: "Email" },
+  { label: "Zip" },
+  { label: "Roles" },
+  { label: "Interests" },
 ];
 
 export default async function AdminCommunityPage() {
   const { rows } = await safeSql<Row>`SELECT * FROM community ORDER BY submitted_at DESC LIMIT 1000`;
+  const data: SubmissionRow[] = rows.map((r) => ({
+    id: r.id,
+    submittedAt: formatSubmittedAt(r.submitted_at),
+    cells: [
+      r.name,
+      r.email,
+      r.zip_code,
+      (r.roles || []).join(", ") || "—",
+      (r.interests || []).join(", ") || "—",
+    ],
+    searchBlob: [r.name, r.email].join(" ").toLowerCase(),
+  }));
   return (
     <div>
       <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
@@ -36,12 +53,7 @@ export default async function AdminCommunityPage() {
           </p>
         </div>
       </header>
-      <SubmissionTable
-        table="community"
-        rows={rows}
-        columns={columns}
-        searchKeys={[(r) => r.name, (r) => r.email]}
-      />
+      <SubmissionTable table="community" headers={headers} rows={data} />
     </div>
   );
 }
