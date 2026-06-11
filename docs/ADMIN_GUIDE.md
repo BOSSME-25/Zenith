@@ -27,7 +27,7 @@ Click any tile or any row to drill into the full list.
 
 ---
 
-## 3. The six sections
+## 3. The admin sections
 
 ### Families
 Parents/guardians who joined the interest list to enroll a student. Includes parent name, email, phone, student name, current grade, expected entry grade, ZIP code, and how they heard about Zenith.
@@ -42,7 +42,10 @@ Organizations interested in partnering (sponsorships, internships, dual enrollme
 Messages submitted through the "Contact us" form on the site. Each entry has a name, email, subject, and message.
 
 ### Newsletter
-People who signed up on the **Newsletter** page to be notified when the Zenith newsletter launches. Each entry has an optional name and an email. (See section 5b.)
+The Comet Trail issues — create, edit, publish, and archive the newsletter that appears on the public site. (See section 5b.)
+
+### Subscribers
+People who signed up on the Newsletter page. Each entry has an optional name and an email. (See section 5b.)
 
 ### Updates
 The blog/announcements posts that appear on the public **/updates** page. (See section 5.)
@@ -106,23 +109,41 @@ The post is now live at `zenithccprep.org/updates/your-slug`.
 
 ---
 
-## 5b. The Newsletter
+## 5b. The Newsletter — "The Comet Trail"
 
-The public **Newsletter** page (linked in the top menu) is a "coming soon" page where visitors enter their email to be notified when the first Zenith newsletter goes out.
+The public **Newsletter** page (zenithccprep.org/newsletter) shows the latest published issue of The Comet Trail. You write and edit issues entirely from the admin — no developer needed.
 
-### How it works
-
-- Visitors enter their name (optional) and email on **zenithccprep.org/newsletter**.
-- Every signup is saved automatically and appears under **Newsletter** in the admin sidebar.
-- The same person signing up twice will not create a duplicate.
-
-### When you're ready to send your first newsletter
+### Creating or editing an issue
 
 1. In the admin sidebar, click **Newsletter**
-2. Click **Export CSV** to download the full subscriber list
-3. Import that CSV into your email tool (Mailchimp, Constant Contact, etc.) and send from there
+2. Click **New issue** (or **Edit** next to an existing one)
+3. Fill in the sections — each one maps to a spot in the newsletter layout:
+   - **Issue** — issue number and month label (e.g. "September 2027")
+   - **Top story** — lead photo, headline, a sentence or two, and an optional button
+   - **From Dr. Samant** — a short, warm founder note
+   - **Comet Spotlight** — a student/family photo, name, and a few sentences
+   - **What's Happening** — up to three events with date, title, details, and link
+   - **Inside the Classroom** — a short look at a project
+   - **Big number** — one milestone, stated plainly (e.g. "100%" + a sentence)
+4. Any section you leave blank is simply hidden on the page — no broken layout
+5. Photos: click **Upload photo** in a section to add an image from your computer
+6. Check **Published** and click **Save issue** — it's live immediately at zenithccprep.org/newsletter
 
-> The website collects and stores the signups; sending the actual newsletter emails is done from a separate email tool once you choose one.
+Leave **Published** unchecked to save a draft only you can see in the admin.
+
+When you publish a newer issue, the previous one automatically moves into the **Past issues** archive at the bottom of the newsletter page.
+
+### Subscribers
+
+People who enter their email on the Newsletter page are saved under **Subscribers** in the admin sidebar (search, export CSV, delete — same as other lists). The same person signing up twice never creates a duplicate.
+
+### Emailing the newsletter
+
+The website publishes the newsletter on the site and collects subscriber emails. To also send it as an email:
+
+1. Click **Subscribers** → **Export CSV**
+2. Import the list into your email tool (Mailchimp, Constant Contact, etc.)
+3. Send from there — you can link readers to zenithccprep.org/newsletter
 
 ---
 
@@ -159,7 +180,8 @@ These are the parts of zenithccprep.org that visitors see. Content for these pag
 | See how many families have signed up | Dashboard (or click **Families**) |
 | Email everyone who joined the interest list | **Families** → Export CSV → mail merge from spreadsheet |
 | Post an announcement | **Updates** → New update |
-| Download newsletter subscribers | **Newsletter** → Export CSV |
+| Publish or edit the newsletter | **Newsletter** → New issue / Edit |
+| Download newsletter subscribers | **Subscribers** → Export CSV |
 | View survey responses | Google Drive → your Zenith form response sheet |
 | Reply to a contact message | **Contacts** → copy their email → reply from your own inbox |
 | Add a photo to an Updates post | **Updates** → New/Edit → **Add image** button |

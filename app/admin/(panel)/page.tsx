@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { safeSql, isDbConfigured } from "@/lib/db";
-import { Users, Heart, Handshake, MessageSquare, Newspaper, Mail } from "lucide-react";
+import { Users, Heart, Handshake, MessageSquare, Newspaper, Mail, UserPlus } from "lucide-react";
 
 type CountRow = { count: string };
 type RecentRow = {
@@ -16,7 +16,8 @@ const TILES = [
   { type: "community", label: "Community", icon: Heart },
   { type: "partners", label: "Partners", icon: Handshake },
   { type: "contacts", label: "Contacts", icon: MessageSquare },
-  { type: "newsletter", label: "Newsletter", icon: Mail },
+  { type: "newsletter", label: "Newsletter Issues", icon: Mail },
+  { type: "subscribers", label: "Subscribers", icon: UserPlus },
   { type: "updates", label: "Updates", icon: Newspaper },
 ] as const;
 
@@ -24,11 +25,12 @@ async function getCounts() {
   if (!isDbConfigured()) {
     return TILES.map((t) => ({ ...t, count: 0 }));
   }
-  const [f, c, p, ct, n, u] = await Promise.all([
+  const [f, c, p, ct, ni, ns, u] = await Promise.all([
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM families`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM community`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM partners`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM contacts`,
+    safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM newsletter_issues`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM newsletter_subscribers`,
     safeSql<CountRow>`SELECT COUNT(*)::text AS count FROM updates`,
   ]);
@@ -37,8 +39,9 @@ async function getCounts() {
     { ...TILES[1], count: Number(c.rows[0]?.count || 0) },
     { ...TILES[2], count: Number(p.rows[0]?.count || 0) },
     { ...TILES[3], count: Number(ct.rows[0]?.count || 0) },
-    { ...TILES[4], count: Number(n.rows[0]?.count || 0) },
-    { ...TILES[5], count: Number(u.rows[0]?.count || 0) },
+    { ...TILES[4], count: Number(ni.rows[0]?.count || 0) },
+    { ...TILES[5], count: Number(ns.rows[0]?.count || 0) },
+    { ...TILES[6], count: Number(u.rows[0]?.count || 0) },
   ];
 }
 
@@ -54,7 +57,7 @@ async function getRecent(): Promise<RecentRow[]> {
       UNION ALL
       SELECT 'contacts', id, name, subject, submitted_at FROM contacts
       UNION ALL
-      SELECT 'newsletter', id, COALESCE(name, 'Subscriber'), email, submitted_at FROM newsletter_subscribers
+      SELECT 'subscribers', id, COALESCE(name, 'Subscriber'), email, submitted_at FROM newsletter_subscribers
     ) AS combined
     ORDER BY submitted_at DESC
     LIMIT 5

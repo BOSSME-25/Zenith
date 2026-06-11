@@ -109,6 +109,38 @@ export const newsletterSchema = z.object({
 });
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
 
+export const issueEventSchema = z.object({
+  month: z.string().trim().max(12),
+  day: z.string().trim().max(8),
+  title: z.string().trim().max(200),
+  detail: z.string().trim().max(400).optional().or(z.literal("")),
+  url: z.string().trim().max(500).optional().or(z.literal("")),
+});
+export type IssueEvent = z.infer<typeof issueEventSchema>;
+
+const optionalText = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
+
+export const newsletterIssueSchema = z.object({
+  issue_number: z.coerce.number().int("Issue number must be a whole number.").min(1, "Issue number is required."),
+  month_label: z.string().trim().min(2, "Add the month/year label, e.g. September 2027."),
+  published: z.boolean().default(false),
+  hero_image_url: optionalText(800),
+  hero_title: z.string().trim().min(2, "The headline is required."),
+  hero_text: optionalText(1000),
+  hero_cta_label: optionalText(80),
+  hero_cta_url: optionalText(500),
+  founder_note: optionalText(2000),
+  spotlight_image_url: optionalText(800),
+  spotlight_name: optionalText(160),
+  spotlight_text: optionalText(2000),
+  events: z.array(issueEventSchema).default([]),
+  classroom_title: optionalText(200),
+  classroom_text: optionalText(2000),
+  stat_value: optionalText(40),
+  stat_text: optionalText(400),
+});
+export type NewsletterIssueInput = z.infer<typeof newsletterIssueSchema>;
+
 export const updateSchema = z.object({
   title: z.string().trim().min(2, "Title is required."),
   slug: z

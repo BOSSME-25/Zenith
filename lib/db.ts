@@ -134,6 +134,28 @@ const CREATE_STATEMENTS = [
     email TEXT NOT NULL UNIQUE,
     name TEXT
   )`,
+  `CREATE TABLE IF NOT EXISTS newsletter_issues (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    issue_number INTEGER NOT NULL,
+    month_label TEXT NOT NULL,
+    published BOOLEAN DEFAULT FALSE,
+    hero_image_url TEXT,
+    hero_title TEXT NOT NULL,
+    hero_text TEXT,
+    hero_cta_label TEXT,
+    hero_cta_url TEXT,
+    founder_note TEXT,
+    spotlight_image_url TEXT,
+    spotlight_name TEXT,
+    spotlight_text TEXT,
+    events JSONB DEFAULT '[]',
+    classroom_title TEXT,
+    classroom_text TEXT,
+    stat_value TEXT,
+    stat_text TEXT
+  )`,
   `CREATE TABLE IF NOT EXISTS updates (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP DEFAULT NOW(),

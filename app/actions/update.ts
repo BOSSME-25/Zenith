@@ -154,6 +154,7 @@ export async function deleteSubmission(
     newsletter: () => safeSql`DELETE FROM newsletter_subscribers WHERE id = ${id}`,
   } as const;
   await map[table]();
-  revalidatePath(`/admin/${table}`);
+  // Subscribers use the "newsletter" table key but live at /admin/subscribers.
+  revalidatePath(table === "newsletter" ? "/admin/subscribers" : `/admin/${table}`);
   revalidatePath("/admin");
 }
