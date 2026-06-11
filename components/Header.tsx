@@ -37,18 +37,18 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-midnight text-white border-b border-midnight-75/40">
-      <div className="container-prose flex items-center justify-between py-3 md:py-4">
+      <div className="container-prose flex items-center justify-between gap-8 py-3 md:py-4">
         <Link
           href="/"
           aria-label="Zenith College and Career Prep — home"
-          className="inline-flex items-baseline gap-2 whitespace-nowrap"
+          className="inline-flex shrink-0 items-baseline gap-2 whitespace-nowrap"
         >
           <span className="text-xl md:text-2xl font-bold tracking-tight text-white">Zenith</span>
           <span className="hidden sm:inline text-xs md:text-sm font-medium uppercase tracking-[0.18em] text-ion">
             College &amp; Career Prep
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-7" aria-label="Primary">
+        <nav className="hidden lg:flex items-center gap-7 whitespace-nowrap" aria-label="Primary">
           {NAV.map((item) => {
             const active = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
             return (
@@ -76,7 +76,7 @@ export function Header() {
         </nav>
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-midnight-75/30"
+          className="lg:hidden inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-midnight-75/30"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -89,7 +89,7 @@ export function Header() {
       <div
         id="mobile-nav"
         className={cn(
-          "md:hidden bg-midnight border-t border-midnight-75/30 transition-[max-height,opacity] duration-200 overflow-hidden",
+          "lg:hidden bg-midnight border-t border-midnight-75/30 transition-[max-height,opacity] duration-200 overflow-hidden",
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         )}
         aria-hidden={!open}
