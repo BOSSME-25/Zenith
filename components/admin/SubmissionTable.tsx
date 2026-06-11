@@ -18,7 +18,7 @@ export type ColumnHeader = {
 };
 
 type Props = {
-  table: "families" | "community" | "partners" | "surveys" | "contacts";
+  table: "families" | "community" | "partners" | "surveys" | "contacts" | "newsletter";
   headers: ColumnHeader[];
   rows: SubmissionRow[];
   emptyLabel?: string;

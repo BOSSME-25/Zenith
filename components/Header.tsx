@@ -12,6 +12,7 @@ const NAV = [
   { href: "/our-board", label: "Our Board" },
   { href: "/faq", label: "FAQ" },
   { href: "/updates", label: "Updates" },
+  { href: "/newsletter", label: "Newsletter" },
   { href: "/contact", label: "Contact" },
 ];
 

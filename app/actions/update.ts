@@ -140,7 +140,7 @@ export async function deleteUpdate(id: number): Promise<void> {
 }
 
 export async function deleteSubmission(
-  table: "families" | "community" | "partners" | "surveys" | "contacts",
+  table: "families" | "community" | "partners" | "surveys" | "contacts" | "newsletter",
   id: number,
 ): Promise<void> {
   await assertAdmin();
@@ -151,6 +151,7 @@ export async function deleteSubmission(
     partners: () => safeSql`DELETE FROM partners WHERE id = ${id}`,
     surveys: () => safeSql`DELETE FROM surveys WHERE id = ${id}`,
     contacts: () => safeSql`DELETE FROM contacts WHERE id = ${id}`,
+    newsletter: () => safeSql`DELETE FROM newsletter_subscribers WHERE id = ${id}`,
   } as const;
   await map[table]();
   revalidatePath(`/admin/${table}`);

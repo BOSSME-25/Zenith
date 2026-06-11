@@ -103,6 +103,12 @@ export const contactSchema = z.object({
 });
 export type ContactInput = z.infer<typeof contactSchema>;
 
+export const newsletterSchema = z.object({
+  email: z.string().trim().email("Please enter a valid email."),
+  name: z.string().trim().max(120).optional().or(z.literal("")),
+});
+export type NewsletterInput = z.infer<typeof newsletterSchema>;
+
 export const updateSchema = z.object({
   title: z.string().trim().min(2, "Title is required."),
   slug: z

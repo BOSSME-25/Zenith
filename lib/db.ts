@@ -128,6 +128,12 @@ const CREATE_STATEMENTS = [
     subject TEXT NOT NULL,
     message TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+    id SERIAL PRIMARY KEY,
+    submitted_at TIMESTAMP DEFAULT NOW(),
+    email TEXT NOT NULL UNIQUE,
+    name TEXT
+  )`,
   `CREATE TABLE IF NOT EXISTS updates (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP DEFAULT NOW(),

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { safeSql, isDbConfigured } from "@/lib/db";
 
-const TABLES = ["families", "community", "partners", "surveys", "contacts"] as const;
+const TABLES = ["families", "community", "partners", "surveys", "contacts", "newsletter"] as const;
 type AllowedTable = (typeof TABLES)[number];
 
 function csvCell(value: unknown): string {
@@ -45,6 +45,10 @@ async function loadRows(table: AllowedTable): Promise<Array<Record<string, unkno
     }
     case "contacts": {
       const { rows } = await safeSql<Record<string, unknown>>`SELECT * FROM contacts ORDER BY submitted_at DESC`;
+      return rows;
+    }
+    case "newsletter": {
+      const { rows } = await safeSql<Record<string, unknown>>`SELECT * FROM newsletter_subscribers ORDER BY submitted_at DESC`;
       return rows;
     }
   }
