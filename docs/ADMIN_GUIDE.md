@@ -93,7 +93,16 @@ The post is now live at `zenithccprep.org/updates/your-slug`.
 - Calls to action ("Survey now available in Spanish — please share")
 - Behind-the-scenes from school design work
 
-> **Adding pictures:** the Updates editor is text-only right now — there's no image upload yet. If you'd like to add photos to posts, ask your developer to turn on image uploads.
+### Adding pictures to a post
+
+1. While writing or editing an update, click your cursor in the **Body** where you want the photo to appear
+2. Click the **Add image** button (just above the Body box)
+3. Choose a photo from your computer (JPG, PNG, WebP, or GIF, up to 10 MB)
+4. It uploads and is inserted automatically as `![caption](link)` — leave that text as-is; it becomes the picture on the published page
+5. The text inside the square brackets (the file name by default) shows as a small caption under the photo — you can edit it to whatever caption you like
+6. Click **Publish update** (or **Save update**) — the photo appears full-width on the live page
+
+> Photos are stored securely in the site's cloud storage. You can add several images to one post — just repeat the steps for each.
 
 ---
 
@@ -153,7 +162,8 @@ These are the parts of zenithccprep.org that visitors see. Content for these pag
 | Download newsletter subscribers | **Newsletter** → Export CSV |
 | View survey responses | Google Drive → your Zenith form response sheet |
 | Reply to a contact message | **Contacts** → copy their email → reply from your own inbox |
-| Add a photo to the site or a post | Email Emily (image upload not built yet) |
+| Add a photo to an Updates post | **Updates** → New/Edit → **Add image** button |
+| Change a homepage photo or hero image | Email Emily |
 
 ---
 
