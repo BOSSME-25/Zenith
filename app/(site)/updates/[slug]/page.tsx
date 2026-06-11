@@ -40,7 +40,8 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
   const post = rows[0];
   if (!post) notFound();
 
-  const paragraphs = post.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  const blocks = post.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  const IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)\)$/;
 
   return (
     <>
@@ -55,9 +56,27 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
           <p className="mt-8 eyebrow text-eventide">{formatDate(post.publish_date)}</p>
           <h1 className="mt-4 text-3xl md:text-4xl font-bold leading-tight text-midnight">{post.title}</h1>
           <div className="mt-10 space-y-5 text-lg leading-relaxed text-midnight">
-            {paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+            {blocks.map((block, i) => {
+              const img = block.match(IMAGE_RE);
+              if (img) {
+                const [, alt, src] = img;
+                return (
+                  <figure key={i} className="my-8">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={alt}
+                      loading="lazy"
+                      className="w-full rounded-2xl border border-ion"
+                    />
+                    {alt && (
+                      <figcaption className="mt-2 text-sm text-midnight-75 text-center">{alt}</figcaption>
+                    )}
+                  </figure>
+                );
+              }
+              return <p key={i}>{block}</p>;
+            })}
           </div>
         </div>
       </Section>

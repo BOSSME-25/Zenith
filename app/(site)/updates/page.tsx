@@ -24,7 +24,10 @@ function formatDate(d: string | Date): string {
 }
 
 function excerpt(body: string, max = 220): string {
-  const plain = body.replace(/\s+/g, " ").trim();
+  const plain = body
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "") // drop image markdown
+    .replace(/\s+/g, " ")
+    .trim();
   return plain.length > max ? plain.slice(0, max).trimEnd() + "…" : plain;
 }
 
