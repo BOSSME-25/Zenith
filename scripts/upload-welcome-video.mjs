@@ -1,18 +1,32 @@
 // Uploads Jay's welcome video to Vercel Blob and prints the public URL.
 //
 // Usage:
-//   BLOB_READ_WRITE_TOKEN=vercel_blob_rw_... node scripts/upload-welcome-video.mjs
-//   # or, with the token already in .env.local on Vercel:  npm run upload:video
+//   BLOB_READ_WRITE_TOKEN=vercel_blob_rw_... npm run upload:video -- <path-to-video>
+//
+// Examples:
+//   npm run upload:video -- public/video/jay-welcome.mp4
+//   npm run upload:video -- "/Users/emilybelt/Desktop/Web Projects/ZenithWebsite/jay-welcome.mp4"
+//   npm run upload:video            # defaults to public/video/jay-welcome.mov
 //
 // Then set the printed URL as NEXT_PUBLIC_WELCOME_VIDEO_URL in your
 // environment (Vercel project settings / .env.local). The welcome popup and
 // the Our Story embed will serve from Blob instead of the in-repo file.
 
 import { readFile } from "node:fs/promises";
+import { basename, extname } from "node:path";
 import { put } from "@vercel/blob";
 
-const SRC = "public/video/jay-welcome.mov";
-const DEST = "welcome/jay-welcome.mov";
+const src = process.argv[2] || "public/video/jay-welcome.mov";
+
+const CONTENT_TYPES = {
+  ".mp4": "video/mp4",
+  ".mov": "video/quicktime",
+  ".m4v": "video/x-m4v",
+  ".webm": "video/webm",
+};
+const ext = extname(src).toLowerCase();
+const contentType = CONTENT_TYPES[ext] || "application/octet-stream";
+const dest = `welcome/${basename(src)}`;
 
 if (!process.env.BLOB_READ_WRITE_TOKEN) {
   console.error(
@@ -22,11 +36,19 @@ if (!process.env.BLOB_READ_WRITE_TOKEN) {
   process.exit(1);
 }
 
-const data = await readFile(SRC);
+let data;
+try {
+  data = await readFile(src);
+} catch {
+  console.error(`Could not read "${src}". Pass the path to your video file as an argument.`);
+  process.exit(1);
+}
 
-const blob = await put(DEST, data, {
+console.log(`Uploading ${src} (${(data.length / 1024 / 1024).toFixed(1)} MB, ${contentType})…`);
+
+const blob = await put(dest, data, {
   access: "public",
-  contentType: "video/quicktime",
+  contentType,
   addRandomSuffix: false,
   allowOverwrite: true,
 });
