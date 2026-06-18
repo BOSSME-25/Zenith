@@ -13,7 +13,24 @@ export default function OurStoryPage() {
         title="A high school designed with Maryvale, for Maryvale."
         description="Zenith College and Career Prep is being built with the community it will serve — through student surveys, focus groups, and conversations with families and local leaders. We&apos;re currently in the application phase with the Arizona State Board for Charter Schools."
         bg="white"
-      />
+      >
+        <Reveal className="max-w-3xl">
+          <figure>
+            <div className="overflow-hidden rounded-2xl border border-ion bg-midnight shadow-[0_8px_24px_rgba(6,36,63,0.08)]">
+              <video
+                src="/video/jay-welcome.mov"
+                className="w-full bg-midnight"
+                controls
+                playsInline
+                preload="metadata"
+              />
+            </div>
+            <figcaption className="mt-3 text-sm text-midnight-75">
+              A welcome from Jay Samant on the story behind Zenith.
+            </figcaption>
+          </figure>
+        </Reveal>
+      </Section>
 
       <Section eyebrow="Mission" title="What we&apos;re here to do." bg="ion-soft">
         <p className="text-lg md:text-xl leading-relaxed text-midnight max-w-3xl">

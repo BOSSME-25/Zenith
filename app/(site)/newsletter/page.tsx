@@ -3,7 +3,7 @@ import { Section } from "@/components/Section";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { NewsletterIssue, type IssueData } from "@/components/NewsletterIssue";
 import { safeSql } from "@/lib/db";
-import { Mail, Sparkles, Users, ArrowRight } from "lucide-react";
+import { Mail, Sparkles, Users, ArrowRight, PlayCircle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +31,32 @@ const HIGHLIGHTS = [
   },
 ];
 
+function WatchVideoCallout() {
+  return (
+    <Link
+      href="/our-story"
+      className="group flex items-center gap-4 rounded-2xl bg-white border border-ion p-5 md:p-6 hover:border-eventide transition-colors"
+    >
+      <span className="flex-none rounded-xl bg-ion-soft p-3 text-eventide">
+        <PlayCircle size={24} aria-hidden />
+      </span>
+      <span className="flex-1">
+        <span className="block text-base md:text-lg font-semibold text-midnight">
+          New here? Watch a welcome from Jay.
+        </span>
+        <span className="mt-0.5 block text-midnight-75">
+          A short hello on the story behind Zenith — over on Our Story.
+        </span>
+      </span>
+      <ArrowRight
+        size={18}
+        className="flex-none text-eventide transition-transform group-hover:translate-x-0.5"
+        aria-hidden
+      />
+    </Link>
+  );
+}
+
 export default async function NewsletterPage() {
   const { rows } = await safeSql<IssueData>`
     SELECT * FROM newsletter_issues
@@ -51,6 +77,9 @@ export default async function NewsletterPage() {
           bg="white"
         />
         <Section bg="ion-soft" className="pt-0 md:pt-0">
+          <div className="mb-8">
+            <WatchVideoCallout />
+          </div>
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <ul className="grid gap-4 sm:grid-cols-1">
               {HIGHLIGHTS.map((h) => {
@@ -92,6 +121,9 @@ export default async function NewsletterPage() {
   return (
     <>
       <Section bg="white">
+        <div className="mb-10 md:mb-12">
+          <WatchVideoCallout />
+        </div>
         <NewsletterIssue issue={latest} />
       </Section>
 
