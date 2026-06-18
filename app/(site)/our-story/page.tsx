@@ -20,7 +20,7 @@ export default function OurStoryPage() {
             <div className="overflow-hidden rounded-2xl border border-ion bg-midnight shadow-[0_8px_24px_rgba(6,36,63,0.08)]">
               <video
                 src={WELCOME_VIDEO_URL}
-                className="w-full bg-midnight"
+                className="mx-auto block max-h-[75vh] w-auto max-w-full bg-midnight"
                 controls
                 playsInline
                 preload="metadata"

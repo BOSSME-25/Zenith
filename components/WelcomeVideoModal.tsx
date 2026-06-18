@@ -107,7 +107,7 @@ export function WelcomeVideoModal() {
           <video
             ref={videoRef}
             src={WELCOME_VIDEO_URL}
-            className="w-full max-h-[70vh] bg-midnight"
+            className="mx-auto block max-h-[70vh] w-auto max-w-full bg-midnight"
             autoPlay
             muted
             playsInline
