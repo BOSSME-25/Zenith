@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { X, Volume2, VolumeX } from "lucide-react";
+import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 
 const STORAGE_KEY = "zenith-welcome-video-seen";
-const VIDEO_SRC = "/video/jay-welcome.mov";
 
 /**
  * Site-wide welcome popup that plays a short video from Jay the first time
@@ -106,7 +106,7 @@ export function WelcomeVideoModal() {
         <div className="relative bg-midnight">
           <video
             ref={videoRef}
-            src={VIDEO_SRC}
+            src={WELCOME_VIDEO_URL}
             className="w-full max-h-[70vh] bg-midnight"
             autoPlay
             muted

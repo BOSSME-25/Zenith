@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 import { StatCounter } from "@/components/StatCounter";
+import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 
 export const metadata = { title: "Our Story" };
 
@@ -18,7 +19,7 @@ export default function OurStoryPage() {
           <figure>
             <div className="overflow-hidden rounded-2xl border border-ion bg-midnight shadow-[0_8px_24px_rgba(6,36,63,0.08)]">
               <video
-                src="/video/jay-welcome.mov"
+                src={WELCOME_VIDEO_URL}
                 className="w-full bg-midnight"
                 controls
                 playsInline

@@ -40,6 +40,9 @@ yarn-error.log*
 # zenith source materials (brand kit, strategy memo, punch list) — local only
 /_source/
 
+# welcome video — served from Vercel Blob in production, kept local for dev
+/public/video/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
