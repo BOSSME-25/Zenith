@@ -89,7 +89,7 @@ export function WelcomeVideoModal() {
           <div>
             <p className="eyebrow text-eventide">Welcome to Zenith</p>
             <h2 className="mt-1 text-lg font-semibold text-midnight leading-tight">
-              A quick hello from Jay
+              Welcome from our founder, Dr. Jay Samant
             </h2>
           </div>
           <button

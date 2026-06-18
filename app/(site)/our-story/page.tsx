@@ -27,7 +27,7 @@ export default function OurStoryPage() {
               />
             </div>
             <figcaption className="mt-3 text-sm text-midnight-75">
-              A welcome from Jay Samant on the story behind Zenith.
+              A welcome from our founder, Dr. Jay Samant, on the story behind Zenith.
             </figcaption>
           </figure>
         </Reveal>

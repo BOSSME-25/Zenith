@@ -42,7 +42,7 @@ function WatchVideoCallout() {
       </span>
       <span className="flex-1">
         <span className="block text-base md:text-lg font-semibold text-midnight">
-          New here? Watch a welcome from Jay.
+          New here? Watch a welcome from our founder, Dr. Jay Samant.
         </span>
         <span className="mt-0.5 block text-midnight-75">
           A short hello on the story behind Zenith — over on Our Story.
