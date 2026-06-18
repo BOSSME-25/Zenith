@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 import { StatCounter } from "@/components/StatCounter";
+import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 
 export const metadata = { title: "Our Story" };
 
@@ -13,7 +14,24 @@ export default function OurStoryPage() {
         title="A high school designed with Maryvale, for Maryvale."
         description="Zenith College and Career Prep is being built with the community it will serve — through student surveys, focus groups, and conversations with families and local leaders. We&apos;re currently in the application phase with the Arizona State Board for Charter Schools."
         bg="white"
-      />
+      >
+        <Reveal className="max-w-3xl">
+          <figure>
+            <div className="overflow-hidden rounded-2xl border border-ion bg-midnight shadow-[0_8px_24px_rgba(6,36,63,0.08)]">
+              <video
+                src={WELCOME_VIDEO_URL}
+                className="mx-auto block max-h-[75vh] w-auto max-w-full bg-midnight"
+                controls
+                playsInline
+                preload="metadata"
+              />
+            </div>
+            <figcaption className="mt-3 text-sm text-midnight-75">
+              A welcome from our founder, Dr. Jay Samant, on the story behind Zenith.
+            </figcaption>
+          </figure>
+        </Reveal>
+      </Section>
 
       <Section eyebrow="Mission" title="What we&apos;re here to do." bg="ion-soft">
         <p className="text-lg md:text-xl leading-relaxed text-midnight max-w-3xl">
