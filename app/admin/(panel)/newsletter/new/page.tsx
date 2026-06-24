@@ -15,7 +15,11 @@ export default function NewIssuePage() {
         </p>
       </header>
       <div className="max-w-3xl">
-        <IssueForm action={createIssue} submitLabel="Save issue" />
+        <IssueForm
+          action={createIssue}
+          submitLabel="Save issue"
+          draftKey="zenith:newsletter:new-draft"
+        />
       </div>
     </div>
   );
