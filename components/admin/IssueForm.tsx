@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { upload } from "@vercel/blob/client";
 import { ImagePlus, Loader2, X } from "lucide-react";
@@ -33,6 +33,13 @@ type Props = {
   defaults?: IssueDefaults;
   submitLabel: string;
   hiddenFields?: Record<string, string>;
+  /**
+   * When set, the form auto-saves its text to this localStorage key as the
+   * user types, so a failed submit (e.g. a deploy invalidating the server
+   * action mid-compose) never loses written work. Used by the "new issue"
+   * page; omitted on the edit page, which is backed by the database.
+   */
+  draftKey?: string;
 };
 
 function sanitizeName(name: string): string {
@@ -142,13 +149,143 @@ function SectionCard({ title, blurb, children }: { title: string; blurb?: string
 
 const EVENT_SLOTS = [0, 1, 2];
 
-export function IssueForm({ action, defaults, submitLabel, hiddenFields }: Props) {
+export function IssueForm({ action, defaults, submitLabel, hiddenFields, draftKey }: Props) {
   const [state, dispatch] = useActionState(action, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const events = defaults?.events ?? [];
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const submittingRef = useRef(false);
+  const [draftFound, setDraftFound] = useState(false);
+
+  // Auto-save the compose form to this browser so a failed submit never loses
+  // written work. Only runs when a draftKey is provided (the "new issue" page).
+  useEffect(() => {
+    if (!draftKey) return;
+
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (raw) {
+        const data = JSON.parse(raw) as Record<string, unknown>;
+        const hasText = Object.values(data).some(
+          (v) => typeof v === "string" && v.trim().length > 0,
+        );
+        if (hasText) setDraftFound(true);
+      }
+    } catch {
+      // ignore an unreadable draft
+    }
+
+    const save = () => {
+      const form = formRef.current;
+      if (!form) return;
+      const obj: Record<string, string> = {};
+      for (const [k, v] of new FormData(form).entries()) {
+        if (typeof v === "string" && !k.endsWith("_image_url") && k !== "id") {
+          obj[k] = v;
+        }
+      }
+      const meaningful = [
+        obj.hero_title,
+        obj.hero_text,
+        obj.founder_note,
+        obj.spotlight_text,
+        obj.classroom_text,
+      ].some((v) => v && v.trim().length > 0);
+      try {
+        if (meaningful) localStorage.setItem(draftKey, JSON.stringify(obj));
+      } catch {
+        // storage unavailable / full — nothing we can do
+      }
+    };
+
+    const interval = window.setInterval(save, 2000);
+    const onPageHide = () => {
+      // A successful submit redirects away (pagehide fires) — clear the backup.
+      if (submittingRef.current) {
+        try {
+          localStorage.removeItem(draftKey);
+        } catch {
+          // ignore
+        }
+      }
+    };
+    window.addEventListener("pagehide", onPageHide);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("pagehide", onPageHide);
+    };
+  }, [draftKey]);
+
+  // An error means the submit did NOT navigate, so keep the backup recoverable.
+  useEffect(() => {
+    if (state.status === "error") submittingRef.current = false;
+  }, [state.status]);
+
+  function restoreDraft() {
+    const form = formRef.current;
+    if (!form || !draftKey) return;
+    try {
+      const data = JSON.parse(localStorage.getItem(draftKey) ?? "{}") as Record<string, string>;
+      for (const [name, value] of Object.entries(data)) {
+        if (typeof value !== "string") continue;
+        const el = form.elements.namedItem(name);
+        if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+          el.value = value;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    setDraftFound(false);
+  }
+
+  function discardDraft() {
+    if (draftKey) {
+      try {
+        localStorage.removeItem(draftKey);
+      } catch {
+        // ignore
+      }
+    }
+    setDraftFound(false);
+  }
+
   return (
-    <form action={dispatch} className="space-y-6">
+    <form
+      ref={formRef}
+      action={dispatch}
+      onSubmit={() => {
+        submittingRef.current = true;
+      }}
+      className="space-y-6"
+    >
+      {draftKey && draftFound && (
+        <div className="rounded-2xl border border-aurora bg-aurora-25/50 p-5 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-midnight">
+            <strong className="font-semibold">Unsaved draft found.</strong> We saved what you were
+            writing in this browser. Restore it?
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={restoreDraft}
+              className="inline-flex items-center rounded-full bg-midnight px-4 py-2 text-xs font-semibold text-white hover:bg-midnight-75"
+            >
+              Restore draft
+            </button>
+            <button
+              type="button"
+              onClick={discardDraft}
+              className="inline-flex items-center rounded-full border border-ion px-4 py-2 text-xs font-semibold text-midnight hover:bg-ion-soft"
+            >
+              Discard
+            </button>
+          </div>
+        </div>
+      )}
+
       {hiddenFields &&
         Object.entries(hiddenFields).map(([k, v]) => (
           <input key={k} type="hidden" name={k} value={v} />
@@ -440,6 +577,12 @@ export function IssueForm({ action, defaults, submitLabel, hiddenFields }: Props
           Cancel
         </Link>
       </div>
+      {draftKey && (
+        <p className="text-xs text-midnight-75">
+          Your draft is auto-saved in this browser as you type. If a save ever fails, reload this
+          page and click <strong className="font-semibold">Restore draft</strong> to recover it.
+        </p>
+      )}
       <FormStatus state={state} />
     </form>
   );
