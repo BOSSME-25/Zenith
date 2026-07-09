@@ -67,7 +67,7 @@ const BOARD: BoardMember[] = [
   {
     name: "Lynn Palacios, M.Ed.",
     focus: "Curriculum, Instruction, and School Design",
-    tags: ["Curriculum", "STEAM", "Instructional Design", "Dual Enrollment"],
+    tags: ["Literacy", "Curriculum", "STEAM", "Instructional Design", "Dual Enrollment"],
     photo: "/board/lynn-palacios.jpg",
     paragraphs: [
       "Lynn Palacios is an educational leader and instructional coach with more than three decades of experience designing and leading innovative secondary and postsecondary learning programs. She currently serves as Instructional Coach for Literacy at La Joya Community High School in the Tolleson Union High School District. Previously, as Instructional Coach at Barry Goldwater High School in the Deer Valley Unified School District, her work contributed to the school being named Arizona's first Solution Tree Model PLC High School.",
