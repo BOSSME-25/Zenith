@@ -67,10 +67,10 @@ const BOARD: BoardMember[] = [
   {
     name: "Lynn Palacios, M.Ed.",
     focus: "Curriculum, Instruction, and School Design",
-    tags: ["Curriculum", "STEAM", "Instructional Design", "Dual Enrollment"],
+    tags: ["Literacy", "Curriculum", "STEAM", "Instructional Design", "Dual Enrollment"],
     photo: "/board/lynn-palacios.jpg",
     paragraphs: [
-      "Lynn Palacios is an educational leader and instructional coach with more than three decades of experience designing and leading innovative secondary and postsecondary learning programs. She currently serves as Instructional Coach at Barry Goldwater High School in the Deer Valley Unified School District, where her work has contributed to the school being named Arizona's first Solution Tree Model PLC High School.",
+      "Lynn Palacios is an educational leader and instructional coach with more than three decades of experience designing and leading innovative secondary and postsecondary learning programs. She currently serves as Instructional Coach for Literacy at La Joya Community High School in the Tolleson Union High School District. Previously, as Instructional Coach at Barry Goldwater High School in the Deer Valley Unified School District, her work contributed to the school being named Arizona's first Solution Tree Model PLC High School.",
       "Lynn has been a founding educator and program leader at some of Arizona's most innovative schools, including Phoenix Coding Academy and Bioscience High School, where she developed transdisciplinary projects, coordinated community-based internship programs, and built meaningful partnerships with industry and higher education. She also brings more than a decade of experience as adjunct faculty at Phoenix College, teaching college composition in both online and in-person formats.",
       "Lynn's deep expertise in STEAM education, project-based learning, dual enrollment, and instructional design makes her one of Zenith's most critical assets during the school design phase. She brings the practitioner's knowledge of what rigorous, equity-centered instruction actually looks like in a classroom, not just in a charter application.",
     ],
