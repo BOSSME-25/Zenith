@@ -3,7 +3,11 @@ import { safeSql, isDbConfigured } from "@/lib/db";
 import { Section } from "@/components/Section";
 import { ArrowRight } from "lucide-react";
 
-export const metadata = { title: "Updates" };
+export const metadata = {
+  title: "Updates",
+  description:
+    "News and milestones from Zenith College and Career Prep — charter authorization progress, community events, and school-design updates from Maryvale.",
+};
 export const dynamic = "force-dynamic";
 
 type UpdateRow = {

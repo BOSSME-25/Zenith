@@ -2,7 +2,11 @@ import Image from "next/image";
 import { Section } from "@/components/Section";
 import { BoardMemberCard, type BoardMember } from "@/components/BoardMemberCard";
 
-export const metadata = { title: "Our Board" };
+export const metadata = {
+  title: "Our Board",
+  description:
+    "Meet the founder and founding board of Zenith College and Career Prep — leaders in education, community, and industry guiding the school's design.",
+};
 
 const FOUNDER = {
   name: "Dr. Jay Samant",

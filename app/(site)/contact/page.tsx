@@ -1,7 +1,11 @@
 import { Section } from "@/components/Section";
 import { ContactForm } from "@/components/forms/ContactForm";
 
-export const metadata = { title: "Contact" };
+export const metadata = {
+  title: "Contact",
+  description:
+    "Contact Zenith College and Career Prep — questions from families, partnership inquiries, and community feedback. We read every message.",
+};
 
 export default function ContactPage() {
   return (

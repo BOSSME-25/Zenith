@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Section } from "@/components/Section";
+import { JsonLd } from "@/components/JsonLd";
 
-export const metadata = { title: "Frequently Asked Questions" };
+export const metadata = {
+  title: "Frequently Asked Questions",
+  description:
+    "Answers to the questions Maryvale families ask most about Zenith College and Career Prep — enrollment, tuition, location, academics, and the Fall 2027 opening.",
+};
 
 type Faq = {
   q: string;
@@ -83,9 +88,20 @@ const FAQS: Faq[] = [
   },
 ];
 
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
 export default function FaqPage() {
   return (
     <>
+      <JsonLd data={FAQ_SCHEMA} />
       <Section
         eyebrow="FAQ"
         title="Answers for families and community."
