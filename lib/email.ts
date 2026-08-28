@@ -16,7 +16,7 @@ function getResendClient(): Resend | null {
 }
 
 function fromAddress(): string {
-  return process.env.EMAIL_FROM || "Zenith College and Career Prep <noreply@zenithprep.org>";
+  return process.env.EMAIL_FROM || "Zenith College and Career Prep <noreply@zenithccprep.org>";
 }
 
 function teamRecipient(): string | null {

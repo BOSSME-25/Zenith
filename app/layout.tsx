@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -10,7 +11,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zenithprep.org"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Zenith College and Career Prep — Elevating Every Future",
     template: "%s · Zenith College and Career Prep",
