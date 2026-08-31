@@ -166,6 +166,60 @@ const CREATE_STATEMENTS = [
     published BOOLEAN DEFAULT TRUE,
     publish_date TIMESTAMP DEFAULT NOW()
   )`,
+  // Nominations are raw, unreviewed submissions. They are never rendered on the
+  // public site — nominator_email and nominee_contact_info in particular must
+  // stay internal. Publishing happens only through comet_profiles below.
+  `CREATE TABLE IF NOT EXISTS nominations (
+    id SERIAL PRIMARY KEY,
+    submitted_at TIMESTAMP DEFAULT NOW(),
+    nominee_name TEXT NOT NULL,
+    nominee_grade_or_grad_year TEXT NOT NULL,
+    nominator_name TEXT NOT NULL,
+    nominator_relationship TEXT NOT NULL,
+    nominator_email TEXT NOT NULL,
+    milestone_type TEXT NOT NULL,
+    description TEXT NOT NULL,
+    nominee_contact_info TEXT,
+    status TEXT NOT NULL DEFAULT 'pending',
+    reviewed_by TEXT,
+    reviewed_at TIMESTAMP,
+    review_notes TEXT,
+    submission_duration_ms INTEGER
+  )`,
+  `CREATE TABLE IF NOT EXISTS comet_profiles (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    status TEXT NOT NULL DEFAULT 'in_motion',
+    name TEXT NOT NULL,
+    photo_url TEXT,
+    grad_year INTEGER,
+    current_grade INTEGER,
+    milestone_type TEXT NOT NULL DEFAULT 'general_story',
+    headline TEXT NOT NULL DEFAULT '',
+    full_story TEXT NOT NULL DEFAULT '',
+    certifications TEXT[] DEFAULT '{}',
+    field_or_institution TEXT,
+    current_role_or_program TEXT,
+    mentor_opt_in BOOLEAN DEFAULT FALSE,
+    mentor_contact_method TEXT DEFAULT 'none',
+    tags TEXT[] DEFAULT '{}',
+    consent_on_file BOOLEAN DEFAULT FALSE,
+    consent_recorded_by TEXT,
+    featured_quarter TEXT,
+    published_at TIMESTAMP,
+    source_nomination_id INTEGER
+  )`,
+  // Stores a salted hash of the submitter IP, never the address itself.
+  `CREATE TABLE IF NOT EXISTS nomination_rate_limit (
+    id SERIAL PRIMARY KEY,
+    ip_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+  )`,
+  `CREATE INDEX IF NOT EXISTS nomination_rate_limit_lookup
+     ON nomination_rate_limit (ip_hash, created_at)`,
+  `CREATE INDEX IF NOT EXISTS nominations_status_idx ON nominations (status, submitted_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS comet_profiles_published_idx ON comet_profiles (published_at, status)`,
 ];
 
 export async function initDatabase(): Promise<{ ok: boolean; message: string }> {

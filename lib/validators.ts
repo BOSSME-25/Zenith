@@ -159,6 +159,114 @@ export const updateSchema = z.object({
 });
 export type UpdateInput = z.infer<typeof updateSchema>;
 
+export const MILESTONE_TYPES = [
+  "dual_enrollment",
+  "cte_certification",
+  "ap_score",
+  "general_story",
+] as const;
+export type MilestoneType = (typeof MILESTONE_TYPES)[number];
+
+export const MILESTONE_LABELS: Record<MilestoneType, string> = {
+  dual_enrollment: "Dual enrollment",
+  cte_certification: "CTE or vocational certification",
+  ap_score: "AP achievement",
+  general_story: "General story",
+};
+
+export const NOMINATOR_RELATIONSHIPS = ["self", "staff", "family", "community"] as const;
+export type NominatorRelationship = (typeof NOMINATOR_RELATIONSHIPS)[number];
+
+export const RELATIONSHIP_LABELS: Record<NominatorRelationship, string> = {
+  self: "Self",
+  staff: "Staff",
+  family: "Family member",
+  community: "Community member",
+};
+
+export const COMET_STATUSES = ["in_motion", "landed"] as const;
+export type CometStatus = (typeof COMET_STATUSES)[number];
+
+export const NOMINATION_STATUSES = ["pending", "approved", "rejected"] as const;
+export type NominationStatus = (typeof NOMINATION_STATUSES)[number];
+
+/**
+ * Public nomination submission. `website` is the honeypot — it is rendered
+ * off-screen and must arrive empty. `form_loaded_at` backs the time trap.
+ */
+export const nominationSchema = z.object({
+  nominee_name: z.string().trim().min(2, "Please enter the nominee's name."),
+  nominee_grade_or_grad_year: z
+    .string()
+    .trim()
+    .min(1, "Add their current grade or graduation year.")
+    .max(60),
+  nominator_name: z.string().trim().min(2, "Please enter your name."),
+  nominator_relationship: z.enum(NOMINATOR_RELATIONSHIPS, {
+    message: "Please choose your relationship to the nominee.",
+  }),
+  nominator_email: z.string().trim().email("Please enter a valid email."),
+  milestone_type: z.enum(MILESTONE_TYPES, {
+    message: "Please choose the kind of milestone.",
+  }),
+  description: z
+    .string()
+    .trim()
+    .min(20, "Please share two or three sentences.")
+    .max(500, "Please keep this under 500 characters."),
+  nominee_contact_info: z.string().trim().max(1000).optional().or(z.literal("")),
+});
+export type NominationInput = z.infer<typeof nominationSchema>;
+
+export const mentorConnectSchema = z.object({
+  comet_id: z.coerce.number().int().min(1),
+  sender_name: z.string().trim().min(2, "Please enter your name."),
+  sender_email: z.string().trim().email("Please enter a valid email."),
+  message: z
+    .string()
+    .trim()
+    .min(20, "Please share at least a sentence or two.")
+    .max(2000, "Please keep this under 2000 characters."),
+});
+export type MentorConnectInput = z.infer<typeof mentorConnectSchema>;
+
+const optionalNumber = z
+  .string()
+  .trim()
+  .optional()
+  .or(z.literal(""))
+  .transform((v) => (v && v.length > 0 ? Number(v) : null))
+  .refine((v) => v === null || Number.isFinite(v), "Please enter a number.");
+
+export const cometProfileSchema = z.object({
+  status: z.enum(COMET_STATUSES),
+  name: z.string().trim().min(2, "Name is required."),
+  photo_url: optionalText(800),
+  grad_year: optionalNumber,
+  current_grade: optionalNumber,
+  milestone_type: z.enum(MILESTONE_TYPES),
+  headline: z.string().trim().min(2, "Add a short headline for the card.").max(240),
+  full_story: optionalText(6000),
+  certifications: z.array(z.string().trim().max(80)).default([]),
+  field_or_institution: optionalText(240),
+  current_role_or_program: optionalText(240),
+  mentor_opt_in: z.boolean().default(false),
+  tags: z.array(z.string().trim().max(60)).default([]),
+  consent_on_file: z.boolean().default(false),
+  consent_recorded_by: optionalText(240),
+  featured_quarter: optionalText(20),
+});
+export type CometProfileInput = z.infer<typeof cometProfileSchema>;
+
+/** Splits a comma-separated admin input into a clean string array. */
+export function parseList(raw: string): string[] {
+  return raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 25);
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()

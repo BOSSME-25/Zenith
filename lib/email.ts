@@ -309,3 +309,99 @@ export async function sendContactEmails(data: ContactEmail) {
   ]);
   return { team: results[0], confirmation: results[1] };
 }
+
+export type NominationEmail = {
+  nominee_name: string;
+  nominee_grade_or_grad_year: string;
+  nominator_name: string;
+  nominator_relationship: string;
+  nominator_email: string;
+  milestone_label: string;
+  description: string;
+  nominee_contact_info?: string | null;
+};
+
+export async function sendNominationEmails(data: NominationEmail) {
+  const team = teamRecipient();
+  const teamHtml = shell(
+    `New Comet nomination: ${escapeHtml(data.nominee_name)}`,
+    `<p>A new nomination is waiting in the moderation queue. Nothing is published until a staff member approves it and consent is on file.</p>${fieldsTable(
+      {
+        "Nominee": data.nominee_name,
+        "Grade / grad year": data.nominee_grade_or_grad_year,
+        "Milestone": data.milestone_label,
+        "Nominated by": data.nominator_name,
+        "Relationship": data.nominator_relationship,
+        "Nominator email": data.nominator_email,
+        "Nominee contact": data.nominee_contact_info || null,
+      },
+    )}
+     <p style="margin-top:20px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:${EVENTIDE};">Their story</p>
+     <p style="white-space:pre-wrap;background:${ION_SOFT};padding:16px;border-radius:8px;">${escapeHtml(data.description)}</p>
+     <p style="margin-top:20px;">Review it in the admin under <strong>Nominations</strong>.</p>`,
+  );
+  const confirmHtml = shell(
+    "Thank you for your nomination",
+    `<p>Hi ${escapeHtml(data.nominator_name.split(" ")[0] || data.nominator_name)},</p>
+     <p>Thank you for nominating <strong>${escapeHtml(data.nominee_name)}</strong>. Our team reviews every nomination by hand.</p>
+     <p>If we move forward, we'll reach out before anything is published — we always confirm consent first, and for current students that means a parent or guardian signs off.</p>
+     ${closingSignature}`,
+  );
+  const results = await Promise.all([
+    team
+      ? send({
+          to: team,
+          subject: `New Comet nomination: ${data.nominee_name}`,
+          html: teamHtml,
+          replyTo: data.nominator_email,
+        })
+      : Promise.resolve({ ok: false, reason: "no-team-recipient" }),
+    send({ to: data.nominator_email, subject: "Thank you for your nomination", html: confirmHtml }),
+  ]);
+  return { team: results[0], confirmation: results[1] };
+}
+
+export type MentorConnectEmail = {
+  comet_name: string;
+  sender_name: string;
+  sender_email: string;
+  message: string;
+};
+
+/**
+ * Routes a mentor request to the school inbox. The Comet's own contact details
+ * are deliberately never used here — staff forward the message themselves.
+ */
+export async function sendMentorConnectEmail(data: MentorConnectEmail) {
+  const team = teamRecipient();
+  const teamHtml = shell(
+    `Mentor request for ${escapeHtml(data.comet_name)}`,
+    `<p>Someone asked to connect with a Comet through the mentor network. Please review and forward it if appropriate.</p>${fieldsTable(
+      {
+        "Comet": data.comet_name,
+        "From": data.sender_name,
+        "Reply to": data.sender_email,
+      },
+    )}
+     <p style="margin-top:20px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:${EVENTIDE};">Message</p>
+     <p style="white-space:pre-wrap;background:${ION_SOFT};padding:16px;border-radius:8px;">${escapeHtml(data.message)}</p>`,
+  );
+  const confirmHtml = shell(
+    "We received your request",
+    `<p>Hi ${escapeHtml(data.sender_name.split(" ")[0] || data.sender_name)},</p>
+     <p>Thanks for reaching out. Your message is with the Zenith team, and we'll pass it along to ${escapeHtml(data.comet_name)} if they're available to connect.</p>
+     ${closingSignature}`,
+  );
+  const results = await Promise.all([
+    team
+      ? send({
+          to: team,
+          subject: `Mentor request for ${data.comet_name}`,
+          html: teamHtml,
+          replyTo: data.sender_email,
+        })
+      : Promise.resolve({ ok: false, reason: "no-team-recipient" }),
+    send({ to: data.sender_email, subject: "We received your request", html: confirmHtml }),
+  ]);
+  return { team: results[0], confirmation: results[1] };
+}

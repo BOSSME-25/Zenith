@@ -28,6 +28,7 @@ const FOOTER_LINKS = [
   { href: "/faq", label: "FAQ" },
   { href: "/updates", label: "Updates" },
   { href: "/newsletter", label: "Newsletter" },
+  { href: "/alumni", label: "Comets" },
   { href: "/get-involved", label: "Get Involved" },
   { href: "/contact", label: "Contact" },
 ];

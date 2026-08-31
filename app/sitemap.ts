@@ -18,6 +18,8 @@ const STATIC_ROUTES: Array<{
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "/updates", changeFrequency: "weekly", priority: 0.8 },
   { path: "/newsletter", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/alumni", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/alumni/nominate", changeFrequency: "yearly", priority: 0.5 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
