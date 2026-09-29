@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, Users, Briefcase, Compass, HandHeart, Flag, TrendingUp, BarChart2, Star } from "lucide-react";
+import { ArrowRight, GraduationCap, Users, Briefcase, Compass, HandHeart, Flag, TrendingUp, BarChart2, Star, CalendarDays } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 import { StatCounter } from "@/components/StatCounter";
@@ -120,9 +120,25 @@ export default function Home() {
             <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-white">
               AP-First. College &amp; Career Connected. Built for Maryvale.
             </h1>
-            <p className="mt-6 text-xl md:text-2xl text-ion font-medium tracking-tight">
-              Tuition-free. AP-first. Built for Maryvale.
-            </p>
+
+            {/* The two facts families ask first: when it opens, and which grade
+                they can enroll. Kept in the hero, above the fold. */}
+            <div className="mt-7 rounded-2xl border border-ion/40 bg-ion/10 px-5 py-4 md:px-6 md:py-5">
+              <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="inline-flex items-center gap-2 text-2xl md:text-3xl font-bold tracking-tight text-white">
+                  <CalendarDays size={24} aria-hidden className="text-ion" />
+                  Opening Fall 2027
+                </span>
+                <span className="text-lg md:text-xl font-medium text-ion">
+                  with our founding 9th grade class
+                </span>
+              </p>
+              <p className="mt-3 text-sm md:text-base leading-relaxed text-ion/85">
+                A tuition-free public charter high school, adding one grade each year through 12th.
+                Pending authorization by the Arizona State Board for Charter Schools.
+              </p>
+            </div>
+
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/get-involved#family"

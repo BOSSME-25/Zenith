@@ -20,7 +20,15 @@ function fromAddress(): string {
 }
 
 function teamRecipient(): string | null {
-  return process.env.NOTIFICATION_EMAIL || null;
+  const to = process.env.NOTIFICATION_EMAIL || null;
+  if (!to) {
+    // Loud, because the submitter still sees a success message and the row is
+    // still saved — a missing staff notification is otherwise invisible.
+    console.error(
+      "[zenith][email] NOTIFICATION_EMAIL is not set — no staff notification was sent for this submission. Set it in the Vercel project settings.",
+    );
+  }
+  return to;
 }
 
 type SendArgs = {
@@ -33,7 +41,11 @@ type SendArgs = {
 async function send({ to, subject, html, replyTo }: SendArgs): Promise<{ ok: boolean; reason?: string }> {
   const client = getResendClient();
   if (!client) {
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV === "production") {
+      console.error(
+        `[zenith][email] RESEND_API_KEY is not set — "${subject}" was NOT sent. Set it in the Vercel project settings.`,
+      );
+    } else {
       console.warn(
         `[zenith][email-noop] would send "${subject}" to ${Array.isArray(to) ? to.join(", ") : to}`,
       );
@@ -48,10 +60,16 @@ async function send({ to, subject, html, replyTo }: SendArgs): Promise<{ ok: boo
       html,
       replyTo,
     });
-    if (error) return { ok: false, reason: error.message };
+    if (error) {
+      // Most often an unverified EMAIL_FROM sender domain.
+      console.error(`[zenith][email] Resend rejected "${subject}": ${error.message}`);
+      return { ok: false, reason: error.message };
+    }
     return { ok: true };
   } catch (err) {
-    return { ok: false, reason: err instanceof Error ? err.message : "send-failed" };
+    const reason = err instanceof Error ? err.message : "send-failed";
+    console.error(`[zenith][email] Failed to send "${subject}": ${reason}`);
+    return { ok: false, reason };
   }
 }
 
