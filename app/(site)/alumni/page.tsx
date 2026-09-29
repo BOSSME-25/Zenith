@@ -18,20 +18,31 @@ export const metadata = {
 };
 
 // Only published profiles are ever selected, and only the public columns.
+// Wrapped because the comet_profiles table does not exist until /api/init has
+// been run on a deployment — a missing table renders the empty state rather
+// than taking down a page that is linked from the main navigation.
 async function getComets(): Promise<PublicComet[]> {
-  const { rows } = await safeSql<PublicComet>`
-    SELECT id, status, name, photo_url, grad_year, current_grade, milestone_type,
-           headline, full_story, certifications, field_or_institution,
-           current_role_or_program, mentor_opt_in, tags
-    FROM comet_profiles
-    WHERE published_at IS NOT NULL
-    ORDER BY featured_quarter DESC NULLS LAST, published_at DESC
-  `;
-  return rows.map((r) => ({
-    ...r,
-    certifications: r.certifications ?? [],
-    tags: r.tags ?? [],
-  }));
+  try {
+    const { rows } = await safeSql<PublicComet>`
+      SELECT id, status, name, photo_url, grad_year, current_grade, milestone_type,
+             headline, full_story, certifications, field_or_institution,
+             current_role_or_program, mentor_opt_in, tags
+      FROM comet_profiles
+      WHERE published_at IS NOT NULL
+      ORDER BY featured_quarter DESC NULLS LAST, published_at DESC
+    `;
+    return rows.map((r) => ({
+      ...r,
+      certifications: r.certifications ?? [],
+      tags: r.tags ?? [],
+    }));
+  } catch (err) {
+    console.error(
+      "[zenith][alumni] Could not load Comet profiles — has /api/init been run on this deployment?",
+      err instanceof Error ? err.message : err,
+    );
+    return [];
+  }
 }
 
 function NominateCta({ variant = "light" }: { variant?: "light" | "dark" }) {

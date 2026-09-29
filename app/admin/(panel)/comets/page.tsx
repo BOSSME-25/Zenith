@@ -19,12 +19,20 @@ type Row = {
 };
 
 export default async function AdminCometsPage() {
-  const { rows } = await safeSql<Row>`
-    SELECT id, name, status, headline, consent_on_file, mentor_opt_in, published_at, updated_at
-    FROM comet_profiles
-    ORDER BY published_at DESC NULLS FIRST, updated_at DESC
-    LIMIT 500
-  `;
+  // comet_profiles does not exist until /api/init has run on this deployment.
+  let rows: Row[] = [];
+  let tableMissing = false;
+  try {
+    const result = await safeSql<Row>`
+      SELECT id, name, status, headline, consent_on_file, mentor_opt_in, published_at, updated_at
+      FROM comet_profiles
+      ORDER BY published_at DESC NULLS FIRST, updated_at DESC
+      LIMIT 500
+    `;
+    rows = result.rows;
+  } catch {
+    tableMissing = true;
+  }
 
   const awaitingConsent = rows.filter((r) => !r.consent_on_file).length;
 
@@ -42,6 +50,13 @@ export default async function AdminCometsPage() {
       {!isDbConfigured() && (
         <div className="rounded-xl bg-white border border-ion p-5 text-sm text-midnight mb-6">
           Database is not configured — profiles cannot be listed until <code>POSTGRES_URL</code> is set.
+        </div>
+      )}
+
+      {tableMissing && isDbConfigured() && (
+        <div className="rounded-xl bg-white border border-eventide/40 p-5 text-sm text-midnight mb-6">
+          The Comet profiles table doesn&apos;t exist yet. Visit{" "}
+          <code>/api/init?password=YOUR_ADMIN_PASSWORD</code> once to create it.
         </div>
       )}
 

@@ -50,14 +50,24 @@ export default async function AdminNominationsPage({
   const { status } = await searchParams;
   const active = FILTERS.some((f) => f.key === status) ? (status as string) : "pending";
 
-  const { rows } =
-    active === "all"
-      ? await safeSql<Row>`SELECT * FROM nominations ORDER BY submitted_at DESC LIMIT 500`
-      : await safeSql<Row>`SELECT * FROM nominations WHERE status = ${active} ORDER BY submitted_at DESC LIMIT 500`;
-
-  const { rows: counts } = await safeSql<{ status: string; count: string }>`
-    SELECT status, COUNT(*)::text AS count FROM nominations GROUP BY status
-  `;
+  // The nominations table does not exist until /api/init has run on this
+  // deployment; show the empty state instead of erroring out of the admin.
+  let rows: Row[] = [];
+  let counts: Array<{ status: string; count: string }> = [];
+  let tableMissing = false;
+  try {
+    const result =
+      active === "all"
+        ? await safeSql<Row>`SELECT * FROM nominations ORDER BY submitted_at DESC LIMIT 500`
+        : await safeSql<Row>`SELECT * FROM nominations WHERE status = ${active} ORDER BY submitted_at DESC LIMIT 500`;
+    rows = result.rows;
+    const countResult = await safeSql<{ status: string; count: string }>`
+      SELECT status, COUNT(*)::text AS count FROM nominations GROUP BY status
+    `;
+    counts = countResult.rows;
+  } catch {
+    tableMissing = true;
+  }
   const countFor = (key: string) =>
     key === "all"
       ? counts.reduce((sum, c) => sum + Number(c.count), 0)
@@ -77,6 +87,13 @@ export default async function AdminNominationsPage({
       {!isDbConfigured() && (
         <div className="rounded-xl bg-white border border-ion p-5 text-sm text-midnight mb-6">
           Database is not configured — nominations cannot be listed until <code>POSTGRES_URL</code> is set.
+        </div>
+      )}
+
+      {tableMissing && isDbConfigured() && (
+        <div className="rounded-xl bg-white border border-eventide/40 p-5 text-sm text-midnight mb-6">
+          The nominations table doesn&apos;t exist yet. Visit{" "}
+          <code>/api/init?password=YOUR_ADMIN_PASSWORD</code> once to create it.
         </div>
       )}
 
