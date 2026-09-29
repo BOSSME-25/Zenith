@@ -1,7 +1,7 @@
 import { safeSql } from "@/lib/db";
+import { formatSubmittedAt } from "@/lib/format";
 import {
   SubmissionTable,
-  formatSubmittedAt,
   type ColumnHeader,
   type SubmissionRow,
 } from "@/components/admin/SubmissionTable";
