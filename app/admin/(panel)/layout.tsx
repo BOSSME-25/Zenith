@@ -13,6 +13,8 @@ const NAV = [
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/subscribers", label: "Subscribers" },
   { href: "/admin/updates", label: "Updates" },
+  { href: "/admin/nominations", label: "Nominations" },
+  { href: "/admin/comets", label: "Comets" },
 ];
 
 export const dynamic = "force-dynamic";

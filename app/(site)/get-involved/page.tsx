@@ -6,7 +6,11 @@ import { FamilyForm } from "@/components/forms/FamilyForm";
 import { CommunityForm } from "@/components/forms/CommunityForm";
 import { PartnerForm } from "@/components/forms/PartnerForm";
 
-export const metadata = { title: "Get Involved" };
+export const metadata = {
+  title: "Get Involved",
+  description:
+    "Join the interest list, take the community survey, volunteer, or partner with Zenith College and Career Prep as we design Maryvale's early college STEAM high school.",
+};
 
 const AUDIENCES = [
   {

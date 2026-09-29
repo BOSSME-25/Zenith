@@ -112,11 +112,3 @@ export function SubmissionTable({ table, headers, rows, emptyLabel }: Props) {
     </div>
   );
 }
-
-export function formatSubmittedAt(value: string | Date): string {
-  try {
-    return new Date(value).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
-  } catch {
-    return String(value);
-  }
-}

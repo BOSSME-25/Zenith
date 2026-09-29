@@ -83,6 +83,39 @@
   }
 }
 
+/* "Comets in Motion" cards carry a slow gradient sweep along the top edge to
+   signal movement. "Landed" cards deliberately get a static badge instead, so
+   the two read as one system with one deliberate difference. The global
+   reduced-motion reset below switches the sweep off. */
+@keyframes comet-sweep {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 250% 0;
+  }
+}
+
+.comet-trail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  border-radius: 1rem 1rem 0 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-ion) 35%,
+    var(--color-aurora) 50%,
+    var(--color-ion) 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: comet-sweep 6s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

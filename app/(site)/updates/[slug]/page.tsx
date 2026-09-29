@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { safeSql } from "@/lib/db";
 import { Section } from "@/components/Section";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -23,12 +25,35 @@ function formatDate(d: string | Date): string {
   }
 }
 
+function excerptFromBody(body: string, maxLength = 160): string {
+  const text = body
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "") // drop markdown images
+    .replace(/\s+/g, " ")
+    .trim();
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1).replace(/\s+\S*$/, "")}…`;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { rows } = await safeSql<UpdateRow>`
-    SELECT title FROM updates WHERE slug = ${slug} AND published = TRUE LIMIT 1
+    SELECT title, body, publish_date FROM updates WHERE slug = ${slug} AND published = TRUE LIMIT 1
   `;
-  return { title: rows[0]?.title || "Update" };
+  const post = rows[0];
+  if (!post) return { title: "Update" };
+  const description = excerptFromBody(post.body);
+  return {
+    title: post.title,
+    description,
+    alternates: { canonical: `/updates/${slug}` },
+    openGraph: {
+      title: post.title,
+      description,
+      type: "article",
+      publishedTime: new Date(post.publish_date).toISOString(),
+      url: `/updates/${slug}`,
+    },
+  };
 }
 
 export default async function UpdatePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -43,8 +68,25 @@ export default async function UpdatePage({ params }: { params: Promise<{ slug: s
   const blocks = post.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
   const IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)\)$/;
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: excerptFromBody(post.body),
+    datePublished: new Date(post.publish_date).toISOString(),
+    url: `${SITE_URL}/updates/${post.slug}`,
+    mainEntityOfPage: `${SITE_URL}/updates/${post.slug}`,
+    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/zenith-mark.png` },
+    },
+  };
+
   return (
     <>
+      <JsonLd data={articleSchema} />
       <Section bg="white">
         <div className="max-w-3xl mx-auto">
           <Link

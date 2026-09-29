@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -10,7 +11,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zenithprep.org"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Zenith College and Career Prep — Elevating Every Future",
     template: "%s · Zenith College and Career Prep",
@@ -23,11 +24,23 @@ export const metadata: Metadata = {
     "Phoenix early college high school",
     "STEAM high school Arizona",
   ],
+  alternates: {
+    canonical: "./",
+  },
   openGraph: {
     title: "Zenith College and Career Prep",
     description:
       "An early college STEAM high school designed with the Maryvale community. Elevating Every Future.",
     type: "website",
+    siteName: "Zenith College and Career Prep",
+    locale: "en_US",
+    url: "./",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zenith College and Career Prep",
+    description:
+      "An early college STEAM high school designed with the Maryvale community. Elevating Every Future.",
   },
   icons: {
     icon: "/brand/zenith-mark.png",

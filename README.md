@@ -44,7 +44,7 @@ After `POSTGRES_URL` and `ADMIN_PASSWORD` are set:
 curl -X POST "http://localhost:3000/api/init?password=YOUR_ADMIN_PASSWORD"
 
 # in production (after deploy)
-curl -X POST "https://zenithprep.org/api/init?password=YOUR_ADMIN_PASSWORD"
+curl -X POST "https://zenithccprep.org/api/init?password=YOUR_ADMIN_PASSWORD"
 ```
 
 You can also visit the URL in a browser. The route is idempotent — it uses `CREATE TABLE IF NOT EXISTS` for all six tables (`families`, `community`, `partners`, `surveys`, `contacts`, `updates`).

@@ -4,7 +4,11 @@ import { Reveal } from "@/components/Reveal";
 import { StatCounter } from "@/components/StatCounter";
 import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 
-export const metadata = { title: "Our Story" };
+export const metadata = {
+  title: "Our Story",
+  description:
+    "Why Zenith exists: the story behind an early college STEAM high school being designed with the Maryvale community of Phoenix, and the vision guiding it.",
+};
 
 export default function OurStoryPage() {
   return (

@@ -11,15 +11,31 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const issueId = Number(id);
   if (!Number.isFinite(issueId)) return { title: "Newsletter" };
-  const { rows } = await safeSql<{ issue_number: number; month_label: string }>`
-    SELECT issue_number, month_label FROM newsletter_issues
+  const { rows } = await safeSql<{
+    issue_number: number;
+    month_label: string;
+    hero_title: string;
+    hero_text: string | null;
+  }>`
+    SELECT issue_number, month_label, hero_title, hero_text FROM newsletter_issues
     WHERE id = ${issueId} AND published = TRUE LIMIT 1
   `;
   const issue = rows[0];
+  if (!issue) return { title: "Newsletter" };
+  const title = `The Comet Trail — Issue ${String(issue.issue_number).padStart(2, "0")} (${issue.month_label})`;
+  const description =
+    issue.hero_text?.trim() ||
+    `${issue.hero_title} — The Comet Trail, the Zenith College and Career Prep newsletter for ${issue.month_label}.`;
   return {
-    title: issue
-      ? `The Comet Trail — Issue ${String(issue.issue_number).padStart(2, "0")} (${issue.month_label})`
-      : "Newsletter",
+    title,
+    description,
+    alternates: { canonical: `/newsletter/${issueId}` },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: `/newsletter/${issueId}`,
+    },
   };
 }
 
