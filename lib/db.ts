@@ -28,8 +28,18 @@ function getPool(): Pool {
 
 let warnedMissingEnv = false;
 function warnOnce() {
-  if (!warnedMissingEnv && process.env.NODE_ENV !== "production") {
-    warnedMissingEnv = true;
+  if (warnedMissingEnv) return;
+  warnedMissingEnv = true;
+  if (process.env.NODE_ENV === "production") {
+    // In production this is data loss, not a dev convenience: form submissions
+    // still report success to the visitor while being silently discarded.
+    console.error(
+      "[zenith][db] No database URL is set — submissions are NOT being saved. " +
+        "Set POSTGRES_URL (or DATABASE_URL) in the Vercel project settings and redeploy. " +
+        "Note that a storage integration may expose these prefixed (e.g. ZenStore_POSTGRES_URL), " +
+        "which this app does not read.",
+    );
+  } else {
     console.warn(
       "[zenith] No database URL is set — database calls are no-ops. " +
         "Set POSTGRES_URL (or DATABASE_URL) in .env.local or on Vercel to enable persistence.",
