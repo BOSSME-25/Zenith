@@ -221,13 +221,15 @@ const CREATE_STATEMENTS = [
     source_nomination_id INTEGER
   )`,
   // Stores a salted hash of the submitter IP, never the address itself.
-  `CREATE TABLE IF NOT EXISTS nomination_rate_limit (
+  // `scope` is the form the attempt belongs to (contact, family, …).
+  `CREATE TABLE IF NOT EXISTS form_rate_limit (
     id SERIAL PRIMARY KEY,
+    scope TEXT NOT NULL,
     ip_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   )`,
-  `CREATE INDEX IF NOT EXISTS nomination_rate_limit_lookup
-     ON nomination_rate_limit (ip_hash, created_at)`,
+  `CREATE INDEX IF NOT EXISTS form_rate_limit_lookup
+     ON form_rate_limit (scope, ip_hash, created_at)`,
   `CREATE INDEX IF NOT EXISTS nominations_status_idx ON nominations (status, submitted_at DESC)`,
   `CREATE INDEX IF NOT EXISTS comet_profiles_published_idx ON comet_profiles (published_at, status)`,
 ];

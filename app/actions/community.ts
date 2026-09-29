@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { safeQuery, isDbConfigured } from "@/lib/db";
+import { guardSubmission } from "@/lib/bot-guard";
 import { sendCommunityEmails } from "@/lib/email";
 import {
   type ActionState,
@@ -15,6 +16,13 @@ export async function submitCommunityForm(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const guard = await guardSubmission(formData, {
+    scope: "community",
+    limit: 20,
+    minMs: 3000,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
+
   const roles = formData
     .getAll("roles")
     .map((v) => String(v))

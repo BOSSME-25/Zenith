@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { safeQuery, isDbConfigured } from "@/lib/db";
+import { guardSubmission } from "@/lib/bot-guard";
 import { sendPartnerEmails } from "@/lib/email";
 import {
   type ActionState,
@@ -14,6 +15,13 @@ export async function submitPartnerForm(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const guard = await guardSubmission(formData, {
+    scope: "partner",
+    limit: 10,
+    minMs: 3000,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
+
   const interests = formData
     .getAll("interests")
     .map((v) => String(v))

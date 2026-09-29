@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { safeSql, isDbConfigured } from "@/lib/db";
+import { guardSubmission } from "@/lib/bot-guard";
 import { sendFamilyEmails } from "@/lib/email";
 import {
   type ActionState,
@@ -13,6 +14,13 @@ export async function submitFamilyForm(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const guard = await guardSubmission(formData, {
+    scope: "family",
+    limit: 20,
+    minMs: 3000,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
+
   const raw = {
     parent_name: String(formData.get("parent_name") ?? ""),
     email: String(formData.get("email") ?? ""),

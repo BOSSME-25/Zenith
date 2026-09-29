@@ -5,6 +5,7 @@ import { subscribeNewsletter } from "@/app/actions/newsletter";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 export function NewsletterForm() {
   const [state, action] = useActionState(subscribeNewsletter, idleState);
@@ -49,6 +50,7 @@ export function NewsletterForm() {
         />
         <FieldError message={fe.email} />
       </div>
+      <BotFields formId="newsletter" />
       <div>
         <SubmitButton label="Notify Me" pendingLabel="Signing up…" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-midnight px-7 py-3 text-sm md:text-base font-semibold text-white hover:bg-midnight-75 transition-colors disabled:opacity-70 disabled:cursor-not-allowed" />
       </div>

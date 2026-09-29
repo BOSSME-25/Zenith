@@ -5,6 +5,7 @@ import { submitContactForm } from "@/app/actions/contact";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 export function ContactForm() {
   const [state, action] = useActionState(submitContactForm, idleState);
@@ -43,6 +44,7 @@ export function ContactForm() {
         <textarea id="message" name="message" rows={6} required className={inputClass} />
         <FieldError message={fe.message} />
       </div>
+      <BotFields formId="contact" />
       <div>
         <SubmitButton label="Send Message" />
       </div>
