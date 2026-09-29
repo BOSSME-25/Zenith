@@ -5,6 +5,7 @@ import { submitPartnerForm } from "@/app/actions/partner";
 import { PARTNER_INTERESTS, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 export function PartnerForm() {
   const [state, action] = useActionState(submitPartnerForm, idleState);
@@ -60,6 +61,7 @@ export function PartnerForm() {
         <textarea id="description" name="description" rows={5} required className={inputClass} placeholder="Tell us a bit about your organization and how you'd like to partner with Zenith." />
         <FieldError message={fe.description} />
       </div>
+      <BotFields formId="partner" />
       <div>
         <SubmitButton label="Submit Inquiry" />
       </div>

@@ -1,17 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { safeSql, safeQuery, isDbConfigured } from "@/lib/db";
+import { guardSubmission } from "@/lib/bot-guard";
 import { isAuthenticated } from "@/lib/auth";
 import { sendNominationEmails, sendMentorConnectEmail } from "@/lib/email";
-import { verifyTurnstile } from "@/lib/turnstile";
-import {
-  checkNominationRateLimit,
-  clientIpFrom,
-  recordNominationAttempt,
-} from "@/lib/rate-limit";
 import {
   type ActionState,
   type CometStatus,
@@ -28,9 +22,6 @@ import {
 /** Minimum time a human plausibly needs to complete the form. */
 const MIN_SUBMISSION_MS = 3000;
 
-const GENERIC_REJECTION =
-  "We couldn't accept that submission. Please refresh the page and try again.";
-
 async function assertAdmin() {
   if (!(await isAuthenticated())) {
     redirect("/admin/login");
@@ -45,44 +36,12 @@ export async function submitNomination(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  // Layer 1 — honeypot. Real browsers leave the off-screen field empty.
-  const honeypot = String(formData.get("website") ?? "").trim();
-  if (honeypot.length > 0) {
-    return { status: "error", message: GENERIC_REJECTION };
-  }
-
-  // Layer 2 — time trap. The client stamps form-load time; we compare here so
-  // the elapsed value is never something the form itself can assert directly.
-  const loadedAt = Number(formData.get("form_loaded_at") ?? 0);
-  const durationMs = Number.isFinite(loadedAt) && loadedAt > 0 ? Date.now() - loadedAt : 0;
-  if (durationMs > 0 && durationMs < MIN_SUBMISSION_MS) {
-    return { status: "error", message: GENERIC_REJECTION };
-  }
-
-  const requestHeaders = await headers();
-  const ip = clientIpFrom(requestHeaders);
-
-  // Layer 3 — Turnstile.
-  const turnstile = await verifyTurnstile(
-    String(formData.get("cf-turnstile-response") ?? "") || null,
-    ip,
-  );
-  if (!turnstile.ok) {
-    return {
-      status: "error",
-      message: "We couldn't verify that you're human. Please complete the check and try again.",
-    };
-  }
-
-  // Layer 4 — rate limit.
-  const limit = await checkNominationRateLimit(ip);
-  if (!limit.allowed) {
-    return {
-      status: "error",
-      message:
-        "You've submitted several nominations recently. Please try again later, or email us directly.",
-    };
-  }
+  const guard = await guardSubmission(formData, {
+    scope: "nomination",
+    limit: 5,
+    minMs: MIN_SUBMISSION_MS,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
 
   const parsed = nominationSchema.safeParse({
     nominee_name: String(formData.get("nominee_name") ?? ""),
@@ -104,8 +63,8 @@ export async function submitNomination(
   const data = parsed.data;
 
   try {
-    // Layer 5 — every nomination lands as 'pending'. Nothing reaches the public
-    // site without a staff approval and consent on file.
+    // Final layer — every nomination lands as 'pending'. Nothing reaches the
+    // public site without a staff approval and consent on file.
     if (isDbConfigured()) {
       await safeSql`
         INSERT INTO nominations (
@@ -115,13 +74,12 @@ export async function submitNomination(
         ) VALUES (
           ${data.nominee_name}, ${data.nominee_grade_or_grad_year}, ${data.nominator_name},
           ${data.nominator_relationship}, ${data.nominator_email}, ${data.milestone_type},
-          ${data.description}, ${data.nominee_contact_info || null}, 'pending', ${durationMs}
+          ${data.description}, ${data.nominee_contact_info || null}, 'pending', ${guard.durationMs}
         )
       `;
       revalidatePath("/admin/nominations");
       revalidatePath("/admin");
     }
-    await recordNominationAttempt(ip);
     await sendNominationEmails({
       ...data,
       nominator_relationship: RELATIONSHIP_LABELS[data.nominator_relationship],
@@ -148,10 +106,15 @@ export async function submitMentorConnect(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const honeypot = String(formData.get("website") ?? "").trim();
-  if (honeypot.length > 0) {
-    return { status: "error", message: GENERIC_REJECTION };
-  }
+  // Turnstile is off here: the dialog is inline on a card, and one widget per
+  // Comet would be disproportionate. The other three layers still apply.
+  const guard = await guardSubmission(formData, {
+    scope: "mentor",
+    limit: 10,
+    minMs: 3000,
+    turnstile: false,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
 
   const parsed = mentorConnectSchema.safeParse({
     comet_id: String(formData.get("comet_id") ?? ""),

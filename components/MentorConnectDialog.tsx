@@ -6,6 +6,7 @@ import { submitMentorConnect } from "@/app/actions/nomination";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./forms/FormStatus";
 import { SubmitButton } from "./forms/SubmitButton";
+import { BotFields } from "./forms/BotFields";
 
 /**
  * "Connect with me" never exposes a Comet's own address — the message is
@@ -55,10 +56,7 @@ export function MentorConnectDialog({
       ) : (
         <form action={action} className="mt-3 space-y-3" noValidate>
           <input type="hidden" name="comet_id" value={cometId} />
-          <div aria-hidden className="absolute left-[-9999px] h-px w-px overflow-hidden">
-            <label htmlFor={`mc_website_${cometId}`}>Website</label>
-            <input id={`mc_website_${cometId}`} name="website" type="text" tabIndex={-1} autoComplete="off" />
-          </div>
+          <BotFields formId={`mentor_${cometId}`} turnstile={false} />
           <div>
             <label className={labelClass} htmlFor={`mc_name_${cometId}`}>
               Your name

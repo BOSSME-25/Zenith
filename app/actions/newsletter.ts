@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { safeSql, isDbConfigured } from "@/lib/db";
+import { guardSubmission } from "@/lib/bot-guard";
 import {
   type ActionState,
   newsletterSchema,
@@ -12,6 +13,13 @@ export async function subscribeNewsletter(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const guard = await guardSubmission(formData, {
+    scope: "newsletter",
+    limit: 20,
+    minMs: 1500,
+  });
+  if (!guard.ok) return { status: "error", message: guard.message };
+
   const raw = {
     email: String(formData.get("email") ?? ""),
     name: String(formData.get("name") ?? ""),

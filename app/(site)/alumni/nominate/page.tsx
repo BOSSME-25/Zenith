@@ -11,8 +11,6 @@ export const metadata = {
 };
 
 export default function NominatePage() {
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || null;
-
   return (
     <>
       <Section
@@ -45,7 +43,7 @@ export default function NominatePage() {
           </div>
 
           <div className="rounded-2xl bg-white border border-ion p-6 md:p-8">
-            <NominationForm turnstileSiteKey={siteKey} />
+            <NominationForm />
           </div>
         </div>
       </Section>

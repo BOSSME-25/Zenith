@@ -1,7 +1,6 @@
 "use client";
 
-import Script from "next/script";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useState } from "react";
 import { submitNomination } from "@/app/actions/nomination";
 import {
   MILESTONE_LABELS,
@@ -12,19 +11,14 @@ import {
 } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 const DESCRIPTION_LIMIT = 500;
 
-export function NominationForm({ turnstileSiteKey }: { turnstileSiteKey: string | null }) {
+export function NominationForm() {
   const [state, action] = useActionState(submitNomination, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [remaining, setRemaining] = useState(DESCRIPTION_LIMIT);
-  // Stamped on mount so the server can measure how long the form was open.
-  const loadedAt = useRef<number>(0);
-
-  useEffect(() => {
-    loadedAt.current = Date.now();
-  }, []);
 
   if (state.status === "success") {
     return (
@@ -36,22 +30,7 @@ export function NominationForm({ turnstileSiteKey }: { turnstileSiteKey: string 
   }
 
   return (
-    <>
-      {turnstileSiteKey && (
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="lazyOnload"
-        />
-      )}
-      <form action={action} className="space-y-5" noValidate>
-        <input type="hidden" name="form_loaded_at" value={loadedAt.current} />
-
-        {/* Honeypot. Positioned off-screen rather than display:none, which the
-            more capable bots detect and skip. Hidden from assistive tech too. */}
-        <div aria-hidden className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
-          <label htmlFor="website">Website</label>
-          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
-        </div>
+    <form action={action} className="space-y-5" noValidate>
 
         <div>
           <label className={labelClass} htmlFor="nominee_name">
@@ -186,15 +165,12 @@ export function NominationForm({ turnstileSiteKey }: { turnstileSiteKey: string 
           <FieldError message={fe.nominee_contact_info} />
         </div>
 
-        {turnstileSiteKey && (
-          <div className="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" />
-        )}
+      <BotFields formId="nomination" />
 
-        <div>
-          <SubmitButton label="Submit Nomination" />
-        </div>
-        <FormStatus state={state} />
-      </form>
-    </>
+      <div>
+        <SubmitButton label="Submit Nomination" />
+      </div>
+      <FormStatus state={state} />
+    </form>
   );
 }

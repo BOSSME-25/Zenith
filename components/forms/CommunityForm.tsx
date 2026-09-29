@@ -5,6 +5,7 @@ import { submitCommunityForm } from "@/app/actions/community";
 import { COMMUNITY_INTERESTS, COMMUNITY_ROLES, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 export function CommunityForm() {
   const [state, action] = useActionState(submitCommunityForm, idleState);
@@ -75,6 +76,7 @@ export function CommunityForm() {
           ))}
         </div>
       </fieldset>
+      <BotFields formId="community" />
       <div>
         <SubmitButton label="Stand with Zenith" />
       </div>

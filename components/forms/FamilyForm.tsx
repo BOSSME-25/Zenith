@@ -5,6 +5,7 @@ import { submitFamilyForm } from "@/app/actions/family";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { BotFields } from "./BotFields";
 
 export function FamilyForm() {
   const [state, action] = useActionState(submitFamilyForm, idleState);
@@ -89,6 +90,7 @@ export function FamilyForm() {
         <textarea id="how_heard" name="how_heard" rows={3} className={inputClass} />
         <FieldError message={fe.how_heard} />
       </div>
+      <BotFields formId="family" />
       <div className="flex items-center gap-4">
         <SubmitButton label="Join the Interest List" />
         <p className="text-sm text-midnight-75">We&apos;ll never share your information.</p>
