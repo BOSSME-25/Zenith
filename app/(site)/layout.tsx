@@ -1,6 +1,8 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WelcomeVideoModal } from "@/components/WelcomeVideoModal";
+import { OpeningBadge } from "@/components/OpeningBadge";
+import { InterestListCta } from "@/components/InterestListCta";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -35,10 +37,12 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         Skip to content
       </a>
       <Header />
+      <OpeningBadge />
       <main id="main" className="flex-1">
         {children}
       </main>
       <Footer />
+      <InterestListCta />
     </div>
   );
 }
