@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Check, Trash2, X } from "lucide-react";
 import { approveNomination, deleteNomination, rejectNomination } from "@/app/actions/nomination";
 
 export function NominationActions({ id, status }: { id: number; status: string }) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState("");
@@ -81,7 +83,12 @@ export function NominationActions({ id, status }: { id: number; status: string }
         onClick={() => {
           if (!confirm("Approve this nomination? It creates an unpublished draft profile.")) return;
           startTransition(async () => {
-            await approveNomination(id);
+            const result = await approveNomination(id);
+            // Approving removes this row, so the confirmation has to live on the
+            // page rather than in this component.
+            if (result.ok && result.name) {
+              router.push(`/admin/nominations?approved=${encodeURIComponent(result.name)}`);
+            }
           });
         }}
         className="inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-white hover:bg-eventide disabled:opacity-60"

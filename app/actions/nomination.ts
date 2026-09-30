@@ -171,9 +171,11 @@ export async function submitMentorConnect(
  * unpublished: staff still add the photo, tags, and consent record before it
  * can go live.
  */
-export async function approveNomination(id: number): Promise<void> {
+export async function approveNomination(
+  id: number,
+): Promise<{ ok: boolean; name?: string }> {
   await assertAdmin();
-  if (!isDbConfigured()) return;
+  if (!isDbConfigured()) return { ok: false };
 
   const { rows } = await safeSql<{
     id: number;
@@ -186,7 +188,7 @@ export async function approveNomination(id: number): Promise<void> {
     FROM nominations WHERE id = ${id} LIMIT 1
   `;
   const nomination = rows[0];
-  if (!nomination || nomination.status !== "pending") return;
+  if (!nomination || nomination.status !== "pending") return { ok: false };
 
   await safeSql`
     INSERT INTO comet_profiles (
@@ -204,6 +206,10 @@ export async function approveNomination(id: number): Promise<void> {
   revalidatePath("/admin/nominations");
   revalidatePath("/admin/comets");
   revalidatePath("/admin");
+  // The caller uses the name to point the reviewer at the draft it just made —
+  // approving removes the row from this page, so without that they are left
+  // with no indication that a profile now exists elsewhere.
+  return { ok: true, name: nomination.nominee_name };
 }
 
 export async function rejectNomination(id: number, reason: string): Promise<ActionState> {

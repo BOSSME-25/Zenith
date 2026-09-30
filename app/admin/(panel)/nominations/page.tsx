@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { NominationActions } from "@/components/admin/NominationActions";
 import {
@@ -45,9 +46,9 @@ function formatDate(value: string): string {
 export default async function AdminNominationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; approved?: string }>;
 }) {
-  const { status } = await searchParams;
+  const { status, approved } = await searchParams;
   const active = FILTERS.some((f) => f.key === status) ? (status as string) : "pending";
 
   // The nominations table does not exist until /api/init has run on this
@@ -83,6 +84,29 @@ export default async function AdminNominationsPage({
           profile — it still needs a photo, tags, and a signed consent record before it can go live.
         </p>
       </header>
+
+      {approved && (
+        <div className="rounded-xl bg-white border border-aurora p-5 mb-6 flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <CheckCircle2 size={20} aria-hidden className="mt-0.5 flex-none text-aurora" />
+            <div>
+              <p className="text-sm font-semibold text-midnight">
+                Draft profile created for {approved}.
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-midnight-75">
+                It is not public yet. Add a photo, field tags, and the signed consent record under
+                Comets — publishing stays blocked until consent is on file.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/comets"
+            className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 whitespace-nowrap"
+          >
+            Finish under Comets <ArrowRight size={15} aria-hidden />
+          </Link>
+        </div>
+      )}
 
       {!isDbConfigured() && (
         <div className="rounded-xl bg-white border border-ion p-5 text-sm text-midnight mb-6">
