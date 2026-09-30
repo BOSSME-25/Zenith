@@ -63,11 +63,42 @@ CSV exports stream from `/api/admin/export/{families|community|partners|surveys|
 2. Import the project on Vercel.
 3. Set environment variables in **Project → Settings → Environment Variables**:
    - `POSTGRES_URL` (provision a Postgres integration from the Vercel Marketplace, e.g. Neon)
+     - Storage integrations may expose this prefixed (e.g. `ZenStore_POSTGRES_URL`). `lib/db.ts`
+       only reads the unprefixed names, so an unprefixed `POSTGRES_URL` must exist.
    - `RESEND_API_KEY`, `EMAIL_FROM`, `NOTIFICATION_EMAIL`
    - `ADMIN_PASSWORD`, optionally `AUTH_SECRET`
    - `NEXT_PUBLIC_SITE_URL`
+   - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` (bot protection on the public forms)
 4. Deploy.
 5. Run `POST /api/init?password=…` once to create tables.
+
+Environment variables are injected at build time, so **changing one requires a redeploy**
+before it takes effect.
+
+### Deploying changes
+
+**Vercel's Production Branch must match this repo's default branch (`main`).** If they differ,
+every push builds a *preview* instead — no error, no warning, and the live domain silently keeps
+serving whatever was last promoted. This repo once sat three months and four merged PRs behind
+production for exactly that reason. Check it under **Project → Settings → Git → Production
+Branch**.
+
+After merging, confirm the change actually went live rather than trusting a green build:
+
+- The deployment should report `target: "production"` and hold the custom domain aliases. A
+  deployment with `target: null` is a preview, whatever its build status.
+- Load the live site and look at the thing you changed.
+
+A preview deployment aliased onto a production domain is not a substitute: Vercel serves previews
+with `X-Robots-Tag: noindex`, which would deindex the site. Promote properly instead.
+
+Schema changes need `POST /api/init?password=…` re-run against the **new** deployment — running it
+before the code is live executes the old bundle and creates nothing new. Prefer the header form so
+the password stays out of browser history and request logs:
+
+```bash
+curl -X POST -H "Authorization: Bearer $ADMIN_PASSWORD" https://zenithccprep.org/api/init
+```
 
 ## Project structure
 
