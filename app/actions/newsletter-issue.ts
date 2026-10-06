@@ -76,13 +76,15 @@ export async function createIssue(
     return { status: "error", message: "Database is not configured." };
   }
   const d = parsed.data;
+  let newId: number | null = null;
   try {
-    await safeQuery(
+    const inserted = await safeQuery<{ id: number }>(
       `INSERT INTO newsletter_issues
         (issue_number, month_label, published, hero_image_url, hero_title, hero_text,
          hero_cta_label, hero_cta_url, founder_note, spotlight_image_url, spotlight_name,
          spotlight_text, events, classroom_title, classroom_text, stat_value, stat_text)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14,$15,$16,$17)`,
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14,$15,$16,$17)
+       RETURNING id`,
       [
         d.issue_number, d.month_label, d.published, d.hero_image_url, d.hero_title, d.hero_text,
         d.hero_cta_label, d.hero_cta_url, d.founder_note, d.spotlight_image_url, d.spotlight_name,
@@ -90,6 +92,7 @@ export async function createIssue(
         d.stat_value, d.stat_text,
       ],
     );
+    newId = inserted.rows[0]?.id ?? null;
   } catch (err) {
     return {
       status: "error",
@@ -97,7 +100,9 @@ export async function createIssue(
     };
   }
   revalidateNewsletter();
-  redirect("/admin/newsletter");
+  // The list page uses ?saved= to say what happened to this issue — there is no
+  // separate publish step, so saving is the only moment to explain the outcome.
+  redirect(newId ? `/admin/newsletter?saved=${newId}` : "/admin/newsletter");
 }
 
 export async function editIssue(
@@ -145,7 +150,7 @@ export async function editIssue(
   }
   revalidateNewsletter();
   revalidatePath(`/newsletter/${id}`);
-  redirect("/admin/newsletter");
+  redirect(`/admin/newsletter?saved=${id}`);
 }
 
 export async function deleteIssue(id: number): Promise<void> {
