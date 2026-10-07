@@ -291,7 +291,7 @@ Drafts and published issues both appear in the Newsletter list. If it isn't ther
 A signed release isn't on file. Click **Edit**, tick **"A signed release is on file"**, add who signed and when, and save. Publish then becomes available.
 
 **At an event, a family sees "submitted this form several times recently"**
-The forms limit how often a single internet connection can submit, to block spam. The interest list allows 20 per hour per connection, and Contact and Partner allow 10. At a tabling event where many people share one Wi-Fi network, switch a few to phone data or wait a few minutes.
+The forms limit how often a single internet connection can submit, to block spam. The interest list allows 100 per hour per connection, Community allows 20, and Contact and Partner allow 10. The interest list is set high on purpose so a busy tabling event doesn't turn families away, so you're unlikely to see this there. If someone does, switch them to phone data or wait a few minutes.
 
 **A form says thank you but I never got an email**
 Check the admin list. The submission is saved even when email isn't (see section 9).

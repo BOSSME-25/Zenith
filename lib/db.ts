@@ -14,6 +14,26 @@ export function isDbConfigured(): boolean {
   return Boolean(getConnectionString());
 }
 
+/**
+ * In production a missing database must never look like success.
+ *
+ * Locally the app is designed to run with no environment at all, so there a
+ * missing database stays a harmless no-op. In production it would mean a family
+ * sees "Thanks for joining" while their entry is silently discarded, so the
+ * form must refuse instead — and say so in the logs.
+ */
+export function submissionsUnavailable(): boolean {
+  if (process.env.NODE_ENV !== "production" || isDbConfigured()) return false;
+  console.error(
+    "[zenith][db] A form submission was REFUSED because no database URL is set. " +
+      "Set POSTGRES_URL (or DATABASE_URL) in the Vercel project settings and redeploy.",
+  );
+  return true;
+}
+
+export const SUBMISSIONS_UNAVAILABLE_MESSAGE =
+  "We can't save your submission right now. Please try again in a little while, or contact us directly so we don't miss you.";
+
 let pool: Pool | null = null;
 function getPool(): Pool {
   if (!pool) {

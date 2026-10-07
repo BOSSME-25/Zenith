@@ -1,7 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { safeSql, isDbConfigured } from "@/lib/db";
+import {
+  safeSql,
+  isDbConfigured,
+  submissionsUnavailable,
+  SUBMISSIONS_UNAVAILABLE_MESSAGE,
+} from "@/lib/db";
 import { guardSubmission } from "@/lib/bot-guard";
 import { sendContactEmails } from "@/lib/email";
 import {
@@ -37,6 +42,10 @@ export async function submitContactForm(
     };
   }
   const data = parsed.data;
+
+  if (submissionsUnavailable()) {
+    return { status: "error", message: SUBMISSIONS_UNAVAILABLE_MESSAGE };
+  }
 
   try {
     if (isDbConfigured()) {

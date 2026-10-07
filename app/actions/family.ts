@@ -1,7 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { safeSql, isDbConfigured } from "@/lib/db";
+import {
+  safeSql,
+  isDbConfigured,
+  submissionsUnavailable,
+  SUBMISSIONS_UNAVAILABLE_MESSAGE,
+} from "@/lib/db";
 import { guardSubmission } from "@/lib/bot-guard";
 import { sendFamilyEmails } from "@/lib/email";
 import {
@@ -14,10 +19,18 @@ export async function submitFamilyForm(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  // The interest list is the one form Zenith cannot afford to lose a submission
+  // from, so it deliberately gives up two protections that can turn a real
+  // family away: Turnstile (which blocks anyone whose browser cannot load it,
+  // and everyone during a Cloudflare outage) and a tight rate limit (a busy
+  // tabling event can put dozens of signups behind one hotspot). The honeypot
+  // and time trap still run. A little extra spam in this list costs far less
+  // than a lost family.
   const guard = await guardSubmission(formData, {
     scope: "family",
-    limit: 20,
+    limit: 100,
     minMs: 3000,
+    turnstile: false,
   });
   if (!guard.ok) return { status: "error", message: guard.message };
 
@@ -42,6 +55,10 @@ export async function submitFamilyForm(
     };
   }
   const data = parsed.data;
+
+  if (submissionsUnavailable()) {
+    return { status: "error", message: SUBMISSIONS_UNAVAILABLE_MESSAGE };
+  }
 
   try {
     if (isDbConfigured()) {

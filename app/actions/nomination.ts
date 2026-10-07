@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { safeSql, safeQuery, isDbConfigured } from "@/lib/db";
+import {
+  safeSql,
+  safeQuery,
+  isDbConfigured,
+  submissionsUnavailable,
+  SUBMISSIONS_UNAVAILABLE_MESSAGE,
+} from "@/lib/db";
 import { guardSubmission } from "@/lib/bot-guard";
 import { isAuthenticated } from "@/lib/auth";
 import { sendNominationEmails, sendMentorConnectEmail } from "@/lib/email";
@@ -61,6 +67,10 @@ export async function submitNomination(
     };
   }
   const data = parsed.data;
+
+  if (submissionsUnavailable()) {
+    return { status: "error", message: SUBMISSIONS_UNAVAILABLE_MESSAGE };
+  }
 
   try {
     // Final layer — every nomination lands as 'pending'. Nothing reaches the

@@ -90,7 +90,7 @@ export function FamilyForm() {
         <textarea id="how_heard" name="how_heard" rows={3} className={inputClass} />
         <FieldError message={fe.how_heard} />
       </div>
-      <BotFields formId="family" />
+      <BotFields formId="family" turnstile={false} />
       <div className="flex items-center gap-4">
         <SubmitButton label="Join the Interest List" />
         <p className="text-sm text-midnight-75">We&apos;ll never share your information.</p>

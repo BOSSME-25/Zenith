@@ -29,7 +29,7 @@ Open <http://localhost:3000>.
 
 The site is designed to **build and run with zero env vars set**:
 
-- If `POSTGRES_URL` is not set, every database call is a no-op. Submissions return success messages but are **not persisted**. Admin lists render empty states.
+- If `POSTGRES_URL` is not set, every database call is a no-op and admin lists render empty states. In **local development** form submissions still return success messages but are **not persisted**. In **production** the public forms instead refuse with an error and log `[zenith][db] ... REFUSED`, so a family is never thanked for an entry that was discarded.
 - If `RESEND_API_KEY` is not set, emails are logged to the dev console instead of sent. Form submissions still succeed.
 - If `ADMIN_PASSWORD` is not set, the admin login is **disabled** (intentional).
 

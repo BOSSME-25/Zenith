@@ -1,7 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { safeQuery, isDbConfigured } from "@/lib/db";
+import {
+  safeQuery,
+  isDbConfigured,
+  submissionsUnavailable,
+  SUBMISSIONS_UNAVAILABLE_MESSAGE,
+} from "@/lib/db";
 import { sendSurveyEmails } from "@/lib/email";
 import {
   type ActionState,
@@ -45,6 +50,10 @@ export async function submitSurveyForm(
   const data = parsed.data;
   const isResident = data.is_resident == null ? null : data.is_resident === "yes";
   const hasChild = data.has_child == null ? null : data.has_child === "yes";
+
+  if (submissionsUnavailable()) {
+    return { status: "error", message: SUBMISSIONS_UNAVAILABLE_MESSAGE };
+  }
 
   try {
     if (isDbConfigured()) {
