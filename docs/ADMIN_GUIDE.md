@@ -4,6 +4,18 @@ A quick-start manual for managing zenithccprep.org.
 
 ---
 
+## Start here: the rules that matter most
+
+1. **The newsletter has no Publish button.** Tick **Published (visible on the site)** and click **Save issue**. That's the whole step. (Updates work the other way: a new update is published by default.)
+2. **The Newsletter page leads with the highest issue number, not the newest save.** Give each issue a higher number than the last. An issue numbered lower than one already published goes to *Past issues*.
+3. **Nothing goes on the Comets page without a signed release on file.** The Publish button stays greyed out until you record one. For anyone under 18, it must come from a parent or guardian.
+
+> **Right now:** email notifications aren't switched on yet, so no form sends you an email. Check **Families, Contacts, Community, Partners, and Nominations** in the admin yourself. Details are in section 9. *Delete this note once email is live.*
+
+**If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to Emily (section 12).
+
+---
+
 ## 1. Logging in
 
 1. Go to **https://zenithccprep.org/admin**
@@ -296,6 +308,20 @@ That section genuinely has no submissions yet. It isn't an error.
 **Send to Emily / BOSS ME Technology:** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and admin password resets.
 
 Rule of thumb: if it's in the sidebar, it's yours. If it's words or layout on a page, send it over.
+
+---
+
+## Appendix: suggested first walkthrough (30 minutes)
+
+| Time | Topic |
+|---|---|
+| 0–5 min | Log in, tour the sidebar, the Dashboard |
+| 5–15 min | Newsletter: create a practice issue as a draft, publish it, then change its number and watch it move between the lead spot and Past issues. Delete it afterward. |
+| 15–20 min | Updates: write one and add a photo |
+| 20–25 min | Submissions: search, then export a CSV |
+| 25–30 min | The Comets queue, and questions |
+
+*Delete this appendix once the walkthrough is done.*
 
 ---
 
