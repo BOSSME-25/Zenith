@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { submitNomination } from "@/app/actions/nomination";
 import {
   MILESTONE_LABELS,
@@ -11,12 +11,13 @@ import {
 } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./BotFields";
 
 const DESCRIPTION_LIMIT = 500;
 
 export function NominationForm() {
-  const [state, action] = useActionState(submitNomination, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitNomination, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [remaining, setRemaining] = useState(DESCRIPTION_LIMIT);
 
@@ -30,7 +31,7 @@ export function NominationForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
 
         <div>
           <label className={labelClass} htmlFor="nominee_name">
@@ -168,7 +169,7 @@ export function NominationForm() {
       <BotFields formId="nomination" />
 
       <div>
-        <SubmitButton label="Submit Nomination" />
+        <SubmitButton pending={pending} label="Submit Nomination" />
       </div>
       <FormStatus state={state} />
     </form>

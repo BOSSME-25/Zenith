@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { upload } from "@vercel/blob/client";
 import { ImagePlus, Loader2 } from "lucide-react";
@@ -13,6 +13,7 @@ import {
 } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 
 export type CometFormValues = {
   id: number;
@@ -44,7 +45,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function CometForm({ comet }: { comet: CometFormValues }) {
-  const [state, dispatch] = useActionState(saveCometProfile, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(saveCometProfile, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [photoUrl, setPhotoUrl] = useState(comet.photo_url ?? "");
   const [uploading, setUploading] = useState(false);
@@ -70,7 +71,7 @@ export function CometForm({ comet }: { comet: CometFormValues }) {
   }
 
   return (
-    <form action={dispatch} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       <input type="hidden" name="id" value={comet.id} />
       <input type="hidden" name="photo_url" value={photoUrl} />
 
@@ -346,7 +347,7 @@ export function CometForm({ comet }: { comet: CometFormValues }) {
       </fieldset>
 
       <div className="flex flex-wrap items-center gap-4">
-        <SubmitButton label="Save profile" />
+        <SubmitButton pending={pending} label="Save profile" />
         <Link href="/admin/comets" className="text-sm font-semibold text-eventide hover:text-midnight">
           Back to Comets
         </Link>

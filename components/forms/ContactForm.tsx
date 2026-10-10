@@ -1,14 +1,14 @@
 "use client";
 
-import { useActionState } from "react";
 import { submitContactForm } from "@/app/actions/contact";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./BotFields";
 
 export function ContactForm() {
-  const [state, action] = useActionState(submitContactForm, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitContactForm, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
 
   if (state.status === "success") {
@@ -21,7 +21,7 @@ export function ContactForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label className={labelClass} htmlFor="contact_name_input">Name <span aria-hidden className="text-red-600">*</span></label>
@@ -46,7 +46,7 @@ export function ContactForm() {
       </div>
       <BotFields formId="contact" />
       <div>
-        <SubmitButton label="Send Message" />
+        <SubmitButton pending={pending} label="Send Message" />
       </div>
       <FormStatus state={state} />
     </form>

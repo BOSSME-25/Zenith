@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { upload } from "@vercel/blob/client";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { idleState, type ActionState, type IssueEvent } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 
 export type IssueDefaults = {
   issue_number?: number;
@@ -150,7 +151,7 @@ function SectionCard({ title, blurb, children }: { title: string; blurb?: string
 const EVENT_SLOTS = [0, 1, 2];
 
 export function IssueForm({ action, defaults, submitLabel, hiddenFields, draftKey }: Props) {
-  const [state, dispatch] = useActionState(action, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(action, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const events = defaults?.events ?? [];
 
@@ -255,9 +256,9 @@ export function IssueForm({ action, defaults, submitLabel, hiddenFields, draftKe
   return (
     <form
       ref={formRef}
-      action={dispatch}
-      onSubmit={() => {
+      onSubmit={(e) => {
         submittingRef.current = true;
+        onSubmit(e);
       }}
       className="space-y-6"
     >
@@ -572,7 +573,7 @@ export function IssueForm({ action, defaults, submitLabel, hiddenFields, draftKe
           />
           <span className="text-sm font-medium text-midnight">Published (visible on the site)</span>
         </label>
-        <SubmitButton label={submitLabel} />
+        <SubmitButton pending={pending} label={submitLabel} />
         <Link href="/admin/newsletter" className="text-sm font-semibold text-eventide hover:underline">
           Cancel
         </Link>

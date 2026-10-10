@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { upload } from "@vercel/blob/client";
 import { ImagePlus, Loader2 } from "lucide-react";
 import { idleState, slugify, type ActionState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 
 type Defaults = {
   title?: string;
@@ -28,7 +29,7 @@ function sanitizeName(name: string): string {
 }
 
 export function UpdateForm({ action, defaults, submitLabel, hiddenFields }: Props) {
-  const [state, dispatch] = useActionState(action, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(action, idleState);
   const [title, setTitle] = useState(defaults?.title ?? "");
   const [slug, setSlug] = useState(defaults?.slug ?? "");
   const [slugEdited, setSlugEdited] = useState(Boolean(defaults?.slug));
@@ -77,7 +78,7 @@ export function UpdateForm({ action, defaults, submitLabel, hiddenFields }: Prop
   }
 
   return (
-    <form action={dispatch} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-5">
       {hiddenFields &&
         Object.entries(hiddenFields).map(([k, v]) => (
           <input key={k} type="hidden" name={k} value={v} />
@@ -183,7 +184,7 @@ export function UpdateForm({ action, defaults, submitLabel, hiddenFields }: Prop
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <SubmitButton label={submitLabel} />
+        <SubmitButton pending={pending} label={submitLabel} />
         <Link href="/admin/updates" className="text-sm font-semibold text-eventide hover:underline">
           Cancel
         </Link>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { MessageSquare, X } from "lucide-react";
 import { submitMentorConnect } from "@/app/actions/nomination";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./forms/FormStatus";
 import { SubmitButton } from "./forms/SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./forms/BotFields";
 
 /**
@@ -20,7 +21,7 @@ export function MentorConnectDialog({
   cometName: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [state, action] = useActionState(submitMentorConnect, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitMentorConnect, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
 
   if (!open) {
@@ -54,7 +55,7 @@ export function MentorConnectDialog({
       {state.status === "success" ? (
         <p className="mt-3 text-sm leading-relaxed text-midnight">{state.message}</p>
       ) : (
-        <form action={action} className="mt-3 space-y-3" noValidate>
+        <form onSubmit={onSubmit} className="mt-3 space-y-3" noValidate>
           <input type="hidden" name="comet_id" value={cometId} />
           <BotFields formId={`mentor_${cometId}`} turnstile={false} />
           <div>
@@ -102,7 +103,7 @@ export function MentorConnectDialog({
           <p className="text-xs text-midnight-75">
             Your message goes to the Zenith team, who will pass it along.
           </p>
-          <SubmitButton label="Send Message" />
+          <SubmitButton pending={pending} label="Send Message" />
           <FormStatus state={state} />
         </form>
       )}
