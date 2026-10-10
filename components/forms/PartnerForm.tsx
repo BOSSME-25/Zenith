@@ -1,14 +1,14 @@
 "use client";
 
-import { useActionState } from "react";
 import { submitPartnerForm } from "@/app/actions/partner";
 import { PARTNER_INTERESTS, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./BotFields";
 
 export function PartnerForm() {
-  const [state, action] = useActionState(submitPartnerForm, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitPartnerForm, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
 
   if (state.status === "success") {
@@ -21,7 +21,7 @@ export function PartnerForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label className={labelClass} htmlFor="organization">Organization <span aria-hidden className="text-red-600">*</span></label>
@@ -63,7 +63,7 @@ export function PartnerForm() {
       </div>
       <BotFields formId="partner" />
       <div>
-        <SubmitButton label="Submit Inquiry" />
+        <SubmitButton pending={pending} label="Submit Inquiry" />
       </div>
       <FormStatus state={state} />
     </form>

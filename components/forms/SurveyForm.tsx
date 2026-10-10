@@ -1,13 +1,13 @@
 "use client";
 
-import { useActionState } from "react";
 import { submitSurveyForm } from "@/app/actions/survey";
 import { CAREER_PATHWAYS, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 
 export function SurveyForm() {
-  const [state, action] = useActionState(submitSurveyForm, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitSurveyForm, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
 
   if (state.status === "success") {
@@ -24,7 +24,7 @@ export function SurveyForm() {
   }
 
   return (
-    <form action={action} className="space-y-6" noValidate>
+    <form onSubmit={onSubmit} className="space-y-6" noValidate>
       <fieldset>
         <legend className={labelClass}>Are you a Maryvale resident?</legend>
         <div className="flex gap-3">
@@ -88,7 +88,7 @@ export function SurveyForm() {
       </div>
 
       <div>
-        <SubmitButton label="Submit Survey" />
+        <SubmitButton pending={pending} label="Submit Survey" />
       </div>
       <FormStatus state={state} />
     </form>

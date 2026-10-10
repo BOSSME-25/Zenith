@@ -1,14 +1,14 @@
 "use client";
 
-import { useActionState } from "react";
 import { submitFamilyForm } from "@/app/actions/family";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./BotFields";
 
 export function FamilyForm() {
-  const [state, action] = useActionState(submitFamilyForm, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitFamilyForm, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
 
   if (state.status === "success") {
@@ -25,7 +25,7 @@ export function FamilyForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label className={labelClass} htmlFor="parent_name">Parent or guardian name <span aria-hidden className="text-red-600">*</span></label>
@@ -92,7 +92,7 @@ export function FamilyForm() {
       </div>
       <BotFields formId="family" turnstile={false} />
       <div className="flex items-center gap-4">
-        <SubmitButton label="Join the Interest List" />
+        <SubmitButton pending={pending} label="Join the Interest List" />
         <p className="text-sm text-midnight-75">We&apos;ll never share your information.</p>
       </div>
       <FormStatus state={state} />

@@ -1,14 +1,15 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { submitCommunityForm } from "@/app/actions/community";
 import { COMMUNITY_INTERESTS, COMMUNITY_ROLES, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "./FormStatus";
 import { SubmitButton } from "./SubmitButton";
+import { useKeptFormAction } from "@/lib/use-kept-form";
 import { BotFields } from "./BotFields";
 
 export function CommunityForm() {
-  const [state, action] = useActionState(submitCommunityForm, idleState);
+  const { state, pending, onSubmit } = useKeptFormAction(submitCommunityForm, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [otherChecked, setOtherChecked] = useState(false);
 
@@ -22,7 +23,7 @@ export function CommunityForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label className={labelClass} htmlFor="community_name">Name <span aria-hidden className="text-red-600">*</span></label>
@@ -78,7 +79,7 @@ export function CommunityForm() {
       </fieldset>
       <BotFields formId="community" />
       <div>
-        <SubmitButton label="Stand with Zenith" />
+        <SubmitButton pending={pending} label="Stand with Zenith" />
       </div>
       <FormStatus state={state} />
     </form>
