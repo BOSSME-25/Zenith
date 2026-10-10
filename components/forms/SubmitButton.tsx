@@ -7,10 +7,16 @@ type Props = {
   label: string;
   pendingLabel?: string;
   className?: string;
+  /**
+   * For forms submitted by hand (see lib/use-kept-form.ts), where React's own
+   * form status never reports pending. Leave unset everywhere else.
+   */
+  pending?: boolean;
 };
 
-export function SubmitButton({ label, pendingLabel, className }: Props) {
-  const { pending } = useFormStatus();
+export function SubmitButton({ label, pendingLabel, className, pending: pendingOverride }: Props) {
+  const status = useFormStatus();
+  const pending = pendingOverride ?? status.pending;
   return (
     <button
       type="submit"

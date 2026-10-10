@@ -423,3 +423,42 @@ export async function sendMentorConnectEmail(data: MentorConnectEmail) {
   ]);
   return { team: results[0], confirmation: results[1] };
 }
+
+export type FeedbackEmail = {
+  name: string;
+  email?: string | null;
+  role: string;
+  topic: string;
+  page?: string | null;
+  message: string;
+};
+
+/**
+ * Team-only notification: feedback is optional-contact, so there is nothing to
+ * confirm back to the sender. Role and topic are our own labels, never free
+ * text, so the subject line carries no user-supplied content.
+ */
+export async function sendFeedbackEmail(data: FeedbackEmail) {
+  const team = teamRecipient();
+  if (!team) return { team: { ok: false, reason: "no-team-recipient" } };
+  const html = shell(
+    `Website feedback: ${escapeHtml(data.topic)}`,
+    `<p>Someone sent feedback from the admin sign-in page.</p>${fieldsTable({
+      "From": data.name,
+      "Role": data.role,
+      "Topic": data.topic,
+      "Email": data.email || null,
+      "Page or section": data.page || null,
+    })}
+     <p style="margin-top:20px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:${EVENTIDE};">Message</p>
+     <p style="white-space:pre-wrap;background:${ION_SOFT};padding:16px;border-radius:8px;">${escapeHtml(data.message)}</p>
+     <p style="margin-top:20px;">Review and mark it done in the admin under <strong>Feedback</strong>.</p>`,
+  );
+  const result = await send({
+    to: team,
+    subject: `Website feedback: ${data.topic}`,
+    html,
+    replyTo: data.email || undefined,
+  });
+  return { team: result };
+}

@@ -10,7 +10,7 @@ A quick-start manual for managing zenithccprep.org.
 2. **The Newsletter page leads with the highest issue number, not the newest save.** Give each issue a higher number than the last. An issue numbered lower than one already published goes to *Past issues*.
 3. **Nothing goes on the Comets page without a signed release on file.** The Publish button stays greyed out until you record one. For anyone under 18, it must come from a parent or guardian.
 
-> **Right now:** email notifications aren't switched on yet, so no form sends you an email. Check **Families, Contacts, Community, Partners, and Nominations** in the admin yourself. Details are in section 9. *Delete this note once email is live.*
+> **Right now:** email notifications aren't switched on yet, so no form sends you an email. Check **Families, Contacts, Community, Partners, Nominations, and Feedback** in the admin yourself. Details are in section 9. *Delete this note once email is live.*
 
 **If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to Emily (section 12).
 
@@ -43,7 +43,7 @@ Click any tile or any row to drill into the full list.
 
 ## 3. The admin sections
 
-The sidebar has ten sections.
+The sidebar has eleven sections.
 
 | Section | What it is |
 |---|---|
@@ -57,6 +57,17 @@ The sidebar has ten sections.
 | **Updates** | The news posts that appear on the public **/updates** page (see section 5) |
 | **Nominations** | Student and alumni nominations waiting for your review (see section 7) |
 | **Comets** | Recognition profiles built from approved nominations (see section 7) |
+| **Feedback** | Suggestions, corrections, and requested information that board members, faculty, and staff send from the sign-in page (see below) |
+
+### Feedback from your team
+
+The **Admin Sign In** page has a **Share feedback or suggest a change** button under the sign-in box. It's for board members, faculty, and staff to suggest a change, send information you've asked for (a bio or a quote, say), correct something on the site, or report a problem. They don't need to be signed in, and an email address is optional.
+
+- Everything they send appears under **Feedback** in the sidebar, newest first, tagged with the topic and the sender's role.
+- Click **Mark done** once you've handled an item. It moves to the **Done** tab, and **Reopen** brings it back. **Delete** removes it permanently.
+- If the sender left an email, it shows as a link so you can reply. Many won't leave one.
+- Because anyone who finds the sign-in page can use it, treat what's there as suggestions, not instructions. The form asks people not to include students' names or personal details.
+- You'll only get a notification email for new feedback once email is switched on (section 9). Until then, check the **Feedback** page yourself.
 
 ---
 
@@ -240,7 +251,7 @@ Two features appear across the site: an **"Opening Fall 2027"** band under the h
 When someone submits a form, the site is designed to send two emails: a **confirmation to the person who submitted** and a **notification to the Zenith team inbox**. Submissions are always saved and appear in the admin whether or not email is working.
 
 > **Current status: email is not yet switched on.** Setting it up needs a few DNS records added to the domain (managed in Squarespace). Until that's done:
-> - No notification emails reach the team. Check **Families, Contacts, Community, Partners, and Nominations** in the admin regularly, and more often during recruitment pushes.
+> - No notification emails reach the team. Check **Families, Contacts, Community, Partners, Nominations, and Feedback** in the admin regularly, and more often during recruitment pushes.
 > - People who submit a form still see a thank-you message but don't receive a confirmation email.
 > - Mentor "Connect with" messages are lost (see section 7).
 >
@@ -259,6 +270,7 @@ When someone submits a form, the site is designed to send two emails: a **confir
 | See which issue is leading the public page | **Newsletter** list: the row marked **Showing as latest** |
 | Download newsletter subscribers | **Subscribers** → Export CSV |
 | Review a Comet nomination | **Nominations** → Approve or Reject |
+| See what the team has suggested | **Feedback** → New tab → **Mark done** when handled |
 | Put a Comet profile on the public page | **Comets** → Edit → tick the signed release → Save profile → **Publish** |
 | View survey responses | Google Drive → your Zenith form response sheet |
 | Reply to a contact message | **Contacts** → copy their email → reply from your own inbox |

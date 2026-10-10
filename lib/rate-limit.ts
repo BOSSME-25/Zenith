@@ -25,7 +25,8 @@ export type RateScope =
   | "community"
   | "partner"
   | "newsletter"
-  | "mentor";
+  | "mentor"
+  | "feedback";
 
 export const DEFAULT_WINDOW_MINUTES = 60;
 
