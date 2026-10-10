@@ -267,6 +267,44 @@ export function parseList(raw: string): string[] {
     .slice(0, 25);
 }
 
+export const FEEDBACK_ROLES = ["board", "faculty", "staff", "other"] as const;
+export type FeedbackRole = (typeof FEEDBACK_ROLES)[number];
+export const FEEDBACK_ROLE_LABELS: Record<FeedbackRole, string> = {
+  board: "Board member",
+  faculty: "Faculty",
+  staff: "Staff",
+  other: "Other",
+};
+
+export const FEEDBACK_TOPICS = ["suggestion", "information", "correction", "problem", "other"] as const;
+export type FeedbackTopic = (typeof FEEDBACK_TOPICS)[number];
+export const FEEDBACK_TOPIC_LABELS: Record<FeedbackTopic, string> = {
+  suggestion: "Suggest a change",
+  information: "Send information that was requested",
+  correction: "Correct or update something on the site",
+  problem: "Something isn't working",
+  other: "Something else",
+};
+
+export const feedbackSchema = z.object({
+  name: z.string().trim().min(2, "Please enter your name."),
+  // Optional, so a quick note never needs one — but worth giving if you want a reply.
+  email: z
+    .string()
+    .trim()
+    .max(200)
+    .refine((v) => !v || /[^\s@]+@[^\s@]+\.[^\s@]+/.test(v), "Please enter a valid email, or leave it blank."),
+  role: z.enum(FEEDBACK_ROLES, { message: "Please choose your role." }),
+  topic: z.enum(FEEDBACK_TOPICS, { message: "Please choose what this is about." }),
+  page: z.string().trim().max(200, "Please keep this under 200 characters."),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Please share a sentence or two.")
+    .max(3000, "Please keep this under 3000 characters."),
+});
+export type FeedbackInput = z.infer<typeof feedbackSchema>;
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()

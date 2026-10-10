@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Logo } from "@/components/Logo";
 import { LoginForm } from "@/components/admin/LoginForm";
+import { FeedbackBox } from "@/components/admin/FeedbackBox";
 import { adminPasswordConfigured } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +28,9 @@ export default function AdminLoginPage() {
             <LoginForm />
           </Suspense>
         </div>
+      </div>
+      <div className="mt-6 flex w-full max-w-md flex-col items-center">
+        <FeedbackBox />
       </div>
     </div>
   );

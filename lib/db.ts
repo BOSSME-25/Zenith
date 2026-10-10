@@ -240,6 +240,22 @@ const CREATE_STATEMENTS = [
     published_at TIMESTAMP,
     source_nomination_id INTEGER
   )`,
+  // Suggestions and requested information sent by board members, faculty and
+  // staff from the admin sign-in page. Written without a login, so every field
+  // is treated as untrusted text; read only through the authenticated admin.
+  `CREATE TABLE IF NOT EXISTS feedback (
+    id SERIAL PRIMARY KEY,
+    submitted_at TIMESTAMP DEFAULT NOW(),
+    name TEXT NOT NULL,
+    email TEXT,
+    role TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    page TEXT,
+    message TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'new',
+    resolved_at TIMESTAMP
+  )`,
+  `CREATE INDEX IF NOT EXISTS feedback_status_idx ON feedback (status, submitted_at DESC)`,
   // Stores a salted hash of the submitter IP, never the address itself.
   // `scope` is the form the attempt belongs to (contact, family, …).
   `CREATE TABLE IF NOT EXISTS form_rate_limit (
