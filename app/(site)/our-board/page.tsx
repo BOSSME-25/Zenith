@@ -194,7 +194,12 @@ export default function OurBoardPage() {
               { name: "George Saad, Esq.", role: "Board Member", quote: "Placeholder — George's blurb coming soon." },
               { name: "Michael Finch", role: "Board Member", quote: "Placeholder — Michael's blurb coming soon." },
               { name: "Jade Nangah", role: "Board Member", quote: "Placeholder — Jade's blurb coming soon." },
-              { name: "Lynn Palacios", role: "Board Member", quote: "Placeholder — Lynn's blurb coming soon." },
+              {
+                name: "Lynn Palacios",
+                role: "Board Member",
+                quote:
+                  "After more than three decades in secondary and postsecondary education across the Valley, I’ve seen firsthand the impact thoughtful, student-centered design can have on learning. The opportunity to help build a school from the ground up—especially as a founding board member—is both rare and deeply meaningful. It’s an honor to join a team committed to doing this work well, and to collaborate with Dr. Jay Samant, whose vision for Zenith closely aligns with my own beliefs about what education can and should be.\n\nThroughout my career, much of it having been spent in one of Phoenix’s large urban school systems, one lesson has stayed with me: students thrive when they have access to meaningful choices in their education. Too often, even with the best intentions, systems are designed around adult needs rather than student experiences. What excites me most about Zenith is its commitment to reversing that pattern—placing students at the center and building from there. Dr. Samant’s deep investment in the Maryvale community, his commitment to listening, and his focus on designing a school grounded in both community voice and educational best practices make this work especially powerful. Zenith has the potential to expand opportunity in a way that is both responsive and transformative for its students.",
+              },
               { name: "Dr. Tom Nevill", role: "Board Member", quote: "Placeholder — Tom's blurb coming soon." },
               { name: "Luis Cordova", role: "Board Member", quote: "Placeholder — Luis's blurb coming soon." },
               { name: "Veronica Sas", role: "Board Member", quote: "Placeholder — Veronica's blurb coming soon." },
@@ -207,8 +212,10 @@ export default function OurBoardPage() {
                 <span className="text-4xl leading-none text-eventide" aria-hidden>
                   &ldquo;
                 </span>
-                <blockquote className="mt-2 text-base leading-relaxed text-midnight">
-                  {q.quote}
+                <blockquote className="mt-2 space-y-4 text-base leading-relaxed text-midnight">
+                  {q.quote.split("\n\n").map((para) => (
+                    <p key={para}>{para}</p>
+                  ))}
                 </blockquote>
                 <figcaption className="mt-5 pt-4 border-t border-ion">
                   <p className="text-sm font-semibold text-midnight">{q.name}</p>
