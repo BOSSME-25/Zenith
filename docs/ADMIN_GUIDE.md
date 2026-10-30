@@ -12,7 +12,7 @@ A quick-start manual for managing zenithccprep.org.
 
 > **Right now:** email notifications aren't switched on yet, so no form sends you an email. Check **Families, Contacts, Community, Partners, Nominations, and Feedback** in the admin yourself. Details are in section 9. *Delete this note once email is live.*
 
-**If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to Emily (section 12).
+**If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to BOSS ME Technology at Zenith@bossmenow.com (section 12).
 
 ---
 
@@ -24,7 +24,7 @@ A quick-start manual for managing zenithccprep.org.
 
 You'll stay logged in for about 7 days. Click **Sign out** in the bottom-left of the sidebar at any time to sign out.
 
-> **If you forget the password:** contact Emily. It's stored in the hosting settings and can be reset there.
+> **If you forget the password:** email Zenith@bossmenow.com. It's stored in the hosting settings and can be reset there.
 
 Please don't share the password. Keep it in a password manager.
 
@@ -227,7 +227,7 @@ Ticking **Available as a mentor** on a profile adds a "Connect with" button to t
 
 ## 8. The public site
 
-These are the parts of zenithccprep.org that visitors see. Page wording, photos, and layout are maintained by Emily's team in the website's code. To change any of them, send the requested changes to Emily.
+These are the parts of zenithccprep.org that visitors see. Page wording, photos, and layout are maintained by BOSS ME Technology in the website's code. To change any of them, send the requested changes to Zenith@bossmenow.com.
 
 - **Home**: opening date (Fall 2027, founding 9th grade class), what makes Zenith different, core values, community, partners
 - **Our Story**: mission, vision, why now, community engagement, and the welcome video
@@ -275,14 +275,14 @@ When someone submits a form, the site is designed to send two emails: a **confir
 | View survey responses | Google Drive → your Zenith form response sheet |
 | Reply to a contact message | **Contacts** → copy their email → reply from your own inbox |
 | Add a photo to an Updates post | **Updates** → New or Edit → **Add image** |
-| Change page wording, a photo, or the layout | Email Emily |
+| Change page wording, a photo, or the layout | Email Zenith@bossmenow.com |
 
 ---
 
 ## 11. Quick troubleshooting
 
 **"Application error" on /admin**
-The database may be temporarily unreachable. Wait a minute and reload. If it persists, contact Emily.
+The database may be temporarily unreachable. Wait a minute and reload. If it persists, email Zenith@bossmenow.com.
 
 **Login keeps failing**
 - Check Caps Lock
@@ -313,11 +313,11 @@ That section genuinely has no submissions yet. It isn't an error.
 
 ---
 
-## 12. What you can do yourself, and what to send to Emily
+## 12. What you can do yourself, and what to send to BOSS ME Technology
 
 **Yours to do, with no developer needed:** everything in the sidebar: Updates, the Newsletter, reviewing and exporting submissions, and the Comets queue.
 
-**Send to Emily / BOSS ME Technology:** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and admin password resets.
+**Send to BOSS ME Technology (Zenith@bossmenow.com):** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and admin password resets.
 
 Rule of thumb: if it's in the sidebar, it's yours. If it's words or layout on a page, send it over.
 

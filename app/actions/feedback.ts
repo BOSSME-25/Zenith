@@ -84,7 +84,7 @@ export async function submitFeedback(
     return {
       status: "error",
       message:
-        "We couldn't save your feedback just now. Please try again in a little while. If it keeps happening, report a problem by emailing ZenithTech@bossmenow.com.",
+        "We couldn't save your feedback just now. Please try again in a little while. If it keeps happening, please let your Zenith contact know.",
     };
   }
 
