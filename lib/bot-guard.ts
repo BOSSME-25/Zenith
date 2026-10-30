@@ -83,7 +83,7 @@ export async function guardSubmission(
     return {
       ok: false,
       message:
-        "You've submitted this form several times recently. Please try again later, or email us directly.",
+        "You've submitted this form several times recently. Please try again later.",
     };
   }
 

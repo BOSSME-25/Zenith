@@ -32,7 +32,7 @@ export function submissionsUnavailable(): boolean {
 }
 
 export const SUBMISSIONS_UNAVAILABLE_MESSAGE =
-  "We can't save your submission right now. Please try again in a little while, or contact us directly so we don't miss you.";
+  "We can't save your submission right now. Please try again in a little while.";
 
 let pool: Pool | null = null;
 function getPool(): Pool {
