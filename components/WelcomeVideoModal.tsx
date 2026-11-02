@@ -37,6 +37,9 @@ export function WelcomeVideoModal() {
       // ignore
     }
 
+    // Other pop-ups on the site wait until this one is closed.
+    document.documentElement.dataset.welcomeOpen = "1";
+
     // Lock background scroll while the modal is open.
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -52,6 +55,8 @@ export function WelcomeVideoModal() {
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
+      delete document.documentElement.dataset.welcomeOpen;
+      window.dispatchEvent(new Event("zenith:welcome-closed"));
     };
   }, [open]);
 

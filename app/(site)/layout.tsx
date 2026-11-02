@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { WelcomeVideoModal } from "@/components/WelcomeVideoModal";
 import { OpeningBadge } from "@/components/OpeningBadge";
 import { InterestListCta } from "@/components/InterestListCta";
+import { EnrollmentPopup } from "@/components/EnrollmentPopup";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -43,6 +44,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </main>
       <Footer />
       <InterestListCta />
+      <EnrollmentPopup />
     </div>
   );
 }

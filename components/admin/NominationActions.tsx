@@ -91,7 +91,7 @@ export function NominationActions({ id, status }: { id: number; status: string }
             }
           });
         }}
-        className="inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-white hover:bg-eventide disabled:opacity-60"
+        className="inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-midnight hover:bg-eventide disabled:opacity-60"
       >
         <Check size={14} aria-hidden /> Approve
       </button>

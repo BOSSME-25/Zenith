@@ -268,6 +268,70 @@ const CREATE_STATEMENTS = [
      ON form_rate_limit (scope, ip_hash, created_at)`,
   `CREATE INDEX IF NOT EXISTS nominations_status_idx ON nominations (status, submitted_at DESC)`,
   `CREATE INDEX IF NOT EXISTS comet_profiles_published_idx ON comet_profiles (published_at, status)`,
+  // Public meetings. A meeting row is a public record once it leaves draft, so
+  // nothing here is ever hard-deleted through the UI and documents are
+  // superseded or withdrawn rather than removed.
+  `CREATE TABLE IF NOT EXISTS meetings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    meeting_type TEXT NOT NULL
+      CHECK (meeting_type IN ('regular','special','emergency','committee','budget_hearing','work_session')),
+    committee_name TEXT,
+    starts_at TIMESTAMPTZ NOT NULL,
+    ends_at TIMESTAMPTZ,
+    location_name TEXT,
+    location_address TEXT,
+    virtual_url TEXT,
+    virtual_meeting_id TEXT,
+    virtual_passcode TEXT,
+    dial_in TEXT,
+    status TEXT NOT NULL DEFAULT 'draft'
+      CHECK (status IN ('draft','scheduled','cancelled','rescheduled','held')),
+    rescheduled_to UUID REFERENCES meetings(id),
+    status_reason TEXT,
+    emergency_reason TEXT,
+    notice_posted_at TIMESTAMPTZ,
+    agenda_posted_at TIMESTAMPTZ,
+    minutes_status TEXT NOT NULL DEFAULT 'none'
+      CHECK (minutes_status IN ('none','draft','approved')),
+    minutes_approved_at TIMESTAMPTZ,
+    recording_url TEXT,
+    public_note TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+  )`,
+  `CREATE TABLE IF NOT EXISTS meeting_documents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    meeting_id UUID NOT NULL REFERENCES meetings(id) ON DELETE RESTRICT,
+    kind TEXT NOT NULL CHECK (kind IN ('agenda','minutes','packet','other')),
+    label TEXT NOT NULL,
+    blob_url TEXT NOT NULL,
+    size_bytes INTEGER,
+    version INTEGER NOT NULL DEFAULT 1,
+    superseded_at TIMESTAMPTZ,
+    withdrawn_at TIMESTAMPTZ,
+    withdrawn_reason TEXT,
+    uploaded_by TEXT,
+    uploaded_at TIMESTAMPTZ DEFAULT NOW()
+  )`,
+  `CREATE TABLE IF NOT EXISTS meeting_audit (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    meeting_id UUID REFERENCES meetings(id),
+    action TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    detail JSONB,
+    at TIMESTAMPTZ DEFAULT NOW()
+  )`,
+  `CREATE TABLE IF NOT EXISTS site_settings (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL,
+    updated_by TEXT,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+  )`,
+  `CREATE INDEX IF NOT EXISTS meetings_starts_idx ON meetings (starts_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS meeting_documents_meeting_idx ON meeting_documents (meeting_id, kind)`,
+  `CREATE INDEX IF NOT EXISTS meeting_audit_meeting_idx ON meeting_audit (meeting_id, at DESC)`,
 ];
 
 export async function initDatabase(): Promise<{ ok: boolean; message: string }> {

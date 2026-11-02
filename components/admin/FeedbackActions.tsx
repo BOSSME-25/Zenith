@@ -17,7 +17,7 @@ export function FeedbackActions({ id, status }: { id: number; status: string }) 
         className={
           done
             ? "inline-flex items-center gap-1.5 rounded-md border border-ion px-3 py-1.5 text-xs font-semibold text-midnight hover:bg-ion-soft disabled:opacity-60"
-            : "inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-white hover:bg-eventide disabled:opacity-60"
+            : "inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-midnight hover:bg-eventide disabled:opacity-60"
         }
       >
         {done ? <RotateCcw size={14} aria-hidden /> : <Check size={14} aria-hidden />}

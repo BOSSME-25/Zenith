@@ -8,6 +8,8 @@ type SectionProps = {
   className?: string;
   bg?: "white" | "ion-soft" | "midnight" | "ion";
   align?: "left" | "center";
+  /** Heading level for the title. Pages that have no other h1 pass "h1". */
+  titleAs?: "h1" | "h2";
 };
 
 export function Section({
@@ -18,6 +20,7 @@ export function Section({
   className,
   bg = "ion-soft",
   align = "left",
+  titleAs: Title = "h2",
 }: SectionProps) {
   const bgClass = {
     white: "bg-white",
@@ -37,9 +40,9 @@ export function Section({
               <p className={cn("eyebrow", eyebrowColor)}>{eyebrow}</p>
             )}
             {title && (
-              <h2 className={cn("mt-4 text-3xl md:text-4xl font-semibold leading-tight", titleColor)}>
+              <Title className={cn("mt-4 text-3xl md:text-4xl font-semibold leading-tight", titleColor)}>
                 {title}
-              </h2>
+              </Title>
             )}
             {description && (
               <p className={cn("mt-4 text-lg leading-relaxed", descColor)}>{description}</p>
