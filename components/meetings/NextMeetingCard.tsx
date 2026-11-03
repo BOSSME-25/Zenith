@@ -4,6 +4,7 @@ import {
   MEETING_TYPE_LABELS,
   formatMeetingDate,
   formatMeetingTime,
+  onlineLabel,
 } from "@/lib/meetings-shared";
 import { DocButton } from "./MeetingDocs";
 
@@ -28,6 +29,7 @@ export function NextMeetingCard({ meeting }: { meeting: MeetingWithDocs | null }
 
   const agenda = meeting.docs.find((d) => d.kind === "agenda");
   const physical = meeting.location_name || meeting.location_address;
+  const online = !physical && meeting.virtual_url;
 
   return (
     <div className="rounded-2xl bg-midnight p-8 md:p-10 text-white">
@@ -52,6 +54,12 @@ export function NextMeetingCard({ meeting }: { meeting: MeetingWithDocs | null }
             {formatMeetingTime(meeting.starts_at, meeting.ends_at)}
           </span>
         </li>
+        {online && (
+          <li className="flex items-start gap-3">
+            <Video size={20} className="mt-0.5 flex-none text-ion" aria-hidden />
+            <span className="font-semibold">{onlineLabel(meeting.virtual_url)}</span>
+          </li>
+        )}
         {physical && (
           <li className="flex items-start gap-3">
             <MapPin size={20} className="mt-0.5 flex-none text-ion" aria-hidden />

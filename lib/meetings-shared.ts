@@ -238,3 +238,87 @@ export function blobPathname(value: string): string {
     return "";
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* How people attend                                                   */
+/* ------------------------------------------------------------------ */
+
+export const ATTENDANCE = ["online", "in_person", "both"] as const;
+export type Attendance = (typeof ATTENDANCE)[number];
+
+export const ATTENDANCE_LABELS: Record<Attendance, string> = {
+  online: "Online only (Zoom or another link)",
+  in_person: "In person only",
+  both: "In person and online",
+};
+
+type Venue = {
+  location_name: string | null;
+  location_address: string | null;
+  virtual_url: string | null;
+};
+
+/** Worked out from what was entered, so there is no separate field to keep in step. */
+export function attendanceOf(m: Venue): Attendance {
+  const physical = Boolean(m.location_name || m.location_address);
+  if (physical && m.virtual_url) return "both";
+  if (physical) return "in_person";
+  return "online";
+}
+
+/** "Online - Zoom" for a Zoom link, "Online" for any other online link. */
+export function onlineLabel(url: string | null | undefined): string {
+  try {
+    if (url && /(^|\.)zoom\.(us|com)$/i.test(new URL(url).hostname)) return "Online - Zoom";
+  } catch {
+    // fall through
+  }
+  return "Online";
+}
+
+/* ------------------------------------------------------------------ */
+/* Meeting form                                                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Lives here, not in the form component, because the new-meeting page runs on
+ * the server and reads these defaults. A constant exported from a client
+ * component reaches the server as a reference, not as its value.
+ */
+export type MeetingFormValues = {
+  id?: string;
+  title: string;
+  meeting_type: MeetingType;
+  committee_name: string;
+  starts_at: string; // datetime-local value, Arizona time
+  ends_at: string;
+  location_name: string;
+  location_address: string;
+  virtual_url: string;
+  virtual_meeting_id: string;
+  virtual_passcode: string;
+  dial_in: string;
+  recording_url: string;
+  public_note: string;
+  emergency_reason: string;
+  attendance: Attendance;
+};
+
+export const EMPTY_MEETING: MeetingFormValues = {
+  title: "Regular Board Meeting",
+  meeting_type: "regular",
+  committee_name: "",
+  starts_at: "",
+  ends_at: "",
+  location_name: "",
+  location_address: "",
+  virtual_url: "",
+  virtual_meeting_id: "",
+  virtual_passcode: "",
+  dial_in: "",
+  recording_url: "",
+  public_note: "",
+  emergency_reason: "",
+  attendance: "online",
+};
+
