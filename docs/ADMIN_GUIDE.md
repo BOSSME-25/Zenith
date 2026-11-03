@@ -336,7 +336,7 @@ Do this at least 72 hours ahead if you can. Twenty-four hours is the legal minim
 
 1. Click **Meetings**, then **New meeting**.
 2. Choose the type. **Regular** is the standard monthly meeting.
-3. Enter the title, the date and start time, and where it is held. Add the online link, meeting ID, passcode, and dial-in if it is also online. **Times are Arizona time. Do not convert anything.**
+3. Enter the title and the date and start time. Under **How will people attend?** choose **Online only**, **In person only**, or **In person and online**, and the form shows just the fields that apply. For an online meeting, paste the Zoom link and add the meeting ID, passcode, and dial-in. The public page shows "Online - Zoom" for a Zoom link. **Times are Arizona time. Do not convert anything.**
 4. Choose your name under **Posted by** and click **Save as draft**. Nothing is public yet.
 5. On the next screen, under **Agenda**, upload the agenda as a PDF. If it is not ready, come back later. Do not publish without it unless the meeting is more than 48 hours away.
 6. Under **Notice**, choose your name and click **Publish notice**. The system records the date and time. If you see a red message about 24 hours, stop and call the Board Chair.

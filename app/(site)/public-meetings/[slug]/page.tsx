@@ -11,6 +11,7 @@ import {
   MEETING_TYPE_LABELS,
   formatMeetingDate,
   formatMeetingTime,
+  onlineLabel,
 } from "@/lib/meetings-shared";
 
 export const dynamic = "force-dynamic";
@@ -69,6 +70,7 @@ export default async function MeetingPage({ params }: { params: Promise<{ slug: 
             <p className="text-xl font-semibold">{m.title}</p>
             <p>{formatMeetingTime(m.starts_at, m.ends_at)}</p>
             {physical && <p>{physical}</p>}
+            {!physical && m.virtual_url && <p>{onlineLabel(m.virtual_url)}</p>}
             {m.virtual_url && (
               <p>
                 <a

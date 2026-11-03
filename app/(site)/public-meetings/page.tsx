@@ -22,6 +22,7 @@ import {
   formatMeetingTime,
   isUpcoming,
   meetingEnd,
+  onlineLabel,
   schoolYearOf,
   type MeetingType,
 } from "@/lib/meetings-shared";
@@ -149,6 +150,13 @@ export default async function PublicMeetingsPage({
             <p>
               <span className="font-semibold">Next meeting, in person:</span>{" "}
               {[next.location_name, next.location_address].filter(Boolean).join(", ")}.
+            </p>
+          )}
+          {next && !next.location_name && !next.location_address && next.virtual_url && (
+            <p>
+              <span className="font-semibold">Next meeting:</span>{" "}
+              {onlineLabel(next.virtual_url)}. There is no in-person location. Use the Join online
+              button above.
             </p>
           )}
           {accommodation.contact && accommodation.reach && accommodation.days && (

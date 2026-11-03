@@ -14,6 +14,7 @@ import {
 } from "@/lib/meetings";
 import {
   DAY_MS,
+  ATTENDANCE,
   MAX_PDF_BYTES,
   MEETING_FILE_RE,
   MEETING_TYPES,
@@ -72,6 +73,7 @@ const meetingSchema = z
       .min(3, "Add a title, for example Regular Board Meeting.")
       .max(120, "Keep the title under 120 characters."),
     meeting_type: z.enum(MEETING_TYPES, { message: "Choose a meeting type." }),
+    attendance: z.enum(ATTENDANCE, { message: "Say how people will attend." }),
     committee_name: z.string().trim().max(120),
     starts_at: z
       .string()
@@ -101,11 +103,19 @@ const meetingSchema = z
         message: "An emergency meeting needs a written reason.",
       });
     }
-    if (!m.location_name && !m.location_address && !m.virtual_url) {
+    const physical = Boolean(m.location_name || m.location_address);
+    if (m.attendance !== "online" && !physical) {
       ctx.addIssue({
         code: "custom",
         path: ["location_name"],
-        message: "Say where the meeting is held, or add an online link.",
+        message: "Say where the meeting is held.",
+      });
+    }
+    if (m.attendance !== "in_person" && !m.virtual_url) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["virtual_url"],
+        message: "Add the online link.",
       });
     }
     const start = fromPhoenixInput(m.starts_at);
@@ -127,6 +137,7 @@ function parseMeeting(formData: FormData) {
   return meetingSchema.safeParse({
     title: s("title"),
     meeting_type: s("meeting_type"),
+    attendance: s("attendance") || "online",
     committee_name: s("committee_name"),
     starts_at: s("starts_at"),
     ends_at: s("ends_at"),
@@ -211,12 +222,14 @@ export async function saveMeeting(_prev: ActionState, formData: FormData): Promi
     committee_name: m.meeting_type === "committee" ? nullIfEmpty(m.committee_name) : null,
     starts_at: startsAt,
     ends_at: endsAt,
-    location_name: nullIfEmpty(m.location_name),
-    location_address: nullIfEmpty(m.location_address),
-    virtual_url: nullIfEmpty(m.virtual_url),
-    virtual_meeting_id: nullIfEmpty(m.virtual_meeting_id),
-    virtual_passcode: nullIfEmpty(m.virtual_passcode),
-    dial_in: nullIfEmpty(m.dial_in),
+    // Only what applies to how people attend is kept: an online-only meeting
+    // has no place, and an in-person one has no link.
+    location_name: m.attendance === "online" ? null : nullIfEmpty(m.location_name),
+    location_address: m.attendance === "online" ? null : nullIfEmpty(m.location_address),
+    virtual_url: m.attendance === "in_person" ? null : nullIfEmpty(m.virtual_url),
+    virtual_meeting_id: m.attendance === "in_person" ? null : nullIfEmpty(m.virtual_meeting_id),
+    virtual_passcode: m.attendance === "in_person" ? null : nullIfEmpty(m.virtual_passcode),
+    dial_in: m.attendance === "in_person" ? null : nullIfEmpty(m.dial_in),
     recording_url: nullIfEmpty(m.recording_url),
     public_note: nullIfEmpty(m.public_note),
     emergency_reason: m.meeting_type === "emergency" ? nullIfEmpty(m.emergency_reason) : null,

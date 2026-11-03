@@ -10,6 +10,7 @@ import {
 } from "@/lib/meetings";
 import {
   type DocKind,
+  attendanceOf,
   DOC_KIND_LABELS,
   MEETING_TYPE_LABELS,
   documentBaseName,
@@ -119,6 +120,7 @@ export default async function EditMeetingPage({
     recording_url: m.recording_url ?? "",
     public_note: m.public_note ?? "",
     emergency_reason: m.emergency_reason ?? "",
+    attendance: attendanceOf(m),
   };
 
   const canDiscard = m.status === "draft" && !m.notice_posted_at && docs.length === 0;

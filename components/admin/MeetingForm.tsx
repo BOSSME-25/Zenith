@@ -6,43 +6,16 @@ import { useKeptFormAction } from "@/lib/use-kept-form";
 import { idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
-import { MEETING_TYPES, MEETING_TYPE_LABELS, type MeetingType } from "@/lib/meetings-shared";
+import {
+  ATTENDANCE,
+  ATTENDANCE_LABELS,
+  MEETING_TYPES,
+  MEETING_TYPE_LABELS,
+  type Attendance,
+  type MeetingFormValues,
+  type MeetingType,
+} from "@/lib/meetings-shared";
 import { PostedBySelect } from "./PostedBySelect";
-
-export type MeetingFormValues = {
-  id?: string;
-  title: string;
-  meeting_type: MeetingType;
-  committee_name: string;
-  starts_at: string; // datetime-local value, Arizona time
-  ends_at: string;
-  location_name: string;
-  location_address: string;
-  virtual_url: string;
-  virtual_meeting_id: string;
-  virtual_passcode: string;
-  dial_in: string;
-  recording_url: string;
-  public_note: string;
-  emergency_reason: string;
-};
-
-export const EMPTY_MEETING: MeetingFormValues = {
-  title: "Regular Board Meeting",
-  meeting_type: "regular",
-  committee_name: "",
-  starts_at: "",
-  ends_at: "",
-  location_name: "",
-  location_address: "",
-  virtual_url: "",
-  virtual_meeting_id: "",
-  virtual_passcode: "",
-  dial_in: "",
-  recording_url: "",
-  public_note: "",
-  emergency_reason: "",
-};
 
 export function MeetingForm({
   values,
@@ -56,6 +29,7 @@ export function MeetingForm({
   const { state, pending, onSubmit } = useKeptFormAction(saveMeeting, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [type, setType] = useState<MeetingType>(values.meeting_type);
+  const [attendance, setAttendance] = useState<Attendance>(values.attendance);
 
   return (
     <form onSubmit={onSubmit} className="space-y-8" noValidate>
@@ -149,71 +123,95 @@ export function MeetingForm({
           </div>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <div>
-            <label className={labelClass} htmlFor="location_name">Where it is held</label>
-            <input
-              id="location_name"
-              name="location_name"
-              type="text"
-              placeholder="Name of the place"
-              defaultValue={values.location_name}
-              className={inputClass}
-            />
-            <FieldError message={fe.location_name} />
-          </div>
-          <div>
-            <label className={labelClass} htmlFor="location_address">Address</label>
-            <input
-              id="location_address"
-              name="location_address"
-              type="text"
-              placeholder="Street, city, AZ ZIP"
-              defaultValue={values.location_address}
-              className={inputClass}
-            />
-            <FieldError message={fe.location_address} />
-          </div>
+        <div>
+          <label className={labelClass} htmlFor="attendance">How will people attend?</label>
+          <select
+            id="attendance"
+            name="attendance"
+            value={attendance}
+            onChange={(e) => setAttendance(e.target.value as Attendance)}
+            className={inputClass}
+          >
+            {ATTENDANCE.map((a) => (
+              <option key={a} value={a}>{ATTENDANCE_LABELS[a]}</option>
+            ))}
+          </select>
+          <FieldError message={fe.attendance} />
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <div className="md:col-span-2">
-            <label className={labelClass} htmlFor="virtual_url">Online link (if also online)</label>
-            <input
-              id="virtual_url"
-              name="virtual_url"
-              type="url"
-              placeholder="https://"
-              defaultValue={values.virtual_url}
-              className={inputClass}
-            />
-            <FieldError message={fe.virtual_url} />
+        {attendance !== "online" && (
+          <div className="grid gap-5 md:grid-cols-2">
+            <div>
+              <label className={labelClass} htmlFor="location_name">Where it is held</label>
+              <input
+                id="location_name"
+                name="location_name"
+                type="text"
+                placeholder="Name of the place"
+                defaultValue={values.location_name}
+                className={inputClass}
+              />
+              <FieldError message={fe.location_name} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="location_address">Address</label>
+              <input
+                id="location_address"
+                name="location_address"
+                type="text"
+                placeholder="Street, city, AZ ZIP"
+                defaultValue={values.location_address}
+                className={inputClass}
+              />
+              <FieldError message={fe.location_address} />
+            </div>
           </div>
-          <div>
-            <label className={labelClass} htmlFor="virtual_meeting_id">Meeting ID</label>
-            <input
-              id="virtual_meeting_id"
-              name="virtual_meeting_id"
-              type="text"
-              defaultValue={values.virtual_meeting_id}
-              className={inputClass}
-            />
+        )}
+
+        {attendance !== "in_person" && (
+          <div className="grid gap-5 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <label className={labelClass} htmlFor="virtual_url">Online link</label>
+              <input
+                id="virtual_url"
+                name="virtual_url"
+                type="url"
+                placeholder="https://"
+                defaultValue={values.virtual_url}
+                className={inputClass}
+              />
+              <p className="mt-1.5 text-xs text-midnight-75">
+                The public page shows &ldquo;Online - Zoom&rdquo; for a Zoom link, and
+                &ldquo;Online&rdquo; for any other.
+              </p>
+              <FieldError message={fe.virtual_url} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="virtual_meeting_id">Meeting ID</label>
+              <input
+                id="virtual_meeting_id"
+                name="virtual_meeting_id"
+                type="text"
+                defaultValue={values.virtual_meeting_id}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="virtual_passcode">Passcode</label>
+              <input
+                id="virtual_passcode"
+                name="virtual_passcode"
+                type="text"
+                defaultValue={values.virtual_passcode}
+                className={inputClass}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className={labelClass} htmlFor="dial_in">Dial-in number (optional)</label>
+              <input id="dial_in" name="dial_in" type="text" defaultValue={values.dial_in} className={inputClass} />
+            </div>
           </div>
-          <div>
-            <label className={labelClass} htmlFor="virtual_passcode">Passcode</label>
-            <input
-              id="virtual_passcode"
-              name="virtual_passcode"
-              type="text"
-              defaultValue={values.virtual_passcode}
-              className={inputClass}
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className={labelClass} htmlFor="dial_in">Dial-in number</label>
-            <input id="dial_in" name="dial_in" type="text" defaultValue={values.dial_in} className={inputClass} />
-          </div>
-        </div>
+        )}
 
         <div>
           <label className={labelClass} htmlFor="public_note">Note on the public page (optional)</label>
