@@ -77,7 +77,7 @@ const meetingSchema = z
     committee_name: z.string().trim().max(120),
     starts_at: z
       .string()
-      .refine((v) => fromPhoenixInput(v) !== null, "Enter the date and start time."),
+      .refine((v) => fromPhoenixInput(v) !== null, "Pick the date and choose the start time."),
     ends_at: z
       .string()
       .refine((v) => v === "" || fromPhoenixInput(v) !== null, "Enter a valid end time."),
@@ -134,13 +134,21 @@ const meetingSchema = z
 
 function parseMeeting(formData: FormData) {
   const s = (k: string) => String(formData.get(k) ?? "");
+  // The form sends a date and two separate times. An older single
+  // date-and-time value is still understood.
+  const date = s("start_date");
+  const startTime = s("start_time");
+  const endTime = s("end_time");
+  const usesParts = formData.has("start_date") || formData.has("start_time");
+  const starts_at = usesParts ? (date && startTime ? `${date}T${startTime}` : "") : s("starts_at");
+  const ends_at = usesParts ? (date && endTime ? `${date}T${endTime}` : "") : s("ends_at");
   return meetingSchema.safeParse({
     title: s("title"),
     meeting_type: s("meeting_type"),
     attendance: s("attendance") || "online",
     committee_name: s("committee_name"),
-    starts_at: s("starts_at"),
-    ends_at: s("ends_at"),
+    starts_at,
+    ends_at,
     location_name: s("location_name"),
     location_address: s("location_address"),
     virtual_url: s("virtual_url"),

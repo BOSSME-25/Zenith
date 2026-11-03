@@ -14,8 +14,29 @@ import {
   type Attendance,
   type MeetingFormValues,
   type MeetingType,
+  formatMeetingDate,
+  formatMeetingTime,
 } from "@/lib/meetings-shared";
 import { PostedBySelect } from "./PostedBySelect";
+
+/** Every 15 minutes from 6:00 AM to 10:00 PM, plus the saved time if it falls between. */
+function timeOptions(current: string): string[] {
+  const out: string[] = [];
+  for (let h = 6; h <= 22; h++) {
+    for (const m of [0, 15, 30, 45]) {
+      if (h === 22 && m > 0) break;
+      out.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+  if (current && !out.includes(current)) out.push(current);
+  return out.sort();
+}
+
+function timeLabel(hhmm: string): string {
+  const [h, m] = hhmm.split(":").map(Number);
+  const suffix = h >= 12 ? "PM" : "AM";
+  return `${h % 12 === 0 ? 12 : h % 12}:${String(m).padStart(2, "0")} ${suffix}`;
+}
 
 export function MeetingForm({
   values,
@@ -30,6 +51,23 @@ export function MeetingForm({
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
   const [type, setType] = useState<MeetingType>(values.meeting_type);
   const [attendance, setAttendance] = useState<Attendance>(values.attendance);
+  const [startDate, setStartDate] = useState(values.starts_at.slice(0, 10));
+  const [startTime, setStartTime] = useState(values.starts_at.slice(11, 16));
+  const [endTime, setEndTime] = useState(values.ends_at.slice(11, 16));
+
+  // A browser date-and-time box fills in the current time when someone picks
+  // only a date, which once posted a notice for the wrong hour. The time is a
+  // separate choice that starts empty, and this line shows how it will read.
+  const startDt = startDate && startTime ? new Date(`${startDate}T${startTime}:00-07:00`) : null;
+  const endDt = startDate && endTime ? new Date(`${startDate}T${endTime}:00-07:00`) : null;
+  const preview =
+    startDt && !Number.isNaN(startDt.getTime())
+      ? endDt && endDt > startDt
+        ? `${formatMeetingDate(startDt)}, ${formatMeetingTime(startDt, endDt)}`
+        : endDt
+          ? `${formatMeetingDate(startDt)}, ${formatMeetingTime(startDt)}. The end time is not after the start.`
+          : `${formatMeetingDate(startDt)}, ${formatMeetingTime(startDt)}`
+      : "";
 
   return (
     <form onSubmit={onSubmit} className="space-y-8" noValidate>
@@ -98,30 +136,62 @@ export function MeetingForm({
           </div>
         )}
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-3">
           <div>
-            <label className={labelClass} htmlFor="starts_at">Starts</label>
+            <label className={labelClass} htmlFor="start_date">Date</label>
             <input
-              id="starts_at"
-              name="starts_at"
-              type="datetime-local"
-              defaultValue={values.starts_at}
+              id="start_date"
+              name="start_date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
               className={inputClass}
             />
-            <FieldError message={fe.starts_at} />
           </div>
           <div>
-            <label className={labelClass} htmlFor="ends_at">Ends (optional)</label>
-            <input
-              id="ends_at"
-              name="ends_at"
-              type="datetime-local"
-              defaultValue={values.ends_at}
+            <label className={labelClass} htmlFor="start_time">Starts</label>
+            <select
+              id="start_time"
+              name="start_time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
               className={inputClass}
-            />
-            <FieldError message={fe.ends_at} />
+            >
+              <option value="">Choose a time</option>
+              {timeOptions(startTime).map((t) => (
+                <option key={t} value={t}>{timeLabel(t)}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="end_time">Ends (optional)</label>
+            <select
+              id="end_time"
+              name="end_time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">No end time</option>
+              {timeOptions(endTime).map((t) => (
+                <option key={t} value={t}>{timeLabel(t)}</option>
+              ))}
+            </select>
           </div>
         </div>
+        <FieldError message={fe.starts_at || fe.ends_at} />
+        <p
+          aria-live="polite"
+          className="rounded-xl border border-ion bg-ion-soft p-4 text-sm text-midnight"
+        >
+          {preview ? (
+            <>
+              <span className="font-semibold">The public page will say:</span> {preview}
+            </>
+          ) : (
+            "Pick the date and choose a start time. The page shows exactly how it will read."
+          )}
+        </p>
 
         <div>
           <label className={labelClass} htmlFor="attendance">How will people attend?</label>
