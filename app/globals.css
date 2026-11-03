@@ -13,7 +13,7 @@
   --color-eventide-75: #7199a9;
   --color-eventide-50: #a0bbc5;
   --color-eventide-25: #d0dde2;
-  --color-aurora: #6aad8d;
+  --color-aurora: #6aadbd;
   --color-aurora-75: #8fc1cd;
   --color-aurora-50: #b4d6de;
   --color-aurora-25: #daeaee;
@@ -125,4 +125,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+@keyframes zenith-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

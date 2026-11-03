@@ -44,7 +44,8 @@ export function InterestListCta() {
   if (dismissed) return null;
 
   return (
-    <div
+    <aside
+      aria-label="Interest list"
       className={cn(
         "fixed bottom-4 right-4 z-40 flex items-center gap-1 transition-all duration-300 sm:bottom-6 sm:right-6",
         visible ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-3",
@@ -72,6 +73,6 @@ export function InterestListCta() {
       >
         <X size={14} aria-hidden />
       </button>
-    </div>
+    </aside>
   );
 }

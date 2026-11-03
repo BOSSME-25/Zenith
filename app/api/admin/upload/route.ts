@@ -1,6 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
+import { MAX_PDF_BYTES, MEETING_FILE_RE } from "@/lib/meetings-shared";
 
 // Client-upload flow: the browser asks this route for a one-time upload token,
 // then uploads the file straight to Vercel Blob (bypassing the function body
@@ -14,9 +15,23 @@ export async function POST(request: Request): Promise<NextResponse> {
     const jsonResponse = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async () => {
+      onBeforeGenerateToken: async (pathname: string) => {
         if (!(await isAuthenticated())) {
           throw new Error("Unauthorized");
+        }
+        // Meeting documents are public records: PDF only, a fixed naming
+        // pattern, and no random suffix or overwrite, so an earlier version
+        // can never be replaced in storage by a later upload.
+        if (pathname.startsWith("meetings/")) {
+          if (!MEETING_FILE_RE.test(pathname)) {
+            throw new Error("That file name is not allowed for a meeting document.");
+          }
+          return {
+            allowedContentTypes: ["application/pdf"],
+            maximumSizeInBytes: MAX_PDF_BYTES,
+            addRandomSuffix: false,
+            allowOverwrite: false,
+          };
         }
         return {
           allowedContentTypes: [

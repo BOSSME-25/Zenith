@@ -12,7 +12,7 @@ A quick-start manual for managing zenithccprep.org.
 
 > **Right now:** email notifications aren't switched on yet, so no form sends you an email. Check **Families, Contacts, Community, Partners, Nominations, and Feedback** in the admin yourself. Details are in section 9. *Delete this note once email is live.*
 
-**If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to BOSS ME Technology at Zenith@bossmenow.com (section 12).
+**If it's in the sidebar, it's yours to manage.** If it's words or layout on a page, send it to BOSS ME Technology at Zenith@bossmenow.com (section 13).
 
 ---
 
@@ -43,7 +43,7 @@ Click any tile or any row to drill into the full list.
 
 ## 3. The admin sections
 
-The sidebar has eleven sections.
+The sidebar has thirteen sections.
 
 | Section | What it is |
 |---|---|
@@ -57,7 +57,9 @@ The sidebar has eleven sections.
 | **Updates** | The news posts that appear on the public **/updates** page (see section 5) |
 | **Nominations** | Student and alumni nominations waiting for your review (see section 7) |
 | **Comets** | Recognition profiles built from approved nominations (see section 7) |
+| **Meetings** | Public board meetings: post a notice, attach the agenda, upload minutes, cancel or move a meeting (see section 12) |
 | **Feedback** | Suggestions, corrections, and requested information that board members, faculty, and staff send from the sign-in page (see below) |
+| **Site settings** | Who can post notices, the physical posting location, the yearly schedule, and the enrollment pop-up (see section 12) |
 
 ### Feedback from your team
 
@@ -270,6 +272,8 @@ When someone submits a form, the site is designed to send two emails: a **confir
 | See which issue is leading the public page | **Newsletter** list: the row marked **Showing as latest** |
 | Download newsletter subscribers | **Subscribers** → Export CSV |
 | Review a Comet nomination | **Nominations** → Approve or Reject |
+| Post the next board meeting | **Meetings** → New meeting → upload the agenda → **Publish notice** (section 12) |
+| Upload approved minutes | **Meetings** → open the meeting → **Minutes** (section 12) |
 | See what the team has suggested | **Feedback** → New tab → **Mark done** when handled |
 | Put a Comet profile on the public page | **Comets** → Edit → tick the signed release → Save profile → **Publish** |
 | View survey responses | Google Drive → your Zenith form response sheet |
@@ -313,9 +317,66 @@ That section genuinely has no submissions yet. It isn't an error.
 
 ---
 
-## 12. What you can do yourself, and what to send to BOSS ME Technology
+## 12. Public meetings (for the Secretary)
 
-**Yours to do, with no developer needed:** everything in the sidebar: Updates, the Newsletter, reviewing and exporting submissions, and the Comets queue.
+Zenith's board meets in public, and Arizona law requires a notice and agenda to be posted at least 24 hours before each meeting (A.R.S. § 38-431.02). This section of the admin puts the notice on the public **Public Meetings** page, keeps every agenda and set of minutes in one place, and records when each thing was posted. You never edit code or ask the web team.
+
+The system enforces the 24-hour rule itself. If a notice is too close to the meeting, it will not publish, and it tells you to call the Board Chair.
+
+### One-time setup (Site settings)
+
+1. **Who can post notices.** Add the name of the Secretary and at least one more person, such as the Board Chair or Vice Chair, so a notice never depends on one person being away. Everyone picks their name from this list when they post, cancel, or upload, and the name goes into the log.
+2. **Where printed notices are posted.** The notice has to name a physical place as well as the website. The board designates the place by vote and records it in its minutes. Enter it only after that vote. Until then the page names the website only, and a red **Notice location not set** banner shows in the admin.
+3. **Accommodation requests** (optional, the board decides). Name or role, email or phone, and how many business days ahead.
+4. **Yearly meeting schedule.** Each August, upload the year's schedule as a PDF. That is the only yearly task. The archive groups itself by school year.
+
+### Post an upcoming meeting
+
+Do this at least 72 hours ahead if you can. Twenty-four hours is the legal minimum, not the target.
+
+1. Click **Meetings**, then **New meeting**.
+2. Choose the type. **Regular** is the standard monthly meeting.
+3. Enter the title, the date and start time, and where it is held. Add the online link, meeting ID, passcode, and dial-in if it is also online. **Times are Arizona time. Do not convert anything.**
+4. Choose your name under **Posted by** and click **Save as draft**. Nothing is public yet.
+5. On the next screen, under **Agenda**, upload the agenda as a PDF. If it is not ready, come back later. Do not publish without it unless the meeting is more than 48 hours away.
+6. Under **Notice**, choose your name and click **Publish notice**. The system records the date and time. If you see a red message about 24 hours, stop and call the Board Chair.
+7. Open the public page (the link is on the meeting) and check the date, time, place, and agenda link.
+8. Print the agenda and post it at the physical location named in the notice. The law needs both places.
+
+### After the meeting: minutes
+
+1. Within three working days, open the meeting and go to **Minutes**.
+2. Upload the draft minutes as a PDF and choose **Draft, pending board approval**. The page labels them that way.
+3. **Never upload executive session minutes or materials.** They stay confidential.
+4. When the board approves the minutes, open the same meeting, upload the approved PDF, choose **Approved by the board**, and enter the approval date. It replaces the draft; the draft stays on record.
+
+### Cancel, move, or correct
+
+- **Cancel:** open the meeting, type the reason, and click **Cancel meeting**. The page keeps the row and shows "Cancelled" with your reason. Take down the printed notice and post a cancellation notice.
+- **Move:** create and publish the meeting for the new date first. Then open the old one, pick the new meeting, and click **Move meeting**. The old row reads "Moved to [date]". Replace the printed notice.
+- **Change the time or place of a posted meeting:** edit it under **Details**. The same 24-hour rule applies, and the change is logged.
+- **Wrong file:** upload the right one with **Replace**, or use **Withdraw this file** under **Files on record** and give a reason.
+- **Nothing is ever deleted.** A replaced or withdrawn file stays in storage and in the log. The only thing you can remove is a draft that was never posted.
+
+### Past meetings
+
+To add meetings that already happened, choose **New meeting**, tick **This meeting already happened**, and attach the agenda and approved minutes. No notice is posted.
+
+### What the tabs and badges mean
+
+- **Upcoming:** drafts and posted meetings that have not happened yet. A red **Agenda missing** badge means a posted meeting is within 48 hours and has no agenda.
+- **Needs minutes:** meetings that have happened without approved minutes. A red **Minutes overdue** badge means three working days have passed with no minutes uploaded.
+- **Archive:** everything else.
+
+### The enrollment pop-up
+
+Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up that appears on public pages shortly after they load, once per visit. It is **Hidden** by default and shows nothing. Leave it hidden until the application or interest link works. Choose **Coming soon** to point people to the interest list, or **Open** once there is an application link. The suggested wording is a draft: Jay and the board approve every word, and every claim has to match the charter terms. It never appears on the interest list page.
+
+---
+
+## 13. What you can do yourself, and what to send to BOSS ME Technology
+
+**Yours to do, with no developer needed:** everything in the sidebar: Updates, the Newsletter, reviewing and exporting submissions, the Comets queue, and the Meetings tools.
 
 **Send to BOSS ME Technology (Zenith@bossmenow.com):** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and admin password resets.
 
@@ -337,4 +398,4 @@ Rule of thumb: if it's in the sidebar, it's yours. If it's words or layout on a 
 
 ---
 
-*Last updated: October 2026*
+*Last updated: November 2026*

@@ -44,7 +44,7 @@ export function CometPublishActions({
                 if (result.status === "error") setError(result.message);
               });
             }}
-            className="inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-white hover:bg-eventide disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-md bg-aurora px-3 py-1.5 text-xs font-semibold text-midnight hover:bg-eventide disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Eye size={14} aria-hidden /> Publish
           </button>

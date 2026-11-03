@@ -15,7 +15,7 @@ export function OpeningBadge() {
   if (pathname === "/") return null;
 
   return (
-    <div className="bg-ion-soft border-b border-ion">
+    <aside aria-label="Opening date" className="bg-ion-soft border-b border-ion">
       <div className="container-prose flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 py-2.5 text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-midnight px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white">
           <CalendarDays size={13} aria-hidden className="text-ion" />
@@ -25,6 +25,6 @@ export function OpeningBadge() {
           Founding 9th grade class · Tuition-free public charter
         </span>
       </div>
-    </div>
+    </aside>
   );
 }

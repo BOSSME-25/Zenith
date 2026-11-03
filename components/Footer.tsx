@@ -29,6 +29,7 @@ const FOOTER_LINKS = [
   { href: "/updates", label: "Updates" },
   { href: "/newsletter", label: "Newsletter" },
   { href: "/alumni", label: "Comets" },
+  { href: "/public-meetings", label: "Public Meetings" },
   { href: "/get-involved", label: "Get Involved" },
   { href: "/contact", label: "Contact" },
 ];
@@ -91,13 +92,13 @@ export function Footer() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={label}
-                    className="group inline-flex items-center gap-3 text-sm text-white/85 hover:text-ion"
+                    aria-label={`${label} ${handle}`}
+                    className="group inline-flex max-w-full items-center gap-3 text-sm text-white/85 hover:text-ion"
                   >
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-midnight-75/40 ring-1 ring-ion/30 transition-colors group-hover:bg-ion group-hover:text-midnight">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-midnight-75/40 ring-1 ring-ion/30 transition-colors group-hover:bg-ion group-hover:text-midnight">
                       <Icon size={18} />
                     </span>
-                    <span className="font-medium">{handle}</span>
+                    <span className="min-w-0 break-all font-medium">{handle}</span>
                   </Link>
                 </li>
               ))}

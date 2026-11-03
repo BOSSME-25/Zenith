@@ -20,6 +20,7 @@ const STATIC_ROUTES: Array<{
   { path: "/newsletter", changeFrequency: "monthly", priority: 0.7 },
   { path: "/alumni", changeFrequency: "weekly", priority: 0.7 },
   { path: "/alumni/nominate", changeFrequency: "yearly", priority: 0.5 },
+  { path: "/public-meetings", changeFrequency: "weekly", priority: 0.6 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -51,6 +52,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: issue.updated_at,
         changeFrequency: "yearly",
         priority: 0.5,
+      });
+    }
+    const { rows: meetings } = await safeSql<{ slug: string; updated_at: Date }>`
+      SELECT slug, updated_at FROM meetings WHERE status <> 'draft' ORDER BY starts_at DESC
+    `;
+    for (const meeting of meetings) {
+      entries.push({
+        url: `${SITE_URL}/public-meetings/${meeting.slug}`,
+        lastModified: meeting.updated_at,
+        changeFrequency: "monthly",
+        priority: 0.4,
       });
     }
   } catch {
