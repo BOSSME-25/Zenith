@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 
 export const dynamic = "force-dynamic";
 
-/** Fall 2027 opening, four-year cohort. */
+/** August 2027 opening, four-year cohort. */
 const FIRST_GRADUATING_CLASS = 2031;
 
 export const metadata = {
@@ -78,7 +78,7 @@ export default async function AlumniPage({
 
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Comets"
         title="Comets in Motion. Comets who've landed."
         description="Every Zenith scholar is going somewhere. This is where we mark the milestones along the way — college credit earned early, certifications completed, and the paths our graduates build after they leave us."
@@ -180,7 +180,7 @@ export default async function AlumniPage({
               Our first class graduates in {FIRST_GRADUATING_CLASS}.
             </p>
             <p className="mt-3 leading-relaxed text-midnight-75">
-              Zenith opens with its founding 9th grade class in Fall 2027. When that cohort walks
+              Zenith opens with its founding 9th grade class in August 2027. When that cohort walks
               across the stage, this is where you&apos;ll find them — in college, in apprenticeships,
               and in careers across Arizona.
             </p>

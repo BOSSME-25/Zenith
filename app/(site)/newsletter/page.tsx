@@ -17,7 +17,7 @@ const HIGHLIGHTS = [
   {
     icon: Sparkles,
     title: "Milestones first",
-    text: "Charter progress, founding-team news, and key dates — straight to your inbox.",
+    text: "Enrollment news, founding-team updates, and key dates, straight to your inbox.",
   },
   {
     icon: Users,
@@ -70,7 +70,7 @@ export default async function NewsletterPage() {
     // No published issue yet — coming-soon page with signup.
     return (
       <>
-        <Section
+        <Section titleAs="h1"
           eyebrow="Coming Soon"
           title="The Zenith Newsletter."
           description="We're putting together a newsletter to keep families, neighbors, and partners close to the journey as we prepare to open Zenith in Maryvale. Be the first to know when it launches."

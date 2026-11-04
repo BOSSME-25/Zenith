@@ -158,7 +158,7 @@ export async function sendFamilyEmails(data: FamilyEmail) {
     "Thank you for joining the interest list",
     `<p>Hi ${escapeHtml(data.parent_name.split(" ")[0] || data.parent_name)},</p>
      <p>Thank you for adding your family to the Zenith Interest List. We're honored that you're considering Zenith for ${escapeHtml(data.student_name)}.</p>
-     <p>Zenith College and Career Prep is currently in the application phase with the Arizona State Board for Charter Schools. As our charter application progresses, we'll keep you informed about open houses, community forums, the enrollment timeline, and other milestones — by your preferred contact method (${escapeHtml(data.preferred_contact)}).</p>
+     <p>Zenith College and Career Prep has been approved by the Arizona State Board for Charter Schools, and we are enrolling 9th graders for August 2027. Zenith opens with 9th grade only and adds one grade each year. Details on how to enroll are coming soon, and we'll share them with you first, along with open houses, community forums, and other milestones, by your preferred contact method (${escapeHtml(data.preferred_contact)}).</p>
      <p>In the meantime, share Zenith with a friend or visit our website to take the Community Survey and help us design a school worthy of Maryvale.</p>
      ${closingSignature}`,
   );
@@ -197,7 +197,7 @@ export async function sendCommunityEmails(data: CommunityEmail) {
   const confirmHtml = shell(
     "Thank you for standing with Zenith",
     `<p>Hi ${escapeHtml(data.name.split(" ")[0] || data.name)},</p>
-     <p>Thank you for joining the Zenith community of supporters. Charter schools rise because communities show up, and your name on this list is part of how we demonstrate demand to the Arizona State Board for Charter Schools.</p>
+     <p>Thank you for joining the Zenith community of supporters. Charter schools rise because communities show up, and your name on this list is part of how we show that Maryvale is behind this school.</p>
      <p>We'll be in touch with the kinds of updates you asked for. If you'd like to do more — share Zenith with a neighbor, invite us to a community gathering, or simply reply to this email with ideas.</p>
      ${closingSignature}`,
   );
@@ -236,7 +236,7 @@ export async function sendPartnerEmails(data: PartnerEmail) {
     "Thank you for reaching out about partnership",
     `<p>Hi ${escapeHtml(data.contact_name.split(" ")[0] || data.contact_name)},</p>
      <p>Thank you for your interest in partnering with Zenith College and Career Prep. Real-world experience — through internships, mentorship, and community partnerships — is one of the pillars of what we're building. Partners like ${escapeHtml(data.organization)} make that possible.</p>
-     <p>Our team will review your inquiry and follow up to schedule a conversation about how we might work together as Zenith progresses through charter authorization.</p>
+     <p>Our team will review your inquiry and follow up to schedule a conversation about how we might work together as Zenith prepares to open in August 2027.</p>
      ${closingSignature}`,
   );
   const results = await Promise.all([
@@ -285,7 +285,7 @@ export async function sendSurveyEmails(data: SurveyEmail) {
       "Thank you for your input",
       `<p>Hi${data.name ? ` ${escapeHtml(data.name.split(" ")[0] || data.name)}` : ""},</p>
        <p>Thank you for taking the Zenith Community Survey. Your answers help us design a high school that reflects what Maryvale families actually want and need.</p>
-       <p>We'll share what we hear back with the community as we move through charter authorization.</p>
+       <p>We'll share what we hear back with the community as we get ready to open.</p>
        ${closingSignature}`,
     );
     tasks.push(send({ to: data.email, subject: "Thank you for your input on Zenith", html: confirmHtml }));

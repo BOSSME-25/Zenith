@@ -85,7 +85,7 @@ export async function submitPartnerForm(
     return {
       status: "success",
       message:
-        "Thank you for reaching out. We'll follow up to explore how we might partner as Zenith progresses through charter authorization.",
+        "Thank you for reaching out. We'll follow up to explore how we might partner as Zenith prepares to open in August 2027.",
     };
   } catch (err) {
     return {

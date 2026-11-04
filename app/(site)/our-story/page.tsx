@@ -13,10 +13,10 @@ export const metadata = {
 export default function OurStoryPage() {
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Our Story"
         title="A high school designed with Maryvale, for Maryvale."
-        description="Zenith College and Career Prep is being built with the community it will serve — through student surveys, focus groups, and conversations with families and local leaders. We&apos;re currently in the application phase with the Arizona State Board for Charter Schools."
+        description="Zenith College and Career Prep is being built with the community it will serve — through student surveys, focus groups, and conversations with families and local leaders. The Arizona State Board for Charter Schools has approved Zenith, and we open in August 2027."
         bg="white"
       >
         <Reveal className="max-w-3xl">
@@ -149,7 +149,7 @@ export default function OurStoryPage() {
             {
               n: "03",
               t: "Open",
-              b: "Pending charter authorization, Zenith opens in Maryvale with 9th grade in Fall 2027 and grows one grade per year.",
+              b: "Approved by the Arizona State Board for Charter Schools, Zenith opens in Maryvale with 9th grade in August 2027 and grows one grade per year.",
             },
           ].map((s) => (
             <li key={s.n} className="rounded-2xl bg-ion-soft border border-ion p-7">

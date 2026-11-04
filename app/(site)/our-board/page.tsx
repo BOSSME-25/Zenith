@@ -135,7 +135,7 @@ const SHOW_WHY_I_JOINED = false;
 export default function OurBoardPage() {
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Our Board"
         title="A founding board built for the work ahead."
         description="Nine community-rooted leaders bringing operational, legal, financial, instructional, and partnership expertise to Zenith&apos;s charter application and launch."

@@ -370,7 +370,7 @@ To add meetings that already happened, choose **New meeting**, tick **This meeti
 
 ### The enrollment pop-up
 
-Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up that appears on public pages shortly after they load, once per visit. It is **Hidden** by default and shows nothing. Leave it hidden until the application or interest link works. Choose **Coming soon** to point people to the interest list, or **Open** once there is an application link. The suggested wording is a draft: Jay and the board approve every word, and every claim has to match the charter terms. It never appears on the interest list page.
+Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up that appears on public pages shortly after they load, once per visit. It is **Hidden** by default and shows nothing. Now that Zenith is approved, **Coming soon** is the right choice: it points people to the interest list. Switch to **Open** once the application link works, and put that link in the button. The suggested wording is a draft: Jay and the board approve every word, and every claim has to match the charter terms. It never appears on the interest list page.
 
 ---
 

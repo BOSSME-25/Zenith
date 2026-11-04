@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 export const metadata = {
   title: "Frequently Asked Questions",
   description:
-    "Answers to the questions Maryvale families ask most about Zenith College and Career Prep — enrollment, tuition, location, academics, and the Fall 2027 opening.",
+    "Answers to the questions Maryvale families ask most about Zenith College and Career Prep: enrollment, tuition, location, academics, and the August 2027 opening.",
 };
 
 type Faq = {
@@ -17,8 +17,12 @@ type Faq = {
 
 const FAQS: Faq[] = [
   {
+    q: "Is Zenith approved to open?",
+    a: "Yes. The Arizona State Board for Charter Schools has approved Zenith College and Career Prep.",
+  },
+  {
     q: "When will Zenith open?",
-    a: "Target opening Fall 2027, pending charter authorization from the Arizona State Board for Charter Schools.",
+    a: "Zenith opens in August 2027 with its founding 9th grade class.",
   },
   {
     q: "Is Zenith a tuition-free public school?",
@@ -26,19 +30,19 @@ const FAQS: Faq[] = [
   },
   {
     q: "What grades will Zenith serve?",
-    a: "9th through 12th grade, adding one grade per year starting with 9th grade in Fall 2027.",
+    a: "9th through 12th grade. Zenith opens with 9th grade only in August 2027 and adds one grade per year.",
   },
   {
     q: "Where will Zenith be located?",
-    a: "In the Maryvale community of Phoenix. Specific site to be confirmed after authorization.",
+    a: "In the Maryvale community of Phoenix. The specific school site will be announced here once it is confirmed.",
   },
   {
     q: "How do I enroll my child?",
-    a: "Join the Interest List now — you'll be the first notified when enrollment opens after authorization.",
+    a: "Zenith is enrolling 9th graders for August 2027. Details on how to enroll are coming soon. Join the Interest List now and you will be the first to hear.",
   },
   {
     q: "How can I support Zenith?",
-    a: "Take the survey, join the interest list, or reach out about partnering. Every action helps our charter application.",
+    a: "Take the survey, join the interest list, or reach out about partnering. Every action helps us build Zenith with Maryvale and get ready for opening day.",
   },
   {
     q: "Who is leading Zenith?",
@@ -102,10 +106,10 @@ export default function FaqPage() {
   return (
     <>
       <JsonLd data={FAQ_SCHEMA} />
-      <Section
+      <Section titleAs="h1"
         eyebrow="FAQ"
         title="Answers for families and community."
-        description="Questions families and neighbors ask most often as Zenith moves through charter authorization. Don&apos;t see your question? Reach out — we read every message."
+        description="Questions families and neighbors ask most often as Zenith prepares to open. Don&apos;t see your question? Reach out. We read every message."
         bg="white"
       />
 

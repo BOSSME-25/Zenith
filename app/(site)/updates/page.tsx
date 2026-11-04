@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 export const metadata = {
   title: "Updates",
   description:
-    "News and milestones from Zenith College and Career Prep — charter authorization progress, community events, and school-design updates from Maryvale.",
+    "News and milestones from Zenith College and Career Prep: enrollment news, community events, and school updates from Maryvale.",
 };
 export const dynamic = "force-dynamic";
 
@@ -46,7 +46,7 @@ export default async function UpdatesPage() {
 
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Updates"
         title="News from Zenith."
         description="Milestones from charter application, community engagement, founding-board work, and what&apos;s next as we prepare to open Zenith in Maryvale."

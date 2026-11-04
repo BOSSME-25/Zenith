@@ -10,10 +10,10 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Contact"
         title="We&apos;d love to hear from you."
-        description="Questions about Zenith, the charter application, partnership ideas, or anything else — drop us a note and we&apos;ll get back to you."
+        description="Questions about Zenith, enrollment, partnership ideas, or anything else? Drop us a note and we&apos;ll get back to you."
         bg="white"
       />
       <Section bg="ion-soft">
