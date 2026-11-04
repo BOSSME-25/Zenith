@@ -172,6 +172,7 @@ export default async function EditMeetingPage({
               posters={posters}
               submitLabel="Publish notice"
               pendingLabel="Publishing…"
+              confirmText={`Post this notice?\n\n${m.title}\n${formatMeetingDate(m.starts_at)}\n${formatMeetingTime(m.starts_at, m.ends_at)}\n\nCheck the date and time. This is what the public will see.`}
             />
             {canDiscard && (
               <div className="border-t border-ion pt-5">
