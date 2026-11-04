@@ -13,7 +13,7 @@ export const metadata = {
 export default function NominatePage() {
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Nominate"
         title="Tell us about a Comet."
         description="Students, staff, families, and community members can all nominate. You can nominate yourself, too."

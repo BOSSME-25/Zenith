@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ApprovalBanner } from "@/components/ApprovalBanner";
 import Image from "next/image";
 import { ArrowRight, GraduationCap, Users, Briefcase, Compass, HandHeart, Flag, TrendingUp, BarChart2, Star, CalendarDays } from "lucide-react";
 import { Section } from "@/components/Section";
@@ -113,6 +114,7 @@ const VALUES = [
 export default function Home() {
   return (
     <>
+      <ApprovalBanner />
       <section className="relative overflow-hidden bg-midnight text-white">
         <div className="container-prose relative py-20 md:py-28 lg:py-32 grid gap-12 lg:grid-cols-[1fr_1fr] items-center">
           <div className="max-w-2xl">
@@ -127,7 +129,7 @@ export default function Home() {
               <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="inline-flex items-center gap-2 text-2xl md:text-3xl font-bold tracking-tight text-white">
                   <CalendarDays size={24} aria-hidden className="text-ion" />
-                  Opening Fall 2027
+                  Opening August 2027
                 </span>
                 <span className="text-lg md:text-xl font-medium text-ion">
                   with our founding 9th grade class
@@ -135,7 +137,7 @@ export default function Home() {
               </p>
               <p className="mt-3 text-sm md:text-base leading-relaxed text-ion/85">
                 A tuition-free public charter high school, adding one grade each year through 12th.
-                Pending authorization by the Arizona State Board for Charter Schools.
+                Approved by the Arizona State Board for Charter Schools.
               </p>
             </div>
 
@@ -362,7 +364,7 @@ export default function Home() {
             </h3>
             <p className="mt-3 text-midnight-75 max-w-2xl">
               Add your name to the Interest List or share what matters most to your family. Every voice
-              strengthens our application to the Arizona State Board for Charter Schools.
+              helps us build Zenith with Maryvale and get ready for opening day.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">

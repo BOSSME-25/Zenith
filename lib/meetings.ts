@@ -183,10 +183,10 @@ export const getNondiscrimination = () =>
 
 export const DEFAULT_POPUP: EnrollmentPopup = enrollmentPopupSchema.parse({
   state: "hidden",
-  eyebrow: "OPENING AUGUST 2027",
-  headline: "Our founding class is on the way",
-  body: "Enrollment for ninth graders opens soon. Tell us you're interested and we'll reach you first.",
-  ctaLabel: "Get on the list",
+  eyebrow: "APPROVED. OPENING AUGUST 2027",
+  headline: "Join our founding 9th grade class",
+  body: "Zenith College and Career Prep is approved to open in Maryvale in August 2027. Details on how to enroll are coming soon. Join the list and we'll tell you first.",
+  ctaLabel: "Join the interest list",
   ctaUrl: "/get-involved#family",
 });
 

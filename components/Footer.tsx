@@ -53,7 +53,7 @@ export function Footer() {
             <Logo variant="full-light" width={220} height={64} className="h-14 w-auto" />
             <p className="mt-5 text-sm leading-relaxed text-white/75 max-w-xs">
               An early college STEAM high school designed with the Maryvale community of Phoenix.
-              Currently in the application phase with the Arizona State Board for Charter Schools.
+              Approved by the Arizona State Board for Charter Schools. Enrolling 9th graders for August 2027.
             </p>
           </div>
           <div>
@@ -71,7 +71,7 @@ export function Footer() {
           <div>
             <p className="eyebrow text-ion">Stay Connected</p>
             <p className="mt-4 text-sm text-white/85 leading-relaxed">
-              Want to stay informed as Zenith progresses through charter authorization?
+              Want to be first to hear when enrollment details are announced?
             </p>
             <Link
               href="/get-involved#family"

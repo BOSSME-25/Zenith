@@ -16,8 +16,8 @@ export function SurveyForm() {
         <p className="eyebrow text-eventide">Thank you</p>
         <p className="mt-3 text-xl font-semibold text-midnight">{state.message}</p>
         <p className="mt-3 text-midnight-75">
-          Your answers are now part of how we design Zenith. We&apos;ll share what we hear back as we move
-          through charter authorization.
+          Your answers are now part of how we design Zenith. We&apos;ll share what we hear back as we get
+          ready to open.
         </p>
       </div>
     );

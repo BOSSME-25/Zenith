@@ -17,7 +17,7 @@ const AUDIENCES = [
     href: "#family",
     icon: Users,
     label: "Future Families",
-    line: "Join the interest list and be first to know when enrollment opens.",
+    line: "Join the interest list and be first to hear how to enroll.",
   },
   {
     href: "#survey",
@@ -42,7 +42,7 @@ const AUDIENCES = [
 export default function GetInvolvedPage() {
   return (
     <>
-      <Section
+      <Section titleAs="h1"
         eyebrow="Get Involved"
         title="Help us open Zenith for Maryvale."
         description="Charter schools rise because communities show up. Pick the path that fits you below."
@@ -81,7 +81,7 @@ export default function GetInvolvedPage() {
             Join the Zenith Interest List.
           </h2>
           <p className="mt-3 text-midnight-75">
-            Get notified the moment enrollment opens.
+            Be the first to hear how to enroll. Zenith is enrolling 9th graders for August 2027.
           </p>
           <div className="mt-8">
             <FamilyForm />
@@ -96,7 +96,7 @@ export default function GetInvolvedPage() {
             Tell us what matters most.
           </h2>
           <p className="mt-3 text-midnight-75">
-            Your answers shape Zenith&apos;s model and strengthen our charter application.
+            Your answers shape Zenith&apos;s model as we get ready to open.
             Available in English and Spanish.
           </p>
           <div className="mt-8 rounded-xl overflow-hidden bg-white border border-ion">
