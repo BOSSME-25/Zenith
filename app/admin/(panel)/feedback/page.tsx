@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { FeedbackActions } from "@/components/admin/FeedbackActions";
 import {
@@ -43,6 +44,7 @@ export default async function AdminFeedbackPage({
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
+  await requireSection("feedback");
   const { status } = await searchParams;
   const active = FILTERS.some((f) => f.key === status) ? (status as string) : "new";
 

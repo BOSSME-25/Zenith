@@ -7,7 +7,6 @@ import { type ActionState, idleState } from "@/lib/validators";
 import { FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
 import { MAX_PDF_BYTES, type DocKind } from "@/lib/meetings-shared";
-import { PostedBySelect } from "./PostedBySelect";
 
 /**
  * Uploads a PDF straight to Blob under the standard file name, then records it
@@ -18,14 +17,12 @@ export function DocumentUploader({
   meetingId,
   kind,
   fileBaseName,
-  posters,
   submitLabel,
 }: {
   meetingId: string;
   kind: DocKind;
   /** e.g. zenith-board-agenda-2026-11-12 or ...-v2, already worked out by the server. */
   fileBaseName: string;
-  posters: string[];
   submitLabel: string;
 }) {
   const [state, setState] = useState<ActionState>(idleState);
@@ -148,9 +145,6 @@ export function DocumentUploader({
         </>
       )}
 
-      <div className="max-w-sm">
-        <PostedBySelect posters={posters} id={`posted_by_${kind}_${fileBaseName}`} />
-      </div>
       <SubmitButton
         label={submitLabel}
         pendingLabel="Uploading…"

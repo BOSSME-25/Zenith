@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import {
   safeSql,
   safeQuery,
@@ -10,7 +9,7 @@ import {
   SUBMISSIONS_UNAVAILABLE_MESSAGE,
 } from "@/lib/db";
 import { guardSubmission } from "@/lib/bot-guard";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import { sendNominationEmails, sendMentorConnectEmail } from "@/lib/email";
 import {
   type ActionState,
@@ -28,11 +27,8 @@ import {
 /** Minimum time a human plausibly needs to complete the form. */
 const MIN_SUBMISSION_MS = 3000;
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) {
-    redirect("/admin/login");
-  }
-}
+const assertNominations = () => requireSection("nominations");
+const assertComets = () => requireSection("comets");
 
 // ---------------------------------------------------------------------------
 // Public: nomination submission
@@ -184,7 +180,7 @@ export async function submitMentorConnect(
 export async function approveNomination(
   id: number,
 ): Promise<{ ok: boolean; name?: string }> {
-  await assertAdmin();
+  await assertNominations();
   if (!isDbConfigured()) return { ok: false };
 
   const { rows } = await safeSql<{
@@ -223,7 +219,7 @@ export async function approveNomination(
 }
 
 export async function rejectNomination(id: number, reason: string): Promise<ActionState> {
-  await assertAdmin();
+  await assertNominations();
   const notes = reason.trim();
   if (notes.length < 3) {
     return { status: "error", message: "Please give a short reason for rejecting this nomination." };
@@ -241,7 +237,7 @@ export async function rejectNomination(id: number, reason: string): Promise<Acti
 }
 
 export async function deleteNomination(id: number): Promise<void> {
-  await assertAdmin();
+  await assertNominations();
   if (isDbConfigured()) {
     await safeSql`DELETE FROM nominations WHERE id = ${id}`;
   }
@@ -278,7 +274,7 @@ export async function saveCometProfile(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  await assertComets();
   const id = Number(formData.get("id"));
   if (!Number.isFinite(id)) return { status: "error", message: "Missing profile id." };
 
@@ -350,7 +346,7 @@ export async function saveCometProfile(
  * these profiles include minors.
  */
 export async function publishComet(id: number): Promise<ActionState> {
-  await assertAdmin();
+  await assertComets();
   if (!isDbConfigured()) {
     return { status: "error", message: "Database is not configured." };
   }
@@ -382,7 +378,7 @@ export async function publishComet(id: number): Promise<ActionState> {
 }
 
 export async function unpublishComet(id: number): Promise<void> {
-  await assertAdmin();
+  await assertComets();
   if (isDbConfigured()) {
     await safeSql`UPDATE comet_profiles SET published_at = NULL, updated_at = NOW() WHERE id = ${id}`;
   }
@@ -391,7 +387,7 @@ export async function unpublishComet(id: number): Promise<void> {
 }
 
 export async function deleteCometProfile(id: number): Promise<void> {
-  await assertAdmin();
+  await assertComets();
   if (isDbConfigured()) {
     await safeSql`DELETE FROM comet_profiles WHERE id = ${id}`;
   }

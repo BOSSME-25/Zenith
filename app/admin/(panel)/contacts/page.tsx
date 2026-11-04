@@ -1,4 +1,5 @@
 import { safeSql } from "@/lib/db";
+import { requireSection } from "@/lib/auth";
 import { formatSubmittedAt } from "@/lib/format";
 import {
   SubmissionTable,
@@ -30,6 +31,7 @@ function truncate(s: string, n: number): string {
 }
 
 export default async function AdminContactsPage() {
+  await requireSection("contacts");
   const { rows } = await safeSql<Row>`SELECT * FROM contacts ORDER BY submitted_at DESC LIMIT 1000`;
   const data: SubmissionRow[] = rows.map((r) => ({
     id: r.id,

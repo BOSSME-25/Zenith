@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { Pencil, ShieldAlert } from "lucide-react";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { CometPublishActions } from "@/components/admin/CometPublishActions";
@@ -19,6 +20,7 @@ type Row = {
 };
 
 export default async function AdminCometsPage() {
+  await requireSection("comets");
   // comet_profiles does not exist until /api/init has run on this deployment.
   let rows: Row[] = [];
   let tableMissing = false;

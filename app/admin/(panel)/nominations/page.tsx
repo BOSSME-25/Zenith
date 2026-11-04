@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { NominationActions } from "@/components/admin/NominationActions";
@@ -48,6 +49,7 @@ export default async function AdminNominationsPage({
 }: {
   searchParams: Promise<{ status?: string; approved?: string }>;
 }) {
+  await requireSection("nominations");
   const { status, approved } = await searchParams;
   const active = FILTERS.some((f) => f.key === status) ? (status as string) : "pending";
 

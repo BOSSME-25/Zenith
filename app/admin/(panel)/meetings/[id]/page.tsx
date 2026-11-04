@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import {
   type DocRow,
   getAdminMeeting,
   getNoticeLocation,
-  getPosters,
   listAdminMeetings,
 } from "@/lib/meetings";
 import {
@@ -87,12 +87,12 @@ export default async function EditMeetingPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ created?: string }>;
 }) {
+  await requireSection("meetings");
   const { id } = await params;
   const { created } = await searchParams;
   const data = await getAdminMeeting(id);
   if (!data) notFound();
   const { meeting: m, docs, audit } = data;
-  const posters = await getPosters();
   const { location: noticeLocation } = await getNoticeLocation();
   const dateKey = phoenixDateKey(m.starts_at);
   const eff = effectiveStatus(m);
@@ -169,7 +169,6 @@ export default async function EditMeetingPage({
             <MeetingActionForm
               action={publishNotice}
               hidden={{ id: m.id }}
-              posters={posters}
               submitLabel="Publish notice"
               pendingLabel="Publishing…"
               confirmText={`Post this notice?\n\n${m.title}\n${formatMeetingDate(m.starts_at)}\n${formatMeetingTime(m.starts_at, m.ends_at)}\n\nCheck the date and time. This is what the public will see.`}
@@ -182,8 +181,7 @@ export default async function EditMeetingPage({
                 <MeetingActionForm
                   action={discardDraft}
                   hidden={{ id: m.id }}
-                  posters={posters}
-                  submitLabel="Discard this draft"
+                      submitLabel="Discard this draft"
                   tone="danger"
                   confirmText="Discard this draft? It was never public."
                 />
@@ -234,8 +232,7 @@ export default async function EditMeetingPage({
                   <MeetingActionForm
                     action={cancelMeeting}
                     hidden={{ id: m.id }}
-                    posters={posters}
-                    submitLabel="Cancel meeting"
+                          submitLabel="Cancel meeting"
                     tone="danger"
                     confirmText="Cancel this meeting? The public page will show it as cancelled."
                   >
@@ -256,8 +253,7 @@ export default async function EditMeetingPage({
                     <MeetingActionForm
                       action={moveMeeting}
                       hidden={{ id: m.id }}
-                      posters={posters}
-                      submitLabel="Move meeting"
+                              submitLabel="Move meeting"
                       confirmText="Mark this meeting as moved to the one you picked?"
                     >
                       <div>
@@ -308,7 +304,7 @@ export default async function EditMeetingPage({
       </Card>
 
       <Card title="Details">
-        <MeetingForm values={formValues} posters={posters} mode="edit" />
+        <MeetingForm values={formValues} mode="edit" />
       </Card>
 
       <Card title="Agenda">
@@ -321,7 +317,6 @@ export default async function EditMeetingPage({
           meetingId={m.id}
           kind="agenda"
           fileBaseName={nextBase(docs, "agenda", dateKey)}
-          posters={posters}
           submitLabel={activeOf("agenda").length > 0 ? "Replace agenda" : "Upload agenda"}
         />
       </Card>
@@ -346,7 +341,6 @@ export default async function EditMeetingPage({
           meetingId={m.id}
           kind="minutes"
           fileBaseName={nextBase(docs, "minutes", dateKey)}
-          posters={posters}
           submitLabel={activeOf("minutes").length > 0 ? "Replace minutes" : "Upload minutes"}
         />
       </Card>
@@ -364,15 +358,13 @@ export default async function EditMeetingPage({
             meetingId={m.id}
             kind="packet"
             fileBaseName={nextBase(docs, "packet", dateKey)}
-            posters={posters}
-            submitLabel="Add board packet"
+              submitLabel="Add board packet"
           />
           <div className="border-t border-ion pt-6">
             <DocumentUploader
               meetingId={m.id}
               kind="other"
               fileBaseName={nextBase(docs, "other", dateKey)}
-              posters={posters}
               submitLabel="Add other document"
             />
           </div>
@@ -411,8 +403,7 @@ export default async function EditMeetingPage({
                       <MeetingActionForm
                         action={withdrawDocument}
                         hidden={{ doc_id: d.id }}
-                        posters={posters}
-                        submitLabel="Withdraw file"
+                                  submitLabel="Withdraw file"
                         tone="danger"
                         confirmText="Withdraw this file from the public page?"
                       >

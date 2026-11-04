@@ -329,6 +329,25 @@ const CREATE_STATEMENTS = [
     updated_by TEXT,
     updated_at TIMESTAMPTZ DEFAULT NOW()
   )`,
+  // Named logins for the admin. The developer login (ADMIN_PASSWORD) is not a
+  // row here. Passwords are stored only as salted scrypt hashes.
+  `CREATE TABLE IF NOT EXISTS admin_users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    title TEXT,
+    role TEXT NOT NULL CHECK (role IN ('school','board')),
+    password_hash TEXT NOT NULL,
+    must_change_password BOOLEAN NOT NULL DEFAULT TRUE,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    session_version INTEGER NOT NULL DEFAULT 1,
+    failed_attempts INTEGER NOT NULL DEFAULT 0,
+    locked_until TIMESTAMPTZ,
+    last_login_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    created_by TEXT,
+    password_changed_at TIMESTAMPTZ
+  )`,
   `CREATE INDEX IF NOT EXISTS meetings_starts_idx ON meetings (starts_at DESC)`,
   `CREATE INDEX IF NOT EXISTS meeting_documents_meeting_idx ON meeting_documents (meeting_id, kind)`,
   `CREATE INDEX IF NOT EXISTS meeting_audit_meeting_idx ON meeting_audit (meeting_id, at DESC)`,

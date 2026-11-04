@@ -1,9 +1,11 @@
 import { UpdateForm } from "@/components/admin/UpdateForm";
+import { requireSection } from "@/lib/auth";
 import { createUpdate } from "@/app/actions/update";
 
 export const metadata = { title: "New Update" };
 
-export default function NewUpdatePage() {
+export default async function NewUpdatePage() {
+  await requireSection("updates");
   return (
     <div>
       <header className="mb-6">

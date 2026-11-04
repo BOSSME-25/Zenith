@@ -90,8 +90,6 @@ export const schoolYearSchema = z.object({
   day: z.number().int().min(1).max(31).default(1),
 });
 
-export const postersSchema = z.array(z.string().trim().min(1).max(80)).max(20);
-
 export const schedulePdfSchema = z.object({
   url: z.string(),
   size: z.number().nullable().default(null),
@@ -126,7 +124,6 @@ export type SettingKey =
   | "notice_location"
   | "accommodation_contact"
   | "school_year_start"
-  | "posters"
   | "schedule_pdf"
   | "nondiscrimination"
   | "enrollment_popup";
@@ -161,7 +158,6 @@ export async function saveSetting(key: SettingKey, value: unknown, actor: string
   `;
 }
 
-export const getPosters = () => getSetting("posters", postersSchema, []);
 export const getNoticeLocation = () =>
   getSetting("notice_location", noticeLocationSchema, { location: "" });
 export const getAccommodation = () =>

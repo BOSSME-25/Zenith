@@ -1,17 +1,14 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { isDbConfigured } from "@/lib/db";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import { type ActionState, fieldErrorsFromZod } from "@/lib/validators";
 import {
   accommodationSchema,
   enrollmentPopupSchema,
-  getPosters,
   noticeLocationSchema,
   nondiscriminationSchema,
-  postersSchema,
   saveSetting,
   schoolYearSchema,
   schedulePdfSchema,
@@ -24,30 +21,17 @@ import {
   isBlobUrl,
 } from "@/lib/meetings-shared";
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) redirect("/admin/login");
-}
+const assertAdmin = () => requireSection("settings");
 
 const NO_DB: ActionState = {
   status: "error",
   message: "The database is not configured, so settings cannot be saved.",
 };
 
-/**
- * Settings change what the public sees, so each save names a person from the
- * posting list. The list itself is the one exception: it has to be set before
- * anyone can be named.
- */
-async function requireActor(formData: FormData): Promise<{ actor: string } | ActionState> {
-  const actor = String(formData.get("posted_by") ?? "").trim();
-  const posters = await getPosters();
-  if (!actor || !posters.includes(actor)) {
-    return {
-      status: "error",
-      message: "Choose your name under Posted by. If the list is empty, add names in the first box on this page.",
-    };
-  }
-  return { actor };
+/** Settings change what the public sees, so each save is logged under the signed-in person. */
+async function requireActor(): Promise<{ actor: string }> {
+  const session = await requireSection("settings");
+  return { actor: session.actor };
 }
 
 function refresh() {
@@ -58,37 +42,13 @@ function refresh() {
 
 const isState = (v: { actor: string } | ActionState): v is ActionState => "status" in v;
 
-export async function savePosters(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  await assertAdmin();
-  if (!isDbConfigured()) return NO_DB;
-  const names = String(formData.get("names") ?? "")
-    .split("\n")
-    .map((n) => n.trim())
-    .filter(Boolean);
-  const unique = Array.from(new Set(names));
-  const parsed = postersSchema.safeParse(unique);
-  if (!parsed.success) {
-    return { status: "error", message: "Use up to 20 names, each under 80 characters." };
-  }
-  await saveSetting("posters", parsed.data, null);
-  await writeAudit(null, "settings_posters", "settings", { count: parsed.data.length });
-  refresh();
-  return {
-    status: "success",
-    message:
-      parsed.data.length >= 2
-        ? "Saved."
-        : "Saved. Name at least two people, so a notice never depends on one person being available.",
-  };
-}
-
 export async function saveNoticeLocation(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
   const parsed = noticeLocationSchema.safeParse({ location: String(formData.get("location") ?? "") });
   if (!parsed.success) {
@@ -111,7 +71,7 @@ export async function saveAccommodation(
 ): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
   const rawDays = String(formData.get("days") ?? "").trim();
   const parsed = accommodationSchema.safeParse({
@@ -142,7 +102,7 @@ export async function saveAccommodation(
 export async function saveSchoolYear(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
   const parsed = schoolYearSchema.safeParse({
     month: Number(formData.get("month")),
@@ -160,7 +120,7 @@ export async function saveNondiscrimination(
 ): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
   const parsed = nondiscriminationSchema.safeParse({ text: String(formData.get("text") ?? "") });
   if (!parsed.success) return { status: "error", message: "Keep it under 1,200 characters." };
@@ -177,7 +137,7 @@ export async function saveNondiscrimination(
 export async function saveSchedulePdf(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
   const url = String(formData.get("blob_url") ?? "");
   const pathname = blobPathname(url);
@@ -207,7 +167,7 @@ export async function saveEnrollmentPopup(
 ): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requireActor(formData);
+  const who = await requireActor();
   if (isState(who)) return who;
 
   const s = (k: string) => String(formData.get(k) ?? "").trim();

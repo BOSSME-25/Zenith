@@ -1,6 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
-import { isAuthenticated } from "@/lib/auth";
+import { accessOf, getSession } from "@/lib/auth";
+import { type Section, canAccess } from "@/lib/admin-access";
 import { MAX_PDF_BYTES, MEETING_FILE_RE } from "@/lib/meetings-shared";
 
 // Client-upload flow: the browser asks this route for a one-time upload token,
@@ -16,8 +17,26 @@ export async function POST(request: Request): Promise<NextResponse> {
       body,
       request,
       onBeforeGenerateToken: async (pathname: string) => {
-        if (!(await isAuthenticated())) {
+        const session = await getSession();
+        if (!session || (session.kind === "user" && session.mustChangePassword)) {
           throw new Error("Unauthorized");
+        }
+        // Each kind of file is only for the people who manage what it belongs to.
+        const folder = pathname.split("/")[0];
+        const sections: Section[] =
+          folder === "meetings"
+            ? ["meetings", "settings"]
+            : folder === "updates"
+              ? ["updates"]
+              : folder === "newsletter"
+                ? ["newsletter"]
+                : folder === "comets"
+                  ? ["comets"]
+                  : folder === "site"
+                    ? ["settings"]
+                    : [];
+        if (!sections.some((s) => canAccess(accessOf(session), s))) {
+          throw new Error("You do not have access to upload this kind of file.");
         }
         // Meeting documents are public records: PDF only, a fixed naming
         // pattern, and no random suffix or overwrite, so an earlier version

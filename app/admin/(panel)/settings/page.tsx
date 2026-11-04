@@ -3,16 +3,15 @@ import {
   EnrollmentPopupForm,
   NondiscriminationForm,
   NoticeLocationForm,
-  PostersForm,
   SchedulePdfForm,
   SchoolYearForm,
 } from "@/components/admin/SettingsForms";
+import { requireSection } from "@/lib/auth";
 import {
   getAccommodation,
   getEnrollmentPopup,
   getNondiscrimination,
   getNoticeLocation,
-  getPosters,
   getSchedulePdf,
   getSchoolYearStart,
 } from "@/lib/meetings";
@@ -22,9 +21,9 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Site settings" };
 
 export default async function SiteSettingsPage() {
-  const [posters, location, accommodation, schoolYear, schedule, nondiscrimination, popup] =
+  await requireSection("settings");
+  const [location, accommodation, schoolYear, schedule, nondiscrimination, popup] =
     await Promise.all([
-      getPosters(),
       getNoticeLocation(),
       getAccommodation(),
       getSchoolYearStart(),
@@ -48,27 +47,23 @@ export default async function SiteSettingsPage() {
         <p className="eyebrow text-eventide">Site settings</p>
         <h1 className="mt-2 text-3xl font-semibold text-midnight">Meetings and pop-up settings</h1>
         <p className="mt-2 text-midnight-75">
-          Start with the posting list. After that, each box saves on its own.
+          Each box saves on its own, and your name goes into the log.
         </p>
       </header>
 
-      <PostersForm names={posters} />
-      <NoticeLocationForm value={location.location} posters={posters} />
+      <NoticeLocationForm value={location.location} />
       <AccommodationForm
         contact={accommodation.contact}
         reach={accommodation.reach}
         days={accommodation.days}
-        posters={posters}
       />
       <SchedulePdfForm
         current={schedule ? { url: schedule.url, schoolYear: schedule.schoolYear } : null}
         nextBaseName={scheduleBase}
-        posters={posters}
       />
-      <SchoolYearForm month={schoolYear.month} day={schoolYear.day} posters={posters} />
-      <NondiscriminationForm text={nondiscrimination.text} posters={posters} />
+      <SchoolYearForm month={schoolYear.month} day={schoolYear.day} />
+      <NondiscriminationForm text={nondiscrimination.text} />
       <EnrollmentPopupForm
-        posters={posters}
         values={{
           state: popup.state,
           eyebrow: popup.eyebrow,

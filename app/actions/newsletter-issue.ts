@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { safeSql, safeQuery, isDbConfigured } from "@/lib/db";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import {
   type ActionState,
   type IssueEvent,
@@ -13,11 +13,7 @@ import {
 
 const EVENT_SLOTS = 3;
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) {
-    redirect("/admin/login");
-  }
-}
+const assertAdmin = () => requireSection("newsletter");
 
 function parseIssueFormData(formData: FormData) {
   const events: IssueEvent[] = [];

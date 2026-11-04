@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import {
   safeSql,
   isDbConfigured,
@@ -9,7 +8,7 @@ import {
   SUBMISSIONS_UNAVAILABLE_MESSAGE,
 } from "@/lib/db";
 import { guardSubmission } from "@/lib/bot-guard";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import { sendFeedbackEmail } from "@/lib/email";
 import {
   type ActionState,
@@ -19,11 +18,7 @@ import {
   fieldErrorsFromZod,
 } from "@/lib/validators";
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) {
-    redirect("/admin/login");
-  }
-}
+const assertAdmin = () => requireSection("feedback");
 
 /**
  * Public: reachable from the admin sign-in page, so there is no session to
