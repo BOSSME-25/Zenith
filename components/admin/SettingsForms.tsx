@@ -1,13 +1,12 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useRef, useState, type FormEvent, type ReactNode } from "react";
 import { upload } from "@vercel/blob/client";
 import {
   saveAccommodation,
   saveEnrollmentPopup,
   saveNondiscrimination,
   saveNoticeLocation,
-  savePosters,
   saveSchedulePdf,
   saveSchoolYear,
 } from "@/app/actions/settings";
@@ -16,7 +15,6 @@ import { type ActionState, idleState } from "@/lib/validators";
 import { FieldError, FormStatus, inputClass, labelClass } from "@/components/forms/FormStatus";
 import { SubmitButton } from "@/components/forms/SubmitButton";
 import { MAX_PDF_BYTES } from "@/lib/meetings-shared";
-import { PostedBySelect } from "./PostedBySelect";
 
 const BUTTON =
   "inline-flex items-center justify-center gap-2 rounded-full bg-midnight px-6 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors disabled:opacity-70 disabled:cursor-not-allowed min-h-11";
@@ -31,25 +29,9 @@ function Card({ title, intro, children }: { title: string; intro?: ReactNode; ch
   );
 }
 
-function Footer({
-  state,
-  pending,
-  posters,
-  withPoster = true,
-}: {
-  state: ActionState;
-  pending: boolean;
-  posters: string[];
-  withPoster?: boolean;
-}) {
-  const uid = useId();
+function Footer({ state, pending }: { state: ActionState; pending: boolean }) {
   return (
     <div className="mt-5 space-y-4">
-      {withPoster && (
-        <div className="max-w-sm">
-          <PostedBySelect posters={posters} id={`posted_by_${uid}`} />
-        </div>
-      )}
       <SubmitButton label="Save" pendingLabel="Saving…" pending={pending} className={BUTTON} />
       <div role="status" aria-live="polite">
         <FormStatus state={state} />
@@ -60,30 +42,7 @@ function Footer({
 
 /* ------------------------------------------------------------------ */
 
-export function PostersForm({ names }: { names: string[] }) {
-  const { state, pending, onSubmit } = useKeptFormAction(savePosters, idleState);
-  return (
-    <Card
-      title="Who can post notices"
-      intro="One name per line. Everyone who posts, cancels, or uploads picks their name from this list, and the name goes into the log next to a time the server records. Name at least two people, so a notice never depends on one person being available."
-    >
-      <form onSubmit={onSubmit}>
-        <label className={labelClass} htmlFor="names">Names</label>
-        <textarea
-          id="names"
-          name="names"
-          rows={4}
-          defaultValue={names.join("\n")}
-          placeholder={"Secretary name\nBoard Chair name"}
-          className={inputClass}
-        />
-        <Footer state={state} pending={pending} posters={[]} withPoster={false} />
-      </form>
-    </Card>
-  );
-}
-
-export function NoticeLocationForm({ value, posters }: { value: string; posters: string[] }) {
+export function NoticeLocationForm({ value }: { value: string }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveNoticeLocation, idleState);
   return (
     <Card
@@ -100,7 +59,7 @@ export function NoticeLocationForm({ value, posters }: { value: string; posters:
           placeholder="Place name, street address, city, AZ ZIP"
           className={inputClass}
         />
-        <Footer state={state} pending={pending} posters={posters} />
+        <Footer state={state} pending={pending} />
       </form>
     </Card>
   );
@@ -110,12 +69,10 @@ export function AccommodationForm({
   contact,
   reach,
   days,
-  posters,
 }: {
   contact: string;
   reach: string;
   days: number | null;
-  posters: string[];
 }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveAccommodation, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
@@ -150,7 +107,7 @@ export function AccommodationForm({
             <FieldError message={fe.days} />
           </div>
         </div>
-        <Footer state={state} pending={pending} posters={posters} />
+        <Footer state={state} pending={pending} />
       </form>
     </Card>
   );
@@ -161,7 +118,7 @@ const MONTHS = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-export function SchoolYearForm({ month, day, posters }: { month: number; day: number; posters: string[] }) {
+export function SchoolYearForm({ month, day }: { month: number; day: number }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveSchoolYear, idleState);
   return (
     <Card
@@ -183,7 +140,7 @@ export function SchoolYearForm({ month, day, posters }: { month: number; day: nu
             <input id="day" name="day" type="number" min={1} max={31} defaultValue={day} className={inputClass} />
           </div>
         </div>
-        <Footer state={state} pending={pending} posters={posters} />
+        <Footer state={state} pending={pending} />
       </form>
     </Card>
   );
@@ -192,11 +149,9 @@ export function SchoolYearForm({ month, day, posters }: { month: number; day: nu
 export function SchedulePdfForm({
   current,
   nextBaseName,
-  posters,
 }: {
   current: { url: string; schoolYear: string } | null;
   nextBaseName: string;
-  posters: string[];
 }) {
   const [state, setState] = useState<ActionState>(idleState);
   const [busy, setBusy] = useState(false);
@@ -269,9 +224,6 @@ export function SchedulePdfForm({
           />
           <p className="mt-1.5 text-xs text-midnight-75">Saved as <code>{nextBaseName}.pdf</code>.</p>
         </div>
-        <div className="max-w-sm">
-          <PostedBySelect posters={posters} id="posted_by_schedule" />
-        </div>
         <SubmitButton label="Upload schedule" pendingLabel="Uploading…" pending={busy} className={BUTTON} />
         <div role="status" aria-live="polite">
           <FormStatus state={state} />
@@ -281,7 +233,7 @@ export function SchedulePdfForm({
   );
 }
 
-export function NondiscriminationForm({ text, posters }: { text: string; posters: string[] }) {
+export function NondiscriminationForm({ text }: { text: string }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveNondiscrimination, idleState);
   return (
     <Card
@@ -291,7 +243,7 @@ export function NondiscriminationForm({ text, posters }: { text: string; posters
       <form onSubmit={onSubmit}>
         <label className={labelClass} htmlFor="nd_text">Statement</label>
         <textarea id="nd_text" name="text" rows={4} defaultValue={text} className={inputClass} />
-        <Footer state={state} pending={pending} posters={posters} />
+        <Footer state={state} pending={pending} />
       </form>
     </Card>
   );
@@ -332,10 +284,8 @@ const SUGGESTED = {
 
 export function EnrollmentPopupForm({
   values,
-  posters,
 }: {
   values: PopupFormValues;
-  posters: string[];
 }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveEnrollmentPopup, idleState);
   const fe = state.status === "error" ? state.fieldErrors || {} : {};
@@ -507,7 +457,7 @@ export function EnrollmentPopupForm({
           </div>
         </div>
 
-        <Footer state={state} pending={pending} posters={posters} />
+        <Footer state={state} pending={pending} />
       </form>
     </Card>
   );

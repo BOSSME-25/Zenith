@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
         </p>
         {!configured && (
           <div className="mt-6 rounded-md bg-ion-soft border border-ion px-4 py-3 text-sm text-midnight">
-            ADMIN_PASSWORD is not configured. Set it in your environment to enable sign-in.
+            The developer password (ADMIN_PASSWORD) is not set. Team logins still work.
           </div>
         )}
         <div className="mt-6">

@@ -17,7 +17,6 @@ import {
   formatMeetingDate,
   formatMeetingTime,
 } from "@/lib/meetings-shared";
-import { PostedBySelect } from "./PostedBySelect";
 
 /** Every 15 minutes from 6:00 AM to 10:00 PM, plus the saved time if it falls between. */
 function timeOptions(current: string): string[] {
@@ -40,11 +39,9 @@ function timeLabel(hhmm: string): string {
 
 export function MeetingForm({
   values,
-  posters,
   mode,
 }: {
   values: MeetingFormValues;
-  posters: string[];
   mode: "create" | "edit";
 }) {
   const { state, pending, onSubmit } = useKeptFormAction(saveMeeting, idleState);
@@ -321,9 +318,6 @@ export function MeetingForm({
       </fieldset>
 
       <div className="space-y-4 border-t border-ion pt-6">
-        <div className="max-w-sm">
-          <PostedBySelect posters={posters} />
-        </div>
         <SubmitButton
           label={mode === "create" ? "Save as draft" : "Save changes"}
           pendingLabel="Saving…"

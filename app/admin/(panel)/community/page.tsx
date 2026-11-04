@@ -1,4 +1,5 @@
 import { safeSql } from "@/lib/db";
+import { requireSection } from "@/lib/auth";
 import { formatSubmittedAt } from "@/lib/format";
 import {
   SubmissionTable,
@@ -29,6 +30,7 @@ const headers: ColumnHeader[] = [
 ];
 
 export default async function AdminCommunityPage() {
+  await requireSection("community");
   const { rows } = await safeSql<Row>`SELECT * FROM community ORDER BY submitted_at DESC LIMIT 1000`;
   const data: SubmissionRow[] = rows.map((r) => ({
     id: r.id,

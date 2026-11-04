@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { Plus, Pencil } from "lucide-react";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { DeleteUpdateButton } from "@/components/admin/DeleteUpdateButton";
@@ -24,6 +25,7 @@ function formatDate(value: string): string {
 }
 
 export default async function AdminUpdatesPage() {
+  await requireSection("updates");
   const { rows } = await safeSql<Row>`
     SELECT id, title, slug, published, publish_date, updated_at
     FROM updates ORDER BY publish_date DESC LIMIT 500

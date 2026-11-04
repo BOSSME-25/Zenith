@@ -1,6 +1,6 @@
 # Zenith College and Career Prep — Website
 
-A Next.js 15 (App Router) marketing + admin site for **Zenith College and Career Prep**, an early-college STEAM high school being designed with the Maryvale community of Phoenix, currently in the application phase with the Arizona State Board for Charter Schools.
+A Next.js 15 (App Router) marketing + admin site for **Zenith College and Career Prep**, an early-college STEAM high school being designed with the Maryvale community of Phoenix, approved by the Arizona State Board for Charter Schools and enrolling ninth graders for August 2027.
 
 ## Stack
 
@@ -10,7 +10,7 @@ A Next.js 15 (App Router) marketing + admin site for **Zenith College and Career
 - **Database**: Postgres via `@vercel/postgres` *(see "Database driver migration" below)*
 - **Email**: Resend (`resend` npm package)
 - **Forms**: Server Actions + Zod validation
-- **Admin auth**: HMAC-signed httpOnly cookie gated on `ADMIN_PASSWORD`
+- **Admin auth**: named logins (email and password, scrypt-hashed in the `admin_users` table) with two roles, **School** and **Board**, plus a **developer** login that is the `ADMIN_PASSWORD` environment variable. Sign-in is an HMAC-signed httpOnly cookie that is re-checked against the database on every request, so switching someone off, resetting their password, or changing their role signs them out at once, and changing `ADMIN_PASSWORD` signs out every developer session. What each role can open is one list in `lib/admin-access.ts`.
 - **Icons**: lucide-react
 
 ## Local setup
@@ -31,7 +31,7 @@ The site is designed to **build and run with zero env vars set**:
 
 - If `POSTGRES_URL` is not set, every database call is a no-op and admin lists render empty states. In **local development** form submissions still return success messages but are **not persisted**. In **production** the public forms instead refuse with an error and log `[zenith][db] ... REFUSED`, so a family is never thanked for an entry that was discarded.
 - If `RESEND_API_KEY` is not set, emails are logged to the dev console instead of sent. Form submissions still succeed.
-- If `ADMIN_PASSWORD` is not set, the admin login is **disabled** (intentional).
+- If `ADMIN_PASSWORD` is not set, the **developer** login is disabled (intentional). Named logins still work, but with no `AUTH_SECRET` or `ADMIN_PASSWORD` in production nothing can be signed, so sign-in fails closed.
 
 When you're ready to wire things up, add the variables to `.env.local` and restart `npm run dev`.
 
@@ -51,7 +51,7 @@ You can also visit the URL in a browser. The route is idempotent — it uses `CR
 
 ## Admin
 
-- Sign in at `/admin/login` with `ADMIN_PASSWORD`.
+- Sign in at `/admin/login`. The developer signs in with `ADMIN_PASSWORD` (the **Developer sign-in** link), opens **Logins**, and creates each person's login. The site shows a temporary password once; the person chooses their own at first sign-in. Run `/api/init` after deploying to create the `admin_users` table.
 - Dashboard, per-table list views, CSV export, and updates CRUD all live under `/admin/*`.
 - Sign out clears the auth cookie.
 

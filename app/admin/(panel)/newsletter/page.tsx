@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { Plus, Pencil, ExternalLink, CheckCircle2, Info } from "lucide-react";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { DeleteIssueButton } from "@/components/admin/DeleteIssueButton";
@@ -32,6 +33,7 @@ export default async function AdminNewsletterIssuesPage({
 }: {
   searchParams: Promise<{ saved?: string }>;
 }) {
+  await requireSection("newsletter");
   const { saved } = await searchParams;
   const { rows } = await safeSql<Row>`
     SELECT id, issue_number, month_label, hero_title, published, updated_at

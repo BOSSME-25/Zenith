@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { Users, Heart, Handshake, MessageSquare, Newspaper, Mail, UserPlus } from "lucide-react";
 
@@ -76,6 +77,7 @@ function formatDateTime(value: string): string {
 export const metadata = { title: "Dashboard" };
 
 export default async function AdminDashboard() {
+  await requireSection("dashboard");
   const [counts, recent] = await Promise.all([getCounts(), getRecent()]);
   const dbReady = isDbConfigured();
   return (

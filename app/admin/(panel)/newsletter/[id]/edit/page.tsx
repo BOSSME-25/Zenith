@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireSection } from "@/lib/auth";
 import { safeSql } from "@/lib/db";
 import { IssueForm, type IssueDefaults } from "@/components/admin/IssueForm";
 import { editIssue } from "@/app/actions/newsletter-issue";
@@ -29,6 +30,7 @@ type Row = {
 };
 
 export default async function EditIssuePage({ params }: { params: Promise<{ id: string }> }) {
+  await requireSection("newsletter");
   const { id } = await params;
   const issueId = Number(id);
   if (!Number.isFinite(issueId)) notFound();

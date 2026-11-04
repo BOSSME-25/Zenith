@@ -1,4 +1,5 @@
 import { safeSql } from "@/lib/db";
+import { requireSection } from "@/lib/auth";
 import { formatSubmittedAt } from "@/lib/format";
 import {
   SubmissionTable,
@@ -39,6 +40,7 @@ function yesNo(v: boolean | null): string {
 }
 
 export default async function AdminSurveysPage() {
+  await requireSection("surveys");
   const { rows } = await safeSql<Row>`SELECT * FROM surveys ORDER BY submitted_at DESC LIMIT 1000`;
   const data: SubmissionRow[] = rows.map((r) => ({
     id: r.id,

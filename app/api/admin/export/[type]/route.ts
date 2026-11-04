@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { isAuthenticated } from "@/lib/auth";
+import { accessOf, getSession } from "@/lib/auth";
+import { type Section, canAccess } from "@/lib/admin-access";
 import { safeSql, isDbConfigured } from "@/lib/db";
 
 const TABLES = ["families", "community", "partners", "surveys", "contacts", "newsletter"] as const;
@@ -58,12 +59,18 @@ export async function GET(
   _req: Request,
   ctx: { params: Promise<{ type: string }> },
 ) {
-  if (!(await isAuthenticated())) {
+  const session = await getSession();
+  if (!session || (session.kind === "user" && session.mustChangePassword)) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
   const { type } = await ctx.params;
   if (!(TABLES as readonly string[]).includes(type)) {
     return NextResponse.json({ ok: false, message: "Unknown export type." }, { status: 404 });
+  }
+  // Each list belongs to its own section; the newsletter export is the subscriber list.
+  const section = (type === "newsletter" ? "subscribers" : type) as Section;
+  if (!canAccess(accessOf(session), section)) {
+    return NextResponse.json({ ok: false, message: "Not allowed." }, { status: 403 });
   }
   if (!isDbConfigured()) {
     return NextResponse.json(

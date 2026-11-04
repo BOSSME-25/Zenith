@@ -3,12 +3,11 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { safeQuery, safeSql, isDbConfigured } from "@/lib/db";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import { type ActionState, fieldErrorsFromZod } from "@/lib/validators";
 import {
   type MeetingRow,
   checkNoticeRule,
-  getPosters,
   revalidateMeetings,
   writeAudit,
 } from "@/lib/meetings";
@@ -29,33 +28,21 @@ import {
   phoenixDateKey,
 } from "@/lib/meetings-shared";
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) redirect("/admin/login");
-}
+const assertAdmin = () => requireSection("meetings");
 
 const NO_DB: ActionState = {
   status: "error",
   message: "The database is not configured, so meetings cannot be saved.",
 };
 
-const NEEDS_POSTER: ActionState = {
-  status: "error",
-  message:
-    "Choose your name under Posted by. If the list is empty, add the people who post notices under Site settings first.",
-};
-
 /**
- * The admin is one shared password, so nothing identifies who acted. Every
- * change therefore names a person from a short list kept in Site settings, and
- * that name goes into the audit log next to the server's own timestamp.
+ * Who is acting. The admin has named logins, so the name that goes into the
+ * log and next to each posting time is the signed-in person's, not something
+ * chosen from a list.
  */
-async function requirePoster(
-  formData: FormData,
-): Promise<{ ok: true; actor: string } | { ok: false; state: ActionState }> {
-  const actor = String(formData.get("posted_by") ?? "").trim();
-  const posters = await getPosters();
-  if (!actor || !posters.includes(actor)) return { ok: false, state: NEEDS_POSTER };
-  return { ok: true, actor };
+async function requirePoster(): Promise<{ ok: true; actor: string } | { ok: false; state: ActionState }> {
+  const session = await requireSection("meetings");
+  return { ok: true, actor: session.actor };
 }
 
 const nullIfEmpty = (v: string) => (v.trim() === "" ? null : v.trim());
@@ -208,7 +195,7 @@ export async function saveMeeting(_prev: ActionState, formData: FormData): Promi
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
 
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const result = parseMeeting(formData);
@@ -352,7 +339,7 @@ export async function saveMeeting(_prev: ActionState, formData: FormData): Promi
 export async function publishNotice(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const meeting = await loadMeeting(String(formData.get("id") ?? ""));
@@ -405,7 +392,7 @@ export async function publishNotice(_prev: ActionState, formData: FormData): Pro
 export async function cancelMeeting(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const reason = String(formData.get("reason") ?? "").trim();
@@ -436,7 +423,7 @@ export async function cancelMeeting(_prev: ActionState, formData: FormData): Pro
 export async function moveMeeting(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const meeting = await loadMeeting(String(formData.get("id") ?? ""));
@@ -474,7 +461,7 @@ export async function moveMeeting(_prev: ActionState, formData: FormData): Promi
 export async function discardDraft(_prev: ActionState, formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const meeting = await loadMeeting(String(formData.get("id") ?? ""));
@@ -518,7 +505,7 @@ const documentSchema = z.object({
 export async function addMeetingDocument(formData: FormData): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const meeting = await loadMeeting(String(formData.get("id") ?? ""));
@@ -645,7 +632,7 @@ export async function withdrawDocument(
 ): Promise<ActionState> {
   await assertAdmin();
   if (!isDbConfigured()) return NO_DB;
-  const who = await requirePoster(formData);
+  const who = await requirePoster();
   if (!who.ok) return who.state;
 
   const reason = String(formData.get("reason") ?? "").trim();

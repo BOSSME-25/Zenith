@@ -1,9 +1,11 @@
 import { IssueForm } from "@/components/admin/IssueForm";
+import { requireSection } from "@/lib/auth";
 import { createIssue } from "@/app/actions/newsletter-issue";
 
 export const metadata = { title: "New Newsletter Issue" };
 
-export default function NewIssuePage() {
+export default async function NewIssuePage() {
+  await requireSection("newsletter");
   return (
     <div>
       <header className="mb-6">

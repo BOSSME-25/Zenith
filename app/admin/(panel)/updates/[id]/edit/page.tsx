@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireSection } from "@/lib/auth";
 import { safeSql, isDbConfigured } from "@/lib/db";
 import { UpdateForm } from "@/components/admin/UpdateForm";
 import { editUpdate } from "@/app/actions/update";
@@ -15,6 +16,7 @@ type Row = {
 };
 
 export default async function EditUpdatePage({ params }: { params: Promise<{ id: string }> }) {
+  await requireSection("updates");
   const { id } = await params;
   const numericId = Number(id);
   if (!Number.isFinite(numericId)) notFound();

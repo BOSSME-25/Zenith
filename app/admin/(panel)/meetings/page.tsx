@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireSection } from "@/lib/auth";
 import { Plus } from "lucide-react";
 import { isDbConfigured } from "@/lib/db";
 import { listAdminMeetings, type MeetingWithDocs } from "@/lib/meetings";
@@ -53,6 +54,7 @@ export default async function AdminMeetingsPage({
 }: {
   searchParams: Promise<{ tab?: string }>;
 }) {
+  await requireSection("meetings");
   const { tab: rawTab } = await searchParams;
   const tab: Tab = TABS.some((t) => t.key === rawTab) ? (rawTab as Tab) : "upcoming";
   const now = new Date();

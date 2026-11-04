@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireSection } from "@/lib/auth";
 import { safeSql } from "@/lib/db";
 import { CometForm, type CometFormValues } from "@/components/admin/CometForm";
 
@@ -10,6 +11,7 @@ export default async function EditCometPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireSection("comets");
   const { id } = await params;
   const cometId = Number(id);
   if (!Number.isFinite(cometId)) notFound();

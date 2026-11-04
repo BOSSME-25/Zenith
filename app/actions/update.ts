@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { safeSql, isDbConfigured } from "@/lib/db";
-import { isAuthenticated } from "@/lib/auth";
+import { requireSection } from "@/lib/auth";
 import {
   type ActionState,
   updateSchema,
@@ -11,11 +11,7 @@ import {
   slugify,
 } from "@/lib/validators";
 
-async function assertAdmin() {
-  if (!(await isAuthenticated())) {
-    redirect("/admin/login");
-  }
-}
+const assertAdmin = () => requireSection("updates");
 
 function parseUpdateFormData(formData: FormData) {
   return {
@@ -143,7 +139,11 @@ export async function deleteSubmission(
   table: "families" | "community" | "partners" | "surveys" | "contacts" | "newsletter",
   id: number,
 ): Promise<void> {
-  await assertAdmin();
+  // Each list has its own section, so a login that cannot open Families cannot
+  // delete a family by calling this directly either.
+  await requireSection(
+    table === "newsletter" ? "subscribers" : (table as "families" | "community" | "partners" | "surveys" | "contacts"),
+  );
   if (!isDbConfigured()) return;
   const map = {
     families: () => safeSql`DELETE FROM families WHERE id = ${id}`,

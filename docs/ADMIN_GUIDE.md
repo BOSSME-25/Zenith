@@ -18,15 +18,24 @@ A quick-start manual for managing zenithccprep.org.
 
 ## 1. Logging in
 
-1. Go to **https://zenithccprep.org/admin**
-2. Enter the admin password.
-3. You'll land on the **Dashboard**.
+Everyone has their own login: an email address and a password. Your name goes into the log next to what you post, so please don't share yours.
 
-You'll stay logged in for about 7 days. Click **Sign out** in the bottom-left of the sidebar at any time to sign out.
+1. Go to **https://www.zenithccprep.org/admin**
+2. Enter your **email** and your **password**.
+3. The first time, you sign in with a **temporary password** that BOSS ME Technology gives you by phone or in person. The site asks you to **choose your own** before anything else opens. Use at least 10 characters. A few words together is easy to remember and hard to guess.
+4. You'll land on your first page: the **Dashboard** for the school, **Meetings** for the board.
 
-> **If you forget the password:** email Zenith@bossmenow.com. It's stored in the hosting settings and can be reset there.
+You'll stay signed in for about 7 days. Click **Sign out** in the bottom-left of the sidebar at any time. Change your password any time under **My account**.
 
-Please don't share the password. Keep it in a password manager.
+**Who can open what.** The sidebar only shows what your role can use, and the site refuses the rest even if you type the address.
+
+| Role | Who | Can use |
+|---|---|---|
+| **School** | Dr. Jay Samant, Robert | Everything in the sidebar except **Logins** |
+| **Board** | Lynn Palacios (Secretary), George Saad (Board President) | **Meetings**, **Site settings**, and **Feedback** |
+| **Developer** | BOSS ME Technology | Everything, plus **Logins** |
+
+> **If you forget your password,** or the site says your login is locked, email Zenith@bossmenow.com. A wrong password five times locks the login for 15 minutes. The developer can unlock it and give you a new temporary password.
 
 ---
 
@@ -43,7 +52,7 @@ Click any tile or any row to drill into the full list.
 
 ## 3. The admin sections
 
-The sidebar has thirteen sections.
+The sidebar has up to fourteen sections. Which ones you see depends on your role (section 1).
 
 | Section | What it is |
 |---|---|
@@ -59,7 +68,8 @@ The sidebar has thirteen sections.
 | **Comets** | Recognition profiles built from approved nominations (see section 7) |
 | **Meetings** | Public board meetings: post a notice, attach the agenda, upload minutes, cancel or move a meeting (see section 12) |
 | **Feedback** | Suggestions, corrections, and requested information that board members, faculty, and staff send from the sign-in page (see below) |
-| **Site settings** | Who can post notices, the physical posting location, the yearly schedule, and the enrollment pop-up (see section 12) |
+| **Site settings** | The physical posting location, the yearly schedule, and the enrollment pop-up (see section 12) |
+| **Logins** | Developer only: add people, reset a password, switch someone off |
 
 ### Feedback from your team
 
@@ -290,8 +300,9 @@ The database may be temporarily unreachable. Wait a minute and reload. If it per
 
 **Login keeps failing**
 - Check Caps Lock
-- Make sure the password matches exactly (no leading or trailing space)
+- Make sure the email and password match exactly (no leading or trailing space)
 - If you copied it from a message, retype it manually
+- Five wrong passwords lock the login for 15 minutes. Email Zenith@bossmenow.com to have it unlocked.
 
 **I saved a newsletter issue but it isn't at the top of the Newsletter page**
 Look at the issue list. If it says **Draft**, edit it and tick **Published**. If it says **Published** but another issue is marked **Showing as latest**, that other issue has a higher number. Edit yours and give it a higher number than that one.
@@ -325,10 +336,11 @@ The system enforces the 24-hour rule itself. If a notice is too close to the mee
 
 ### One-time setup (Site settings)
 
-1. **Who can post notices.** Add the name of the Secretary and at least one more person, such as the Board Chair or Vice Chair, so a notice never depends on one person being away. Everyone picks their name from this list when they post, cancel, or upload, and the name goes into the log.
-2. **Where printed notices are posted.** The notice has to name a physical place as well as the website. The board designates the place by vote and records it in its minutes. Enter it only after that vote. Until then the page names the website only, and a red **Notice location not set** banner shows in the admin.
-3. **Accommodation requests** (optional, the board decides). Name or role, email or phone, and how many business days ahead.
-4. **Yearly meeting schedule.** Each August, upload the year's schedule as a PDF. That is the only yearly task. The archive groups itself by school year.
+1. **Where printed notices are posted.** The notice has to name a physical place as well as the website. The board designates the place by vote and records it in its minutes. Enter it only after that vote. Until then the page names the website only, and a red **Notice location not set** banner shows in the admin.
+2. **Accommodation requests** (optional, the board decides). Name or role, email or phone, and how many business days ahead.
+3. **Yearly meeting schedule.** Each August, upload the year's schedule as a PDF. That is the only yearly task. The archive groups itself by school year.
+
+Your name and title are recorded automatically from your login, next to a time the server records, so there is nothing to choose or type. Two people have board logins (the Secretary and the Board President), so a notice never depends on one person being away.
 
 ### Post an upcoming meeting
 
@@ -337,9 +349,9 @@ Do this at least 72 hours ahead if you can. Twenty-four hours is the legal minim
 1. Click **Meetings**, then **New meeting**.
 2. Choose the type. **Regular** is the standard monthly meeting.
 3. Enter the title. Pick the **Date**, then choose the **Starts** time (and **Ends**, if you want one) from the lists. The line under them shows exactly how the public page will read, so check it. Under **How will people attend?** choose **Online only**, **In person only**, or **In person and online**, and the form shows just the fields that apply. For an online meeting, paste the Zoom link and add the meeting ID, passcode, and dial-in. The public page shows "Online - Zoom" for a Zoom link. **Times are Arizona time. Do not convert anything.**
-4. Choose your name under **Posted by** and click **Save as draft**. Nothing is public yet.
+4. Click **Save as draft**. Nothing is public yet.
 5. On the next screen, under **Agenda**, upload the agenda as a PDF. If it is not ready, come back later. Do not publish without it unless the meeting is more than 48 hours away.
-6. Under **Notice**, choose your name and click **Publish notice**. A box asks you to confirm the date and time; read it before you say yes. The system records the date and time. If you see a red message about 24 hours, stop and call the Board Chair.
+6. Under **Notice**, click **Publish notice**. A box asks you to confirm the date and time; read it before you say yes. The system records the date and time. If you see a red message about 24 hours, stop and call the Board Chair.
 7. Open the public page (the link is on the meeting) and check the date, time, place, and agenda link.
 8. Print the agenda and post it at the physical location named in the notice. The law needs both places.
 
@@ -378,7 +390,7 @@ Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up th
 
 **Yours to do, with no developer needed:** everything in the sidebar: Updates, the Newsletter, reviewing and exporting submissions, the Comets queue, and the Meetings tools.
 
-**Send to BOSS ME Technology (Zenith@bossmenow.com):** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and admin password resets.
+**Send to BOSS ME Technology (Zenith@bossmenow.com):** page wording, photos and layout, new pages, navigation, the enrollment and lottery page, board bios, domain and DNS changes, hosting, email setup, and new logins or password resets.
 
 Rule of thumb: if it's in the sidebar, it's yours. If it's words or layout on a page, send it over.
 

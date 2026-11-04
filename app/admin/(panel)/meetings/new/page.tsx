@@ -1,6 +1,6 @@
 import { MeetingForm } from "@/components/admin/MeetingForm";
+import { requireSection } from "@/lib/auth";
 import { NoticeLocationBanner } from "@/components/admin/NoticeLocationBanner";
-import { getPosters } from "@/lib/meetings";
 import { ATTENDANCE, EMPTY_MEETING, MEETING_TYPES, type MeetingFormValues } from "@/lib/meetings-shared";
 
 export const dynamic = "force-dynamic";
@@ -52,7 +52,7 @@ export default async function NewMeetingPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const posters = await getPosters();
+  await requireSection("meetings");
   const values = prefill(await searchParams);
   return (
     <div>
@@ -67,7 +67,7 @@ export default async function NewMeetingPage({
       </header>
       <NoticeLocationBanner />
       <div className="max-w-3xl rounded-2xl bg-white border border-ion p-6 md:p-8">
-        <MeetingForm values={values} posters={posters} mode="create" />
+        <MeetingForm values={values} mode="create" />
       </div>
     </div>
   );
