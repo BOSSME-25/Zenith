@@ -69,7 +69,7 @@ const FAQS: Faq[] = [
   },
   {
     q: "What career pathways will Zenith offer?",
-    a: "IT and Cybersecurity, Health Sciences, and Advanced Manufacturing — aligned to high-demand Arizona industries.",
+    a: "IT and Cybersecurity, Health Sciences, Advanced Manufacturing, and Business and Entrepreneurship, aligned to high-demand Arizona industries.",
     learnMore: "/school-model",
   },
   {

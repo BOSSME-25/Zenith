@@ -48,8 +48,8 @@ const OUTCOMES = [
 const DIFFERENTIATORS = [
   {
     icon: GraduationCap,
-    title: "AP-First Model",
-    body: "All students are prepared for advanced coursework and college-level expectations beginning in 9th grade through rigorous Pre-AP aligned instruction and academic support systems.",
+    title: "AP and Dual Enrollment",
+    body: "All students are prepared for advanced coursework and college-level expectations beginning in 9th grade through rigorous Pre-AP aligned instruction and academic support systems, with AP courses and dual enrollment leading to college credit.",
   },
   {
     icon: Compass,
@@ -120,7 +120,7 @@ export default function Home() {
           <div className="max-w-2xl">
             <p className="eyebrow text-ion">A New Kind of High School Is Coming to Maryvale</p>
             <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-white">
-              AP-First. College &amp; Career Connected. Built for Maryvale.
+              College and Career Pathways. Built for Maryvale.
             </h1>
 
             {/* The two facts families ask first: when it opens, and which grade

@@ -104,6 +104,11 @@ const PATHWAYS = [
     title: "Advanced Manufacturing",
     body: "Robotics, precision fabrication, and the modern manufacturing skills Arizona employers are hiring for today.",
   },
+  {
+    icon: Lightbulb,
+    title: "Business and Entrepreneurship",
+    body: "Business planning, marketing, finance, and the entrepreneurial skills to start, run, and grow a business.",
+  },
 ];
 
 const CAREER_FLOW = ["Explore", "Experience", "Apply", "Lead"];
@@ -297,9 +302,9 @@ export default function SchoolModelPage() {
         <div className="mt-12 pt-10 border-t border-ion/40">
           <p className="eyebrow text-eventide">Featured Pathways</p>
           <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
-            Three high-demand Arizona pathways.
+            Four high-demand Arizona pathways.
           </h3>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {PATHWAYS.map(({ icon: Icon, title, body }, i) => (
               <Reveal
                 key={title}
