@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
 
 function InstagramIcon({ size = 18 }: { size?: number }) {
   return (
@@ -71,14 +72,35 @@ export function Footer() {
           <div>
             <p className="eyebrow text-ion">Stay Connected</p>
             <p className="mt-4 text-sm text-white/85 leading-relaxed">
-              Want to be first to hear when enrollment details are announced?
+              {APPLICATION_URL
+                ? "Ready to join our founding 9th grade class?"
+                : "Want to be first to hear when enrollment details are announced?"}
             </p>
-            <Link
-              href="/get-involved#family"
-              className="mt-5 inline-flex items-center rounded-full bg-ion px-5 py-2.5 text-sm font-semibold text-midnight hover:bg-white"
-            >
-              Join the Interest List
-            </Link>
+            {APPLICATION_URL ? (
+              <>
+                <a
+                  href={APPLICATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex items-center rounded-full bg-ion px-5 py-2.5 text-sm font-semibold text-midnight hover:bg-white"
+                >
+                  Apply Now
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+                <p className="mt-3 text-sm text-white/85">
+                  <Link href={INTEREST_LIST_HREF} className="underline underline-offset-2 hover:text-ion">
+                    Not ready? Join the interest list
+                  </Link>
+                </p>
+              </>
+            ) : (
+              <Link
+                href={INTEREST_LIST_HREF}
+                className="mt-5 inline-flex items-center rounded-full bg-ion px-5 py-2.5 text-sm font-semibold text-midnight hover:bg-white"
+              >
+                Join the Interest List
+              </Link>
+            )}
           </div>
           <div>
             <p className="eyebrow text-ion">Follow Us</p>

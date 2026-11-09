@@ -68,6 +68,7 @@ CSV exports stream from `/api/admin/export/{families|community|partners|surveys|
    - `RESEND_API_KEY`, `EMAIL_FROM`, `NOTIFICATION_EMAIL`
    - `ADMIN_PASSWORD`, optionally `AUTH_SECRET`
    - `NEXT_PUBLIC_SITE_URL`
+   - `NEXT_PUBLIC_APPLICATION_URL` (the full `https://` link to the online application). Unset, the site's main button is "Join the interest list". Set, **Apply Now** becomes the main button site-wide (home banner and hero, floating button, footer, Get Involved, family email) and the interest list becomes a smaller option. The enrollment pop-up is set separately in the admin under Site settings.
    - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` (bot protection on the public forms)
 4. Deploy.
 5. Run `POST /api/init?password=…` once to create tables.

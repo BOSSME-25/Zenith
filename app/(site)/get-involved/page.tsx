@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APPLICATION_URL } from "@/lib/enrollment";
 import { Users, ClipboardList, Heart, Handshake } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
@@ -17,7 +18,9 @@ const AUDIENCES = [
     href: "#family",
     icon: Users,
     label: "Future Families",
-    line: "Join the interest list and be first to hear how to enroll.",
+    line: APPLICATION_URL
+      ? "Apply now, or join the interest list to stay in the loop."
+      : "Join the interest list and be first to hear how to enroll.",
   },
   {
     href: "#survey",
@@ -76,12 +79,32 @@ export default function GetInvolvedPage() {
 
       <Section bg="ion-soft">
         <div id="family" className="max-w-3xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
+          {APPLICATION_URL && (
+            <div className="mb-10 rounded-2xl bg-midnight p-6 md:p-8 text-white">
+              <p className="eyebrow text-ion">Enrolling now</p>
+              <h2 className="mt-3 text-2xl md:text-3xl font-bold text-white">Ready to apply?</h2>
+              <p className="mt-3 leading-relaxed text-white/90">
+                Zenith is enrolling 9th graders for August 2027.
+              </p>
+              <a
+                href={APPLICATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-aurora px-7 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-aurora-75 transition-colors"
+              >
+                Apply Now
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          )}
           <p className="eyebrow text-eventide">Family Interest List</p>
           <h2 className="mt-3 text-2xl md:text-3xl font-semibold text-midnight">
-            Join the Zenith Interest List.
+            {APPLICATION_URL ? "Not ready to apply yet?" : "Join the Zenith Interest List."}
           </h2>
           <p className="mt-3 text-midnight-75">
-            Be the first to hear how to enroll. Zenith is enrolling 9th graders for August 2027.
+            {APPLICATION_URL
+              ? "Join the interest list and we will keep you posted on open houses and key dates."
+              : "Be the first to hear how to enroll. Zenith is enrolling 9th graders for August 2027."}
           </p>
           <div className="mt-8">
             <FamilyForm />

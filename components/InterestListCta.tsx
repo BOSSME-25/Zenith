@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowRight, X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
 
 const DISMISS_KEY = "zenith-interest-cta-dismissed";
 /** Far enough down that it never competes with a page's own hero CTA. */
@@ -39,28 +40,43 @@ export function InterestListCta() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Pointless on the page it links to, and on the nomination form.
-  if (pathname.startsWith("/get-involved") || pathname.startsWith("/alumni/nominate")) return null;
+  // Pointless on the page it links to, and on the nomination form. Once there is
+  // an application, the button is Apply Now and is still useful on that page.
+  if (!APPLICATION_URL && pathname.startsWith("/get-involved")) return null;
+  if (pathname.startsWith("/alumni/nominate")) return null;
   if (dismissed) return null;
 
   return (
     <aside
-      aria-label="Interest list"
+      aria-label={APPLICATION_URL ? "Apply now" : "Interest list"}
       className={cn(
         "fixed bottom-4 right-4 z-40 flex items-center gap-1 transition-all duration-300 sm:bottom-6 sm:right-6",
         visible ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-3",
       )}
     >
-      <Link
-        href="/get-involved#family"
-        className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(6,36,63,0.35)] ring-1 ring-ion/30 transition-colors hover:bg-eventide active:scale-95"
-      >
-        Join the Interest List
-        <ArrowRight size={16} aria-hidden />
-      </Link>
+      {APPLICATION_URL ? (
+        <a
+          href={APPLICATION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(6,36,63,0.35)] ring-1 ring-ion/30 transition-colors hover:bg-eventide active:scale-95"
+        >
+          Apply Now
+          <ArrowRight size={16} aria-hidden />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      ) : (
+        <Link
+          href={INTEREST_LIST_HREF}
+          className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(6,36,63,0.35)] ring-1 ring-ion/30 transition-colors hover:bg-eventide active:scale-95"
+        >
+          Join the Interest List
+          <ArrowRight size={16} aria-hidden />
+        </Link>
+      )}
       <button
         type="button"
-        aria-label="Hide the interest list button"
+        aria-label={APPLICATION_URL ? "Hide the Apply Now button" : "Hide the interest list button"}
         onClick={() => {
           setDismissed(true);
           try {

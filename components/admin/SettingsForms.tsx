@@ -258,6 +258,8 @@ export type PopupFormValues = {
   body: string;
   ctaLabel: string;
   ctaUrl: string;
+  secondaryLabel: string;
+  secondaryUrl: string;
   imageUrl: string;
   imageAlt: string;
   showFrom: string;
@@ -272,13 +274,17 @@ const SUGGESTED = {
     body: "Zenith College and Career Prep is approved to open in Maryvale in August 2027. Details on how to enroll are coming soon. Join the list and we'll tell you first.",
     ctaLabel: "Join the interest list",
     ctaUrl: "/get-involved#family",
+    secondaryLabel: "",
+    secondaryUrl: "",
   },
   open: {
     eyebrow: "ENROLLING FOR 2027-28",
     headline: "Join our founding class",
     body: "Zenith College and Career Prep opens in August 2027 for ninth graders in Maryvale. Early college courses, STEAM career paths, and a small school where every student is known.",
-    ctaLabel: "Start your application",
+    ctaLabel: "Apply Now",
     ctaUrl: "",
+    secondaryLabel: "Not ready? Join the interest list",
+    secondaryUrl: "/get-involved#family",
   },
 } as const;
 
@@ -405,6 +411,31 @@ export function EnrollmentPopupForm({
               className={inputClass}
             />
             <FieldError message={fe.ctaUrl} />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="secondaryLabel">Smaller option, label (up to 40, optional)</label>
+            <input
+              id="secondaryLabel"
+              name="secondaryLabel"
+              type="text"
+              maxLength={40}
+              placeholder="Not ready? Join the interest list"
+              defaultValue={values.secondaryLabel}
+              className={inputClass}
+            />
+            <FieldError message={fe.secondaryLabel} />
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="secondaryUrl">Smaller option, link</label>
+            <input
+              id="secondaryUrl"
+              name="secondaryUrl"
+              type="text"
+              placeholder="/get-involved#family"
+              defaultValue={values.secondaryUrl}
+              className={inputClass}
+            />
+            <FieldError message={fe.secondaryUrl} />
           </div>
         </div>
 

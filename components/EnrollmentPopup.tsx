@@ -14,6 +14,8 @@ type Popup = {
   body: string;
   ctaLabel: string;
   ctaUrl: string | null;
+  secondaryLabel: string | null;
+  secondaryUrl: string | null;
   imageUrl: string | null;
   imageAlt: string;
   rememberDismissDays: number;
@@ -39,11 +41,46 @@ function dismissedRecently(version: string): boolean {
 }
 
 /**
+ * A link inside the pop-up: the main button, or a smaller text link. An
+ * outside address (the application) opens in a new tab so the visitor keeps
+ * their place on the site.
+ */
+function PopupLink({
+  href,
+  onFollow,
+  primary = false,
+  children,
+}: {
+  href: string;
+  onFollow: () => void;
+  primary?: boolean;
+  children: React.ReactNode;
+}) {
+  const external = /^https?:\/\//i.test(href);
+  const className = primary
+    ? "inline-flex min-h-11 items-center justify-center rounded-full bg-aurora px-7 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-aurora-75 transition-colors"
+    : "inline-flex min-h-11 items-center px-1 text-sm font-semibold text-white underline underline-offset-4 hover:text-ion";
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" onClick={onFollow} className={className}>
+        {children}
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
+    );
+  }
+  return (
+    <Link href={href} onClick={onFollow} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+/**
  * The site-wide enrollment pop-up.
  *
  * Off by default: with no live setting this renders nothing at all. When on,
- * it appears once per visit, about a second and a half after the page loads,
- * and waits for the welcome video if that is open. It uses the native dialog
+ * it appears once per visit, about a second and a half after the page loads.
+ * It uses the native dialog
  * element, so focus stays inside it, Escape closes it, and focus returns to
  * where the visitor was. It collects nothing.
  */
@@ -82,32 +119,16 @@ export function EnrollmentPopup() {
     }
     if (dismissedRecently(popup.version)) return;
 
-    let timer: number | undefined;
-    const show = () => {
+    const timer = window.setTimeout(() => {
       try {
         sessionStorage.setItem(SESSION_KEY, "1");
       } catch {
         // ignore
       }
       setOpen(true);
-    };
-    const onWelcomeClosed = () => {
-      window.removeEventListener("zenith:welcome-closed", onWelcomeClosed);
-      timer = window.setTimeout(show, DELAY_MS);
-    };
-
-    timer = window.setTimeout(() => {
-      if (document.documentElement.dataset.welcomeOpen === "1") {
-        window.addEventListener("zenith:welcome-closed", onWelcomeClosed);
-      } else {
-        show();
-      }
     }, DELAY_MS);
 
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("zenith:welcome-closed", onWelcomeClosed);
-    };
+    return () => window.clearTimeout(timer);
   }, [popup, excluded]);
 
   // Open the native dialog and keep the page behind it still.
@@ -124,7 +145,8 @@ export function EnrollmentPopup() {
 
   if (!popup || !open || excluded) return null;
 
-  function dismiss() {
+  /** Closing it, or following either link, keeps it away for the set number of days. */
+  function rememberDismissal() {
     try {
       localStorage.setItem(
         DISMISS_KEY,
@@ -136,6 +158,10 @@ export function EnrollmentPopup() {
     } catch {
       // ignore
     }
+  }
+
+  function dismiss() {
+    rememberDismissal();
     setOpen(false);
   }
 
@@ -188,27 +214,11 @@ export function EnrollmentPopup() {
           </p>
 
           <div className="mt-7 flex flex-col items-start gap-2">
-            {popup.ctaUrl && (
-              <Link
-                href={popup.ctaUrl}
-                onClick={() => {
-                  try {
-                    localStorage.setItem(
-                      DISMISS_KEY,
-                      JSON.stringify({
-                        until: Date.now() + popup.rememberDismissDays * 24 * 60 * 60 * 1000,
-                        version: popup.version,
-                      }),
-                    );
-                  } catch {
-                    // ignore
-                  }
-                  setOpen(false);
-                }}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-aurora px-7 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-aurora-75 transition-colors"
-              >
-                {popup.ctaLabel}
-              </Link>
+            {popup.ctaUrl && <PopupLink href={popup.ctaUrl} onFollow={dismiss} primary>{popup.ctaLabel}</PopupLink>}
+            {popup.secondaryLabel && popup.secondaryUrl && (
+              <PopupLink href={popup.secondaryUrl} onFollow={dismiss}>
+                {popup.secondaryLabel}
+              </PopupLink>
             )}
             <button
               type="button"

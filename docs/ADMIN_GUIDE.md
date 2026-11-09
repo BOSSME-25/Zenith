@@ -241,9 +241,9 @@ Ticking **Available as a mentor** on a profile adds a "Connect with" button to t
 
 These are the parts of zenithccprep.org that visitors see. Page wording, photos, and layout are maintained by BOSS ME Technology in the website's code. To change any of them, send the requested changes to Zenith@bossmenow.com.
 
-- **Home**: opening date (Fall 2027, founding 9th grade class), what makes Zenith different, core values, community, partners
+- **Home**: the approval banner, the opening date (August 2027, founding 9th grade class), Dr. Samant's welcome video just below the main banner, what makes Zenith different, core values, community, partners
 - **Our Story**: mission, vision, why now, community engagement, and the welcome video
-- **School Model**: academics, the AP-first pathway, advisory, the Elevate block, career pathways, financial literacy
+- **School Model**: academics, AP courses and dual enrollment, advisory, the Elevate block, career pathways, financial literacy
 - **Our Board**: founder bio and board members with expandable bios
 - **FAQ**: answers to the questions families ask most often
 - **Get Involved**: audience cards (Families, Community, Partners), the survey, and the sign-up forms
@@ -382,7 +382,11 @@ To add meetings that already happened, choose **New meeting**, tick **This meeti
 
 ### The enrollment pop-up
 
-Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up that appears on public pages shortly after they load, once per visit. It is **Hidden** by default and shows nothing. Now that Zenith is approved, **Coming soon** is the right choice: it points people to the interest list. Switch to **Open** once the application link works, and put that link in the button. The suggested wording is a draft: Jay and the board approve every word, and every claim has to match the charter terms. It never appears on the interest list page.
+Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up that appears on public pages shortly after they load, once per visit. It is **Hidden** by default and shows nothing. Now that Zenith is approved, **Coming soon** is the right choice: it points people to the interest list. Switch to **Open** once the application link works: put that link in the main button (**Apply Now**), and keep the interest list as the smaller option underneath for families who are not ready to apply. The wording below the headline is approved by Jay, and every claim has to match the charter terms. The pop-up never appears on the interest list page.
+
+### Turning on Apply Now across the site
+
+Until the online application link is set, the site's main button says **Join the interest list**. Setting the link switches the whole site at once: **Apply Now** becomes the main button in the home page banner and top section, the floating button, the footer, the Get Involved page, and the family confirmation email, and the interest list becomes a smaller option next to it. The developer sets it in the hosting settings (see the README), then the site is redeployed. This is separate from the pop-up, which you set yourself under **Site settings**.
 
 ---
 
