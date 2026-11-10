@@ -16,8 +16,8 @@ export const metadata: Metadata = {
  * The application, embedded from Cognito Forms.
  *
  * The form lives at Cognito and is only shown here, so nothing a family types
- * passes through or is stored by this website. The privacy note says so, and
- * names the third party, because this page collects information about children.
+ * passes through or is stored by this website. The privacy note, below the form,
+ * says so and names the third party, because this page collects information about children.
  */
 export default function ApplyPage() {
   return (
@@ -29,10 +29,48 @@ export default function ApplyPage() {
         description="Zenith College and Career Prep is approved by the Arizona State Board for Charter Schools and enrolling 9th graders for August 2027. Complete the application below."
         bg="white"
         className="pb-8 md:pb-10"
-      >
+      />
+
+      <Section bg="ion-soft" className="pt-10 md:pt-14">
+        <div className="mx-auto max-w-4xl">
+          <p className="mb-4 text-sm text-midnight-75">
+            Trouble seeing the form?{" "}
+            <a
+              href={COGNITO_PUBLIC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-semibold text-eventide underline underline-offset-2 hover:text-midnight"
+            >
+              Open it in a new tab <ExternalLink size={13} aria-hidden />
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
+          <div className="overflow-hidden rounded-2xl border border-ion bg-white">
+            <iframe
+              src={COGNITO_EMBED_SRC}
+              title="Zenith College and Career Prep application form"
+              allow="payment"
+              style={{ border: 0, width: "100%" }}
+              height={2236}
+            />
+          </div>
+          <noscript>
+            <p className="mt-4 text-midnight">
+              The form needs JavaScript. You can{" "}
+              <a href={COGNITO_PUBLIC_URL} className="font-semibold underline">
+                open the application on Cognito Forms
+              </a>{" "}
+              instead.
+            </p>
+          </noscript>
+        </div>
+      </Section>
+
+      {/* Below the form, so the application comes first. */}
+      <Section bg="white" className="py-10 md:py-14">
         <aside
           aria-labelledby="privacy-note-title"
-          className="max-w-3xl rounded-2xl border border-ion bg-ion-soft p-6 md:p-7"
+          className="mx-auto max-w-4xl rounded-2xl border border-ion bg-ion-soft p-6 md:p-7"
         >
           <h2
             id="privacy-note-title"
@@ -73,41 +111,6 @@ export default function ApplyPage() {
             </li>
           </ul>
         </aside>
-      </Section>
-
-      <Section bg="ion-soft" className="pt-10 md:pt-14">
-        <div className="mx-auto max-w-4xl">
-          <p className="mb-4 text-sm text-midnight-75">
-            Trouble seeing the form?{" "}
-            <a
-              href={COGNITO_PUBLIC_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-semibold text-eventide underline underline-offset-2 hover:text-midnight"
-            >
-              Open it in a new tab <ExternalLink size={13} aria-hidden />
-              <span className="sr-only"> (opens in a new tab)</span>
-            </a>
-          </p>
-          <div className="overflow-hidden rounded-2xl border border-ion bg-white">
-            <iframe
-              src={COGNITO_EMBED_SRC}
-              title="Zenith College and Career Prep application form"
-              allow="payment"
-              style={{ border: 0, width: "100%" }}
-              height={2236}
-            />
-          </div>
-          <noscript>
-            <p className="mt-4 text-midnight">
-              The form needs JavaScript. You can{" "}
-              <a href={COGNITO_PUBLIC_URL} className="font-semibold underline">
-                open the application on Cognito Forms
-              </a>{" "}
-              instead.
-            </p>
-          </noscript>
-        </div>
       </Section>
 
       {/* Cognito's own script, which resizes the frame to fit the form. */}
