@@ -52,6 +52,16 @@ export default function ApplyPage() {
             </li>
             <li>Share only what the form asks for.</li>
             <li>
+              Read our full{" "}
+              <Link
+                href="/privacy"
+                className="font-semibold text-eventide underline underline-offset-2 hover:text-midnight"
+              >
+                privacy page
+              </Link>
+              .
+            </li>
+            <li>
               Questions about the application or your information?{" "}
               <Link
                 href="/contact"
