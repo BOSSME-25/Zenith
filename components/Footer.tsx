@@ -125,7 +125,10 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-midnight-75/40 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="text-xs tracking-[0.18em] uppercase text-ion">Elevating Every Future</p>
           <p className="text-xs text-white/60">
-            &copy; {year} Zenith College and Career Prep. All rights reserved.
+            &copy; {year} Zenith College and Career Prep. All rights reserved.{" "}
+            <Link href="/privacy" className="ml-2 underline underline-offset-2 hover:text-ion">
+              Privacy
+            </Link>
           </p>
         </div>
       </div>
