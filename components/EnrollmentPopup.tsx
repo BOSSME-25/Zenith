@@ -27,7 +27,7 @@ const DISMISS_KEY = "zenith-enrollment-popup-dismissed";
 const DELAY_MS = 1500;
 
 /** Pages where the pop-up would only repeat what the visitor is already doing. */
-const EXCLUDED = ["/get-involved", "/admin"];
+const EXCLUDED = ["/get-involved", "/apply", "/admin"];
 
 function dismissedRecently(version: string): boolean {
   try {

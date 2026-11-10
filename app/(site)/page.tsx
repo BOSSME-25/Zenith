@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ApprovalBanner } from "@/components/ApprovalBanner";
+import { ApplyLink } from "@/components/ApplyLink";
 import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
 import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 import Image from "next/image";
@@ -145,16 +146,10 @@ export default function Home() {
 
             <div className="mt-9 flex flex-wrap gap-3">
               {APPLICATION_URL ? (
-                <a
-                  href={APPLICATION_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors"
-                >
+                <ApplyLink className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors">
                   Apply Now
                   <ArrowRight size={18} aria-hidden />
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+                </ApplyLink>
               ) : (
                 <Link
                   href={INTEREST_LIST_HREF}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { APPLICATION_URL } from "@/lib/enrollment";
+import { ApplyLink } from "@/components/ApplyLink";
 import { Users, ClipboardList, Heart, Handshake } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
@@ -86,15 +87,9 @@ export default function GetInvolvedPage() {
               <p className="mt-3 leading-relaxed text-white/90">
                 Zenith is enrolling 9th graders for August 2027.
               </p>
-              <a
-                href={APPLICATION_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-aurora px-7 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-aurora-75 transition-colors"
-              >
+              <ApplyLink className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-aurora px-7 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-aurora-75 transition-colors">
                 Apply Now
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
+              </ApplyLink>
             </div>
           )}
           <p className="eyebrow text-eventide">Family Interest List</p>

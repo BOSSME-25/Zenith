@@ -386,7 +386,13 @@ Under **Site settings**, the **Open enrollment pop-up** box controls a pop-up th
 
 ### Turning on Apply Now across the site
 
-Until the online application link is set, the site's main button says **Join the interest list**. Setting the link switches the whole site at once: **Apply Now** becomes the main button in the home page banner and top section, the floating button, the footer, the Get Involved page, and the family confirmation email, and the interest list becomes a smaller option next to it. The developer sets it in the hosting settings (see the README), then the site is redeployed. This is separate from the pop-up, which you set yourself under **Site settings**.
+Until the online application link is set, the site's main button says **Join the interest list**. Setting the link switches the whole site at once: **Apply Now** becomes the main button in the home page banner and top section, the floating button, the footer, the Get Involved page, and the family confirmation email, and the interest list becomes a smaller option next to it. The developer sets it in the hosting settings (see the README) to **/apply**, the application page on this site, and redeploys. This is separate from the pop-up, which you set yourself under **Site settings**.
+
+### The application page and where applications go
+
+The page **zenithccprep.org/apply** shows the online application, which is a **Cognito Forms** form, with a short note on how families' information is handled. Mariposa's ads should send families there.
+
+**Applications do not appear in this admin.** They are collected and stored in Cognito Forms, and the Families list under the sidebar only holds the interest list. Dr. Samant's notification when someone applies is set up by Mariposa through Zapier. If the form itself needs to change (questions, wording, what happens after submitting), that is done in Cognito, not on this site.
 
 ---
 

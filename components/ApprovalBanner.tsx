@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, PartyPopper } from "lucide-react";
 import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
+import { ApplyLink } from "@/components/ApplyLink";
 
 /**
  * The congratulations banner at the top of the homepage. Other pages carry the
@@ -26,15 +27,9 @@ export function ApprovalBanner() {
         <div className="flex flex-none flex-col items-center gap-1">
           {APPLICATION_URL ? (
             <>
-              <a
-                href={APPLICATION_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors"
-              >
+              <ApplyLink className="inline-flex min-h-11 items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors">
                 Apply Now <ArrowRight size={16} aria-hidden />
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
+              </ApplyLink>
               <Link
                 href={INTEREST_LIST_HREF}
                 className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-2 hover:text-midnight-75"

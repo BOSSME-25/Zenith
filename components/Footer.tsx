@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
+import { ApplyLink } from "./ApplyLink";
 
 function InstagramIcon({ size = 18 }: { size?: number }) {
   return (
@@ -78,15 +79,9 @@ export function Footer() {
             </p>
             {APPLICATION_URL ? (
               <>
-                <a
-                  href={APPLICATION_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center rounded-full bg-ion px-5 py-2.5 text-sm font-semibold text-midnight hover:bg-white"
-                >
+                <ApplyLink className="mt-5 inline-flex items-center rounded-full bg-ion px-5 py-2.5 text-sm font-semibold text-midnight hover:bg-white">
                   Apply Now
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+                </ApplyLink>
                 <p className="mt-3 text-sm text-white/85">
                   <Link href={INTEREST_LIST_HREF} className="underline underline-offset-2 hover:text-ion">
                     Not ready? Join the interest list

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
+import { ApplyLink } from "@/components/ApplyLink";
 
 const DISMISS_KEY = "zenith-interest-cta-dismissed";
 /** Far enough down that it never competes with a page's own hero CTA. */
@@ -44,6 +45,8 @@ export function InterestListCta() {
   // an application, the button is Apply Now and is still useful on that page.
   if (!APPLICATION_URL && pathname.startsWith("/get-involved")) return null;
   if (pathname.startsWith("/alumni/nominate")) return null;
+  // The application page already is the application.
+  if (pathname.startsWith("/apply")) return null;
   if (dismissed) return null;
 
   return (
@@ -55,16 +58,10 @@ export function InterestListCta() {
       )}
     >
       {APPLICATION_URL ? (
-        <a
-          href={APPLICATION_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(6,36,63,0.35)] ring-1 ring-ion/30 transition-colors hover:bg-eventide active:scale-95"
-        >
+        <ApplyLink className="inline-flex items-center gap-2 rounded-full bg-midnight px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(6,36,63,0.35)] ring-1 ring-ion/30 transition-colors hover:bg-eventide active:scale-95">
           Apply Now
           <ArrowRight size={16} aria-hidden />
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
+        </ApplyLink>
       ) : (
         <Link
           href={INTEREST_LIST_HREF}

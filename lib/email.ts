@@ -1,5 +1,5 @@
 import "server-only";
-import { APPLICATION_URL } from "@/lib/enrollment";
+import { APPLICATION_ABSOLUTE_URL } from "@/lib/enrollment";
 import { Resend } from "resend";
 
 const MIDNIGHT = "#06243F";
@@ -159,7 +159,7 @@ export async function sendFamilyEmails(data: FamilyEmail) {
     "Thank you for joining the interest list",
     `<p>Hi ${escapeHtml(data.parent_name.split(" ")[0] || data.parent_name)},</p>
      <p>Thank you for adding your family to the Zenith Interest List. We're honored that you're considering Zenith for ${escapeHtml(data.student_name)}.</p>
-     <p>Zenith College and Career Prep has been approved by the Arizona State Board for Charter Schools, and we are enrolling 9th graders for August 2027. Zenith opens with 9th grade only and adds one grade each year. ${APPLICATION_URL ? `You can apply any time at <a href="${escapeHtml(APPLICATION_URL)}">${escapeHtml(APPLICATION_URL)}</a>. We'll also share` : "Details on how to enroll are coming soon, and we'll share them with you first, along with"} open houses, community forums, and other milestones, by your preferred contact method (${escapeHtml(data.preferred_contact)}).</p>
+     <p>Zenith College and Career Prep has been approved by the Arizona State Board for Charter Schools, and we are enrolling 9th graders for August 2027. Zenith opens with 9th grade only and adds one grade each year. ${APPLICATION_ABSOLUTE_URL ? `You can apply any time at <a href="${escapeHtml(APPLICATION_ABSOLUTE_URL)}">${escapeHtml(APPLICATION_ABSOLUTE_URL)}</a>. We'll also share` : "Details on how to enroll are coming soon, and we'll share them with you first, along with"} open houses, community forums, and other milestones, by your preferred contact method (${escapeHtml(data.preferred_contact)}).</p>
      <p>In the meantime, share Zenith with a friend or visit our website to take the Community Survey and help us design a school worthy of Maryvale.</p>
      ${closingSignature}`,
   );
