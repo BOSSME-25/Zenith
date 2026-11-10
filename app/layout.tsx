@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import localFont from "next/font/local";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+// Montserrat is served from this site, not fetched from Google at build time.
+// A Google Fonts hiccup once failed a production build and left the old site up.
+const montserrat = localFont({
+  src: [
+    { path: "./fonts/montserrat-300.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/montserrat-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/montserrat-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/montserrat-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/montserrat-700.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-montserrat",
   display: "swap",
 });
