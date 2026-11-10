@@ -112,6 +112,10 @@ export const enrollmentPopupSchema = z.object({
   body: z.string().trim().max(220).default(""),
   ctaLabel: z.string().trim().max(30).default(""),
   ctaUrl: relativeOrHttps.optional(),
+  // A smaller second option under the main button, for families who are not
+  // ready to apply (the interest list).
+  secondaryLabel: z.string().trim().max(40).default(""),
+  secondaryUrl: relativeOrHttps.optional(),
   imageUrl: z.string().trim().optional(),
   imageAlt: z.string().trim().max(140).default(""),
   showFrom: z.string().datetime().optional(),

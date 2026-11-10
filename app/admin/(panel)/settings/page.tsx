@@ -71,6 +71,8 @@ export default async function SiteSettingsPage() {
           body: popup.body,
           ctaLabel: popup.ctaLabel,
           ctaUrl: popup.ctaUrl ?? "",
+          secondaryLabel: popup.secondaryLabel,
+          secondaryUrl: popup.secondaryUrl ?? "",
           imageUrl: popup.imageUrl ?? "",
           imageAlt: popup.imageAlt,
           showFrom: popup.showFrom ? toPhoenixInput(new Date(popup.showFrom)) : "",

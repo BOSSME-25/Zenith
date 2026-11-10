@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { ApprovalBanner } from "@/components/ApprovalBanner";
+import { ApplyLink } from "@/components/ApplyLink";
+import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
+import { WELCOME_VIDEO_URL } from "@/lib/welcomeVideo";
 import Image from "next/image";
 import { ArrowRight, GraduationCap, Users, Briefcase, Compass, HandHeart, Flag, TrendingUp, BarChart2, Star, CalendarDays } from "lucide-react";
 import { Section } from "@/components/Section";
@@ -142,13 +145,20 @@ export default function Home() {
             </div>
 
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                href="/get-involved#family"
-                className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors"
-              >
-                Join Our Interest List
-                <ArrowRight size={18} aria-hidden />
-              </Link>
+              {APPLICATION_URL ? (
+                <ApplyLink className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors">
+                  Apply Now
+                  <ArrowRight size={18} aria-hidden />
+                </ApplyLink>
+              ) : (
+                <Link
+                  href={INTEREST_LIST_HREF}
+                  className="inline-flex items-center gap-2 rounded-full bg-ion px-6 py-3 text-sm md:text-base font-semibold text-midnight hover:bg-white transition-colors"
+                >
+                  Join Our Interest List
+                  <ArrowRight size={18} aria-hidden />
+                </Link>
+              )}
               <Link
                 href="/school-model"
                 className="inline-flex items-center gap-2 rounded-full border border-ion/60 px-6 py-3 text-sm md:text-base font-semibold text-ion hover:bg-ion hover:text-midnight transition-colors"
@@ -162,6 +172,17 @@ export default function Home() {
                 Partner With Zenith
               </Link>
             </div>
+            {APPLICATION_URL && (
+              <p className="mt-4 text-sm text-ion/85">
+                Not ready to apply yet?{" "}
+                <Link
+                  href={INTEREST_LIST_HREF}
+                  className="font-semibold underline underline-offset-2 hover:text-white"
+                >
+                  Join the interest list
+                </Link>
+              </p>
+            )}
           </div>
           <div className="relative hidden lg:flex justify-center">
             <Image
@@ -173,6 +194,34 @@ export default function Home() {
               priority
             />
           </div>
+        </div>
+      </section>
+
+      {/* Jay's welcome, here instead of a pop-up. No autoplay: it has sound, and
+          the person chooses to press play. */}
+      <section aria-labelledby="welcome-video-title" className="bg-white py-14 md:py-20">
+        <div className="container-prose">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="eyebrow text-eventide">Welcome to Zenith</p>
+            <h2
+              id="welcome-video-title"
+              className="mt-3 text-2xl md:text-3xl font-semibold leading-tight text-midnight"
+            >
+              A welcome from our founder, Dr. Jay Samant
+            </h2>
+          </div>
+          <figure className="mx-auto mt-8 max-w-3xl">
+            <div className="overflow-hidden rounded-2xl border border-ion bg-midnight shadow-[0_8px_24px_rgba(6,36,63,0.08)]">
+              <video
+                src={WELCOME_VIDEO_URL}
+                aria-label="A welcome from our founder, Dr. Jay Samant"
+                className="mx-auto block max-h-[70vh] w-auto max-w-full bg-midnight"
+                controls
+                playsInline
+                preload="metadata"
+              />
+            </div>
+          </figure>
         </div>
       </section>
 

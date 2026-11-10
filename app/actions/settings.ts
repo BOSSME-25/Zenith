@@ -186,6 +186,8 @@ export async function saveEnrollmentPopup(
     body: s("body"),
     ctaLabel: s("ctaLabel"),
     ctaUrl: optional("ctaUrl"),
+    secondaryLabel: s("secondaryLabel"),
+    secondaryUrl: optional("secondaryUrl"),
     imageUrl: optional("imageUrl"),
     imageAlt: s("imageAlt"),
     showFrom: phoenixToIso("showFrom"),
@@ -212,6 +214,13 @@ export async function saveEnrollmentPopup(
     return {
       status: "error",
       message: "Fill in the headline, the text, and the button label before turning this on.",
+    };
+  }
+  if (p.secondaryLabel && !p.secondaryUrl) {
+    return {
+      status: "error",
+      message: "Add the link for the smaller option, or clear its label.",
+      fieldErrors: { secondaryUrl: "Add a link, for example /get-involved#family." },
     };
   }
   if (p.imageUrl && !p.imageAlt) {

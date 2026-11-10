@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APPLICATION_URL } from "@/lib/enrollment";
 import { ChevronDown } from "lucide-react";
 import { Section } from "@/components/Section";
 import { JsonLd } from "@/components/JsonLd";
@@ -38,7 +39,9 @@ const FAQS: Faq[] = [
   },
   {
     q: "How do I enroll my child?",
-    a: "Zenith is enrolling 9th graders for August 2027. Details on how to enroll are coming soon. Join the Interest List now and you will be the first to hear.",
+    a: APPLICATION_URL
+      ? "Zenith is enrolling 9th graders for August 2027. Apply online using the Apply Now button on the home page or the Get Involved page. If you are not ready yet, join the Interest List and we will keep you posted."
+      : "Zenith is enrolling 9th graders for August 2027. Details on how to enroll are coming soon. Join the Interest List now and you will be the first to hear.",
   },
   {
     q: "How can I support Zenith?",
@@ -54,12 +57,12 @@ const FAQS: Faq[] = [
   },
   {
     q: "What makes Zenith different?",
-    a: "AP-first academics, personalized advisory, early college credit, career pathways, and a small school environment — all in one school designed for Maryvale.",
+    a: "Early college credit through AP courses and dual enrollment, career pathways, personalized advisory, and a small school environment, all in one school designed for Maryvale.",
     learnMore: "/school-model",
   },
   {
-    q: "What does AP-first mean?",
-    a: "AP-first means Zenith is designed to prepare all students for rigorous college-level coursework and postsecondary success. Students begin with Pre-AP aligned instruction in 9th grade and have access to Advanced Placement (AP) courses, college credit opportunities, and dual enrollment as they progress through high school.",
+    q: "What does early college mean at Zenith?",
+    a: "Zenith is designed to prepare all students for rigorous college-level coursework and postsecondary success. Students begin with Pre-AP aligned instruction in 9th grade and have access to Advanced Placement (AP) courses, college credit opportunities, and dual enrollment as they progress through high school, alongside career pathways that connect learning to real-world careers.",
     learnMore: "/school-model",
   },
   {

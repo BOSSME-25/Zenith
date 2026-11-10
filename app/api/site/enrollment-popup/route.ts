@@ -29,12 +29,14 @@ export async function GET() {
             body: popup.body,
             ctaLabel: popup.ctaLabel,
             ctaUrl: popup.ctaUrl || (popup.state === "coming_soon" ? "/get-involved#family" : null),
+            secondaryLabel: popup.secondaryLabel || null,
+            secondaryUrl: popup.secondaryLabel ? popup.secondaryUrl || null : null,
             imageUrl: popup.imageUrl || null,
             imageAlt: popup.imageAlt,
             rememberDismissDays: popup.rememberDismissDays,
             // Changing the copy or the image counts as a new pop-up, so a
             // visitor who closed the old one sees the new one.
-            version: [popup.state, popup.headline, popup.body, popup.ctaUrl, popup.imageUrl].join("|"),
+            version: [popup.state, popup.headline, popup.body, popup.ctaUrl, popup.secondaryUrl, popup.imageUrl].join("|"),
           }
         : null,
     },

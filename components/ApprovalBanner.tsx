@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { ArrowRight, PartyPopper } from "lucide-react";
+import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
+import { ApplyLink } from "@/components/ApplyLink";
 
 /**
  * The congratulations banner at the top of the homepage. Other pages carry the
  * same news in the slim band under the header (see OpeningBadge), so the news
  * is never more than one glance away.
  *
- * It points at the interest list, because the details on how to enroll are
- * not out yet. When they are, this is the place to point at the application.
+ * Before the online application exists, the button points at the interest
+ * list. Once NEXT_PUBLIC_APPLICATION_URL is set, Apply Now is the main button
+ * and the interest list is a smaller link beside it.
  */
 export function ApprovalBanner() {
   return (
@@ -21,12 +24,28 @@ export function ApprovalBanner() {
             graders for August 2027.
           </span>
         </p>
-        <Link
-          href="/get-involved#family"
-          className="inline-flex min-h-11 flex-none items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors"
-        >
-          Join the interest list <ArrowRight size={16} aria-hidden />
-        </Link>
+        <div className="flex flex-none flex-col items-center gap-1">
+          {APPLICATION_URL ? (
+            <>
+              <ApplyLink className="inline-flex min-h-11 items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors">
+                Apply Now <ArrowRight size={16} aria-hidden />
+              </ApplyLink>
+              <Link
+                href={INTEREST_LIST_HREF}
+                className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-2 hover:text-midnight-75"
+              >
+                Not ready? Join the interest list
+              </Link>
+            </>
+          ) : (
+            <Link
+              href={INTEREST_LIST_HREF}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-midnight px-5 py-2.5 text-sm font-semibold text-white hover:bg-midnight-75 transition-colors"
+            >
+              Join the interest list <ArrowRight size={16} aria-hidden />
+            </Link>
+          )}
+        </div>
       </div>
     </aside>
   );

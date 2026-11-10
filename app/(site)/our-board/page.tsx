@@ -13,7 +13,7 @@ const FOUNDER = {
   role: "Founder and Chief Executive Officer",
   photo: "/board/jay-samant.jpg",
   paragraphs: [
-    "Dr. Jay Samant is the Founder and CEO of Zenith College and Career Prep, an AP-first, early college public charter high school designed to expand college and career opportunities for students in the Maryvale community of Phoenix.",
+    "Dr. Jay Samant is the Founder and CEO of Zenith College and Career Prep, an early college public charter high school in Maryvale that offers AP courses, dual enrollment, and career pathways, designed to expand college and career opportunities for students in the Maryvale community of Phoenix.",
     "He brings more than 16 years of experience across both K-12 and higher education leadership, focused on expanding access, postsecondary readiness, and opportunity for students.",
     "Prior to founding Zenith, Dr. Samant served in leadership roles across K-12 and higher education, including as a Special Education Teacher, District Leader in Special Education, Founding Assistant Principal, High School Principal, and later as Director of Academic Readiness & College Success, where he supported college and career readiness initiatives across 10 schools and helped drive a 95%+ college acceptance rate during his tenure. He also served as Associate Dean for High School to College Connections at the Community College of Denver, helping expand early college and dual enrollment opportunities for first-generation students.",
     "During his time at STRIVE Prep, Dr. Samant helped lead one of Denver's highest-performing secondary schools, which became the district's number one-ranked high school on the performance framework.",
