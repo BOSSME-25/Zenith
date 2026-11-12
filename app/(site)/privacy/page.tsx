@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/Section";
+import { PUBLIC_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
 };
 
-const UPDATED = "November 2026";
+const UPDATED = "November 12, 2026";
 
 const linkClass =
   "font-semibold text-eventide underline underline-offset-2 hover:text-midnight";
@@ -74,9 +75,24 @@ export default function PrivacyPage() {
               website&apos;s own database. Cognito Forms handles it under its own privacy policy.
             </p>
             <p>
-              Notifications about new applications may pass through an automation service so the right
-              people at the school are told promptly. We use what you share to process enrollment at Zenith
-              College and Career Prep. Please share only what the form asks for.
+              Each application is also copied, through an automation service (Zapier), to a spreadsheet that
+              only Zenith and its marketing partner can open. The school is notified when a new application
+              arrives. We use what you share to process enrollment at Zenith College and Career Prep.
+              Please share only what the form asks for.
+            </p>
+          </Block>
+
+          <Block id="ads" title="Ads and lead forms">
+            <p>
+              Zenith advertises on Meta (Facebook and Instagram). Some ads take you to our application
+              page. Others open a short form inside Meta that asks for your name, contact information and
+              ZIP code, and confirms the student is entering 9th grade. What you enter in a Meta form is
+              collected by Meta, handled under Meta&apos;s own privacy policy, and sent to the same
+              spreadsheet described above.
+            </p>
+            <p>
+              This website does not currently use advertising pixels or trackers. If that changes, we will
+              update this page first.
             </p>
           </Block>
 
@@ -140,7 +156,12 @@ export default function PrivacyPage() {
                 service for notifications and replies. They handle information only to provide those services.
               </li>
               <li>
-                <strong className="font-semibold">Cognito Forms</strong> for the application, as described above.
+                <strong className="font-semibold">Cognito Forms and Meta</strong> for the application and for
+                ad lead forms, as described above.
+              </li>
+              <li>
+                <strong className="font-semibold">Zenith&apos;s marketing partner</strong>, which runs the ads and
+                can open the lead spreadsheet. It does not share that information with anyone beyond the school.
               </li>
               <li>
                 <strong className="font-semibold">The public</strong>, for anything we are required or choose to
@@ -189,11 +210,16 @@ export default function PrivacyPage() {
             <p>
               You can ask us what information we hold about you or your child, ask us to correct it, or ask
               us to delete it. You can unsubscribe from any email we send. For anything you sent through
-              the application, we will work with Cognito Forms to act on your request.
+              the application or a Meta ad form, the school will have it removed from each place it was
+              stored: Cognito Forms, the lead spreadsheet and Meta.
             </p>
             <p>
-              To make a request, use our <Link href="/contact" className={linkClass}>contact form</Link> and
-              say what you need. We will reply as soon as we can.
+              To make a request, email{" "}
+              <a href={`mailto:${PUBLIC_EMAIL}`} className={linkClass}>
+                {PUBLIC_EMAIL}
+              </a>{" "}
+              or use our <Link href="/contact" className={linkClass}>contact form</Link> and say what you
+              need. We will reply as soon as we can.
             </p>
           </Block>
 
