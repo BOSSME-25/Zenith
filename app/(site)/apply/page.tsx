@@ -3,14 +3,33 @@ import Link from "next/link";
 import Script from "next/script";
 import { ExternalLink, ShieldCheck } from "lucide-react";
 import { Section } from "@/components/Section";
-import { COGNITO_EMBED_SRC, COGNITO_PUBLIC_URL, COGNITO_SCRIPT_SRC } from "@/lib/enrollment";
+import {
+  APPLICATION_URL,
+  COGNITO_EMBED_SRC,
+  COGNITO_PUBLIC_URL,
+  COGNITO_SCRIPT_SRC,
+  INTEREST_LIST_HREF,
+} from "@/lib/enrollment";
 
-export const metadata: Metadata = {
-  title: "Apply",
-  description:
-    "Apply to Zenith College and Career Prep. Zenith is approved by the Arizona State Board for Charter Schools and enrolling 9th graders for August 2027.",
-  alternates: { canonical: "/apply" },
-};
+// Applications are open only while NEXT_PUBLIC_APPLICATION_URL is set. With it
+// unset, this page says applications are not open yet and sends families to
+// the interest list, and search engines are told to leave it out.
+const APPLICATIONS_OPEN = APPLICATION_URL !== null;
+
+export const metadata: Metadata = APPLICATIONS_OPEN
+  ? {
+      title: "Apply",
+      description:
+        "Apply to Zenith College and Career Prep. Zenith is approved by the Arizona State Board for Charter Schools and enrolling 9th graders for August 2027.",
+      alternates: { canonical: "/apply" },
+    }
+  : {
+      title: "Applications",
+      description:
+        "Applications for Zenith College and Career Prep are not open yet. Join the interest list and we will tell you first.",
+      alternates: { canonical: "/apply" },
+      robots: { index: false, follow: true },
+    };
 
 /**
  * The application, embedded from Cognito Forms.
@@ -20,6 +39,25 @@ export const metadata: Metadata = {
  * says so and names the third party, because this page collects information about children.
  */
 export default function ApplyPage() {
+  if (!APPLICATIONS_OPEN) {
+    return (
+      <Section
+        titleAs="h1"
+        eyebrow="Applications"
+        title="Applications are not open yet."
+        description="Zenith College and Career Prep is approved to open in Maryvale in August 2027. We are not accepting applications yet. Join the interest list and we will tell you first when that changes."
+        bg="white"
+      >
+        <Link
+          href={INTEREST_LIST_HREF}
+          className="inline-flex min-h-12 items-center rounded-full bg-midnight px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-midnight-75"
+        >
+          Join the interest list
+        </Link>
+      </Section>
+    );
+  }
+
   return (
     <>
       <Section
