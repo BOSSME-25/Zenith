@@ -1,5 +1,6 @@
 import { Section } from "@/components/Section";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { PUBLIC_EMAIL } from "@/lib/site";
 
 export const metadata = {
   title: "Contact",
@@ -18,6 +19,16 @@ export default function ContactPage() {
       />
       <Section bg="ion-soft">
         <div className="max-w-2xl mx-auto rounded-2xl bg-white border border-ion p-8 md:p-10">
+          <p className="mb-6 text-midnight leading-relaxed">
+            Prefer email? Write to{" "}
+            <a
+              href={`mailto:${PUBLIC_EMAIL}`}
+              className="font-semibold text-eventide underline underline-offset-2 hover:text-midnight"
+            >
+              {PUBLIC_EMAIL}
+            </a>
+            .
+          </p>
           <ContactForm />
         </div>
       </Section>

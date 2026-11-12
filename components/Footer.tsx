@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { APPLICATION_URL, INTEREST_LIST_HREF } from "@/lib/enrollment";
 import { ApplyLink } from "./ApplyLink";
+import { PUBLIC_EMAIL } from "@/lib/site";
 
 function InstagramIcon({ size = 18 }: { size?: number }) {
   return (
@@ -96,6 +97,12 @@ export function Footer() {
                 Join the Interest List
               </Link>
             )}
+            <p className="mt-5 text-sm text-white/85">
+              Questions?{" "}
+              <a href={`mailto:${PUBLIC_EMAIL}`} className="break-all underline underline-offset-2 hover:text-ion">
+                {PUBLIC_EMAIL}
+              </a>
+            </p>
           </div>
           <div>
             <p className="eyebrow text-ion">Follow Us</p>
