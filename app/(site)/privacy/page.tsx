@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/Section";
 import { PUBLIC_EMAIL } from "@/lib/site";
+import { APPLICATION_URL } from "@/lib/enrollment";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -68,27 +69,39 @@ export default function PrivacyPage() {
           </Block>
 
           <Block id="apply" title="The application">
-            <p>
-              The application at <Link href="/apply" className={linkClass}>zenithccprep.org/apply</Link> is
-              a form from <strong className="font-semibold">Cognito Forms</strong>, a third-party service.
-              What you enter goes to Cognito Forms and is received by Zenith. It is not stored in this
-              website&apos;s own database. Cognito Forms handles it under its own privacy policy.
-            </p>
-            <p>
-              Each application is also copied, through an automation service (Zapier), to a spreadsheet that
-              only Zenith and its marketing partner can open. The school is notified when a new application
-              arrives. We use what you share to process enrollment at Zenith College and Career Prep.
-              Please share only what the form asks for.
-            </p>
+            {APPLICATION_URL ? (
+              <>
+                <p>
+                  The application at <Link href="/apply" className={linkClass}>zenithccprep.org/apply</Link> is
+                  a form from <strong className="font-semibold">Cognito Forms</strong>, a third-party service.
+                  What you enter goes to Cognito Forms and is received by Zenith. It is not stored in this
+                  website&apos;s own database. Cognito Forms handles it under its own privacy policy.
+                </p>
+                <p>
+                  Each application is also copied, through an automation service (Zapier), to a spreadsheet
+                  that only Zenith and its marketing partner can open. The school is notified when a new
+                  application arrives. We use what you share to process enrollment at Zenith College and
+                  Career Prep. A parent or guardian should complete the application for the student. Please
+                  share only what the form asks for.
+                </p>
+              </>
+            ) : (
+              <p>
+                Zenith is not accepting applications yet. When applications open, they will be taken through
+                a form from <strong className="font-semibold">Cognito Forms</strong>, a third-party service,
+                and this page will describe how that information is handled. Until then, the interest list
+                is how families reach us.
+              </p>
+            )}
           </Block>
 
           <Block id="ads" title="Ads and lead forms">
             <p>
-              Zenith advertises on Meta (Facebook and Instagram). Some ads take you to our application
-              page. Others open a short form inside Meta that asks for your name, contact information and
+              Zenith advertises on Meta (Facebook and Instagram). Some ads take you to this website.
+              Others open a short form inside Meta that asks for your name, contact information and
               ZIP code, and confirms the student is entering 9th grade. What you enter in a Meta form is
-              collected by Meta, handled under Meta&apos;s own privacy policy, and sent to the same
-              spreadsheet described above.
+              collected by Meta, handled under Meta&apos;s own privacy policy, and sent to a spreadsheet that
+              only Zenith and its marketing partner can open.
             </p>
             <p>
               This website does not currently use advertising pixels or trackers. If that changes, we will

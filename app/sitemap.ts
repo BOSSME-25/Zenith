@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { safeSql } from "@/lib/db";
 import { SITE_URL } from "@/lib/site";
+import { APPLICATION_URL } from "@/lib/enrollment";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,6 @@ const STATIC_ROUTES: Array<{
   { path: "/our-story", changeFrequency: "monthly", priority: 0.8 },
   { path: "/school-model", changeFrequency: "monthly", priority: 0.9 },
   { path: "/our-board", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/apply", changeFrequency: "weekly", priority: 0.9 },
   { path: "/get-involved", changeFrequency: "monthly", priority: 0.9 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
@@ -26,7 +26,11 @@ const STATIC_ROUTES: Array<{
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const entries: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({
+  // The application page is listed only while applications are open.
+  const routes = APPLICATION_URL
+    ? [...STATIC_ROUTES, { path: "/apply", changeFrequency: "weekly" as const, priority: 0.9 }]
+    : STATIC_ROUTES;
+  const entries: MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${SITE_URL}${route.path}`,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
